@@ -1,32 +1,19 @@
 package com.coinprism.model;
 
 import android.os.AsyncTask;
-import android.provider.Telephony;
-import android.widget.ArrayAdapter;
-
-import com.coinprism.wallet.adapter.AssetAdapter;
-import com.coinprism.wallet.fragment.BalanceTab;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,11 +29,12 @@ public class BalanceLoader extends AsyncTask<String, Integer, AddressBalance>
 {
     private final String baseUrl;
     private AddressBalance addressBalance;
-    private BalanceTab balanceTab;
+    private WalletState parent;
 
-    public BalanceLoader(String baseUrl)
+    public BalanceLoader(String baseUrl, WalletState parent)
     {
         this.baseUrl = baseUrl;
+        this.parent = parent;
     }
 
     @Override
@@ -125,7 +113,7 @@ public class BalanceLoader extends AsyncTask<String, Integer, AddressBalance>
         super.onPostExecute(result);
         //Do anything with response..
 
-        this.balanceTab.updateData(result);
+        this.parent.updateData(result);
     }
 
     private AddressBalance parseJson(String json) throws JSONException
@@ -166,11 +154,6 @@ public class BalanceLoader extends AsyncTask<String, Integer, AddressBalance>
     private void notifyError()
     {
 
-    }
-
-    public void setBalanceTab(BalanceTab balanceTab)
-    {
-        this.balanceTab = balanceTab;
     }
 
     public AddressBalance getAddressBalance()

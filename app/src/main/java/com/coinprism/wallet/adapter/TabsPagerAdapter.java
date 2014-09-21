@@ -10,31 +10,29 @@ import com.coinprism.wallet.fragment.TransactionsTab;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter
 {
+    private final Fragment[] fragments;
+
     public TabsPagerAdapter(FragmentManager manager)
     {
         super(manager);
+        this.fragments = new Fragment[]
+        {
+            new SendTab(),
+            new BalanceTab(),
+            new TransactionsTab()
+        };
     }
 
     @Override
     public Fragment getItem(int index)
     {
-        switch (index)
-        {
-            case 0:
-                return new SendTab();
-            case 1:
-                return new BalanceTab();
-            case 2:
-                return new TransactionsTab();
-        }
-
-        return null;
+        return this.fragments[index];
     }
 
     @Override
     public int getCount()
     {
         // get item count - equal to number of tabs
-        return 3;
+        return this.fragments.length;
     }
 }

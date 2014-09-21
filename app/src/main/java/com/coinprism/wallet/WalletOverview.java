@@ -1,36 +1,26 @@
 package com.coinprism.wallet;
 
-import android.app.Activity;
 import android.app.ActionBar;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerTabStrip;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 import android.support.v4.view.ViewPager;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
-import com.coinprism.model.AssetBalance;
-import com.coinprism.model.AssetDefinition;
+import com.coinprism.model.WalletState;
 import com.coinprism.wallet.adapter.TabsPagerAdapter;
 
-import java.math.BigInteger;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
-public class WalletOverview extends FragmentActivity implements ActionBar.TabListener
+public class WalletOverview extends FragmentActivity implements ActionBar.TabListener, IUpdatable
 {
     private ViewPager viewPager;
-    private TabsPagerAdapter mAdapter;
+    private TabsPagerAdapter tabsPagerAdapter;
     private ActionBar actionBar;
-    private String[] tabs = { "Send", "Wallet", "Transactions" };
+    private String[] tabs = {"Send", "Wallet", "Transactions"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,36 +31,39 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         // Initialization
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
-        mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+        tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
-        viewPager.setAdapter(mAdapter);
+        viewPager.setAdapter(tabsPagerAdapter);
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
 
         // Adding Tabs
         for (String tab_name : tabs)
         {
             actionBar.addTab(
-                actionBar.newTab().setText(tab_name).setTabListener(this));
+                    actionBar.newTab().setText(tab_name).setTabListener(this));
         }
 
         // On swiping the viewpager make respective tab selected
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
 
             @Override
-            public void onPageSelected(int position) {
+            public void onPageSelected(int position)
+            {
                 // on changing the page
                 // make respected tab selected
                 actionBar.setSelectedNavigationItem(position);
             }
 
             @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
+            public void onPageScrolled(int arg0, float arg1, int arg2)
+            {
             }
 
             @Override
-            public void onPageScrollStateChanged(int arg0) {
+            public void onPageScrollStateChanged(int arg0)
+            {
             }
         });
 
@@ -84,6 +77,31 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
 //        }
     }
 
+    public void updateWallet()
+    {
+        for (int i = 0; i < tabsPagerAdapter.getCount(); i++)
+            ((IUpdatable) tabsPagerAdapter.getItem(i)).updateWallet();
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        WalletState.getState().setCurrentActivity(this);
+        WalletState.getState().triggerUpdate();
+
+        Timer updateTimer = new Timer();
+        TimerTask task = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                WalletState.getState().triggerUpdate();
+            }
+        };
+
+        updateTimer.schedule(task, 0, 2000);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -107,17 +125,20 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
     }
 
     @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft)
+    {
     }
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
+    {
         // on tab selected
         // show respected fragment view
         viewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft)
+    {
     }
 }

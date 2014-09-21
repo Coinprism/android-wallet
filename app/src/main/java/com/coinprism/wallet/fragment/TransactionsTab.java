@@ -5,16 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
-import com.coinprism.model.AssetBalance;
-import com.coinprism.model.AssetDefinition;
+import com.coinprism.wallet.IUpdatable;
 import com.coinprism.wallet.R;
-import com.coinprism.wallet.adapter.AssetAdapter;
 
-import java.math.BigInteger;
-
-public class TransactionsTab extends Fragment
+public class TransactionsTab extends Fragment implements IUpdatable
 {
     @Override
     public View onCreateView(
@@ -23,5 +18,9 @@ public class TransactionsTab extends Fragment
         View rootView = inflater.inflate(R.layout.fragment_tab_transactions, container, false);
 
         return rootView;
+    }
+
+    public void updateWallet()
+    {
     }
 }

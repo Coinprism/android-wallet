@@ -26,7 +26,8 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
 
             <EditText
                 android:layout_width="match_parent"
@@ -38,7 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_weight="0.4" />
+                android:layout_weight="0.4"
+                android:id="@+id/assetSpinner" />
 
         </LinearLayout>
     </LinearLayout>

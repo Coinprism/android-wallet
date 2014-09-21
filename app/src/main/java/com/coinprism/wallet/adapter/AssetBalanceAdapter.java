@@ -12,12 +12,12 @@ import com.coinprism.wallet.R;
 
 import java.util.List;
 
-public class AssetAdapter extends ArrayAdapter<AssetBalance>
+public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
 {
     private final Context context;
     private final List<AssetBalance> values;
 
-    public AssetAdapter(Context context, List<AssetBalance> values)
+    public AssetBalanceAdapter(Context context, List<AssetBalance> values)
     {
         super(context, R.layout.asset_balance_item, values);
         this.context = context;
