@@ -19,7 +19,13 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:20.0.+'
+    compile 'com.android.support:support-v4:20.0.0'
+    compile group: 'com.google', name: 'bitcoinj', version: '0.11.3'
+    compile 'com.google.zxing:core:3.0.0'
 }

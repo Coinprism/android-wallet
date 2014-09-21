@@ -10,12 +10,14 @@ import android.widget.TextView;
 import com.coinprism.model.AssetBalance;
 import com.coinprism.wallet.R;
 
+import java.util.List;
+
 public class AssetAdapter extends ArrayAdapter<AssetBalance>
 {
     private final Context context;
-    private final AssetBalance[] values;
+    private final List<AssetBalance> values;
 
-    public AssetAdapter(Context context, AssetBalance[] values)
+    public AssetAdapter(Context context, List<AssetBalance> values)
     {
         super(context, R.layout.asset_balance_item, values);
         this.context = context;
@@ -28,10 +30,11 @@ public class AssetAdapter extends ArrayAdapter<AssetBalance>
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.asset_balance_item, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.assetName);
+        ((TextView) rowView.findViewById(R.id.assetName))
+            .setText(values.get(position).getAsset().getName());
 
-        textView.setText(values[position].getAsset().getName());
-        // change the icon for Windows and iPhone
+        ((TextView) rowView.findViewById(R.id.issuerName))
+            .setText(values.get(position).getAsset().getName());
 
         return rowView;
     }

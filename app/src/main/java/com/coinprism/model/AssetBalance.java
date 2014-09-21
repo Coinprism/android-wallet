@@ -4,7 +4,6 @@ import java.math.BigInteger;
 
 public class AssetBalance
 {
-
     private final AssetDefinition asset;
     private final BigInteger quantity;
 

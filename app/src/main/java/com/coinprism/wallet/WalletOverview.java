@@ -37,7 +37,7 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet_overview);
 
-        // Initilization
+        // Initialization
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
         mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
@@ -75,6 +75,8 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
             }
         });
 
+
+        viewPager.setCurrentItem(1);
 //        if (savedInstanceState == null)
 //        {
 //            getFragmentManager().beginTransaction()
