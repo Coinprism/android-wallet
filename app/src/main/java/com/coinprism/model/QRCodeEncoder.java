@@ -17,14 +17,14 @@ public class QRCodeEncoder
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;
 
-    public static void createQRCode(String text, ImageView iv, int width, int height)
+    public static void createQRCode(String text, ImageView iv, int width, int height, int quietZone)
     {
         // barcode image
         Bitmap bitmap = null;
 
         try
         {
-            bitmap = encodeAsBitmap(text, BarcodeFormat.QR_CODE, width, height);
+            bitmap = encodeAsBitmap(text, BarcodeFormat.QR_CODE, width, height, quietZone);
             iv.setImageBitmap(bitmap);
 
         }
@@ -34,7 +34,7 @@ public class QRCodeEncoder
         }
     }
 
-    private static Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width, int img_height) throws WriterException
+    private static Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width, int img_height, int quietZone) throws WriterException
     {
         String contentsToEncode = contents;
         if (contentsToEncode == null)
@@ -47,6 +47,7 @@ public class QRCodeEncoder
         {
             hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
             hints.put(EncodeHintType.CHARACTER_SET, encoding);
+            hints.put(EncodeHintType.MARGIN, quietZone);
         }
         MultiFormatWriter writer = new MultiFormatWriter();
         BitMatrix result;
@@ -72,7 +73,7 @@ public class QRCodeEncoder
         }
 
         Bitmap bitmap = Bitmap.createBitmap(width, height,
-                Bitmap.Config.ARGB_8888);
+            Bitmap.Config.ARGB_8888);
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;
     }

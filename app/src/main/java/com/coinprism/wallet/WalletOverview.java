@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerTabStrip;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,9 +44,9 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(mAdapter);
-        viewPager.setCurrentItem(1);
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
 
         // Adding Tabs
         for (String tab_name : tabs)
@@ -54,9 +55,7 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
                 actionBar.newTab().setText(tab_name).setTabListener(this));
         }
 
-        /**
-         * on swiping the viewpager make respective tab selected
-         * */
+        // On swiping the viewpager make respective tab selected
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -75,8 +74,8 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
             }
         });
 
-
         viewPager.setCurrentItem(1);
+
 //        if (savedInstanceState == null)
 //        {
 //            getFragmentManager().beginTransaction()
@@ -102,9 +101,8 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings)
-        {
             return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
