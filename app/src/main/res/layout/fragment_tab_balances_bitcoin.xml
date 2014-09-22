@@ -1,19 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:padding="8dp"
+        android:gravity="center"
+        android:background="#D6D6D6"
         android:text="Balance"/>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/btcBalance"/>-->
+    <include layout="@layout/asset_balance_item" />
+    <!--<LinearLayout android:orientation="horizontal"-->
+                  <!--android:layout_width="match_parent"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:paddingTop="8dp"-->
+                  <!--android:paddingBottom="8dp">-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="64dp"-->
+            <!--android:layout_height="64dp"-->
+            <!--android:layout_marginRight="16dp"-->
+            <!--android:id="@+id/assetIcon"-->
+            <!--android:background="#ff0000"/>-->
+
+        <!--<LinearLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!-->-->
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/assetBalance"-->
+                <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+                <!--android:paddingBottom="8dp" />-->
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/assetName"-->
+                <!--android:textAppearance="?android:attr/textAppearanceSmall"/>-->
+        <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btcBalance"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:padding="8dp"
+        android:gravity="center"
+        android:background="#D6D6D6"
         android:text="Assets"/>
 </LinearLayout>

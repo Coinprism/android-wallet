@@ -17,12 +17,15 @@ import com.coinprism.wallet.IUpdatable;
 import com.coinprism.wallet.R;
 import com.coinprism.wallet.adapter.AssetBalanceAdapter;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class BalanceTab extends Fragment implements IUpdatable
 {
     private AssetBalanceAdapter adapter;
-    private TextView btcBalance;
+
+    //private TextView btcBalance;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +42,7 @@ public class BalanceTab extends Fragment implements IUpdatable
         listView.addHeaderView(listHeaderView, null, false);
         listView.setAdapter(adapter);
 
-        btcBalance = (TextView) listHeaderView.findViewById(R.id.btcBalance);
+        //btcBalance = (TextView) listHeaderView.findViewById(R.id.btcBalance);
 
         this.setupUI(rootView);
 
@@ -63,7 +66,11 @@ public class BalanceTab extends Fragment implements IUpdatable
         AddressBalance balance = WalletState.getState().getBalance();
         if (balance != null)
         {
-            this.btcBalance.setText(balance.getSatoshiBalance().toString());
+            BigDecimal bitcoinValue = new BigDecimal(balance.getSatoshiBalance())
+                .scaleByPowerOfTen(-8);
+            //this.btcBalance.setText(balance.getSatoshiBalance().toString());
+            AssetBalanceAdapter.setBalanceItemContents(this.getView(),
+                NumberFormat.getNumberInstance().format(bitcoinValue) + " BTC", "");
 
             this.adapter.clear();
             this.adapter.addAll(balance.getAssetBalances());

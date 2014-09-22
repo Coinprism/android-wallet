@@ -100,7 +100,7 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
             }
         };
 
-        updateTimer.schedule(task, 0, 2000);
+        updateTimer.schedule(task, 0, 60000);
     }
 
     @Override

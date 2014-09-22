@@ -4,5 +4,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/assetName"
-        android:textAppearance="?android:attr/textAppearanceMediumInverse"
-        android:textColor="#000000"/>
+        android:textAppearance="?android:attr/textAppearanceMedium" />
