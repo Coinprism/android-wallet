@@ -11,12 +11,14 @@ public class WalletState
     private static WalletState state;
 
     private final WalletConfiguration configuration;
+    private final APIClient api;
     private AddressBalance walletData;
     private IUpdatable currentActivity;
 
-    public WalletState(WalletConfiguration configuration)
+    public WalletState(WalletConfiguration configuration, APIClient api)
     {
         this.configuration = configuration;
+        this.api = api;
     }
 
     public static WalletState getState()
@@ -31,14 +33,14 @@ public class WalletState
 
     private static WalletState initialize()
     {
-        //BalanceLoader loader = new BalanceLoader("https://10.0.2.2:44300");
-
-        return new WalletState(new WalletConfiguration("mpb6mkVeNqUD2q6YrBnBfYv8ejPTuuyUrH"));
+        return new WalletState(
+            new WalletConfiguration("mpb6mkVeNqUD2q6YrBnBfYv8ejPTuuyUrH"),
+            new APIClient("https://10.0.2.2:44300"));
     }
 
     public void triggerUpdate()
     {
-        BalanceLoader loader = new BalanceLoader("https://api.coinprism.com", this);
+        BalanceLoader loader = new BalanceLoader(this);
         loader.execute(configuration.getAddress());
     }
 
@@ -56,6 +58,11 @@ public class WalletState
     public WalletConfiguration getConfiguration()
     {
         return this.configuration;
+    }
+
+    public APIClient getAPIClient()
+    {
+        return this.api;
     }
 
     public void setCurrentActivity(WalletOverview value)

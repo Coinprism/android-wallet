@@ -1,11 +1,13 @@
 package com.coinprism.model;
 
+import java.util.List;
+
 public class AddressBalance
 {
     private final Long satoshiBalance;
-    private final AssetBalance[] assetBalances;
+    private final List<AssetBalance> assetBalances;
 
-    public AddressBalance(Long satoshiBalance, AssetBalance[] assetBalances)
+    public AddressBalance(Long satoshiBalance, List<AssetBalance> assetBalances)
     {
         this.satoshiBalance = satoshiBalance;
         this.assetBalances = assetBalances;
@@ -16,7 +18,7 @@ public class AddressBalance
         return this.satoshiBalance;
     }
 
-    public AssetBalance[] getAssetBalances()
+    public List<AssetBalance> getAssetBalances()
     {
         return this.assetBalances;
     }

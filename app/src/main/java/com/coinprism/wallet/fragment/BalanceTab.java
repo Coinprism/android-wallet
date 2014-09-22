@@ -66,9 +66,7 @@ public class BalanceTab extends Fragment implements IUpdatable
             this.btcBalance.setText(balance.getSatoshiBalance().toString());
 
             this.adapter.clear();
-
-            for (AssetBalance item : balance.getAssetBalances())
-                this.adapter.add(item);
+            this.adapter.addAll(balance.getAssetBalances());
         }
     }
 }

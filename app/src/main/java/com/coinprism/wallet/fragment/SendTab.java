@@ -32,7 +32,7 @@ public class SendTab extends Fragment implements IUpdatable
         this.assetSpinner = (Spinner) rootView.findViewById(R.id.assetSpinner);
 
         this.adapter = new AssetSelectorAdapter(this.getActivity(), new ArrayList<AssetDefinition>());
-
+        this.adapter.add(null);
         this.assetSpinner.setAdapter(adapter);
 
         return rootView;
@@ -40,13 +40,9 @@ public class SendTab extends Fragment implements IUpdatable
 
     public void updateWallet()
     {
-        AddressBalance balance = WalletState.getState().getBalance();
-        if (balance != null)
-        {
-            this.adapter.clear();
+        this.adapter.clear();
 
-            for (AssetBalance item : balance.getAssetBalances())
-                this.adapter.add(item.getAsset());
-        }
+        this.adapter.add(null);
+        this.adapter.addAll(WalletState.getState().getAPIClient().getAllAssetDefinitions());
     }
 }

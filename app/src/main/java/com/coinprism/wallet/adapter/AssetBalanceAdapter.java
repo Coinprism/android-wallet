@@ -30,11 +30,21 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.asset_balance_item, parent, false);
-        ((TextView) rowView.findViewById(R.id.assetName))
-            .setText(values.get(position).getAsset().getName());
 
-        ((TextView) rowView.findViewById(R.id.issuerName))
-            .setText(values.get(position).getAsset().getName());
+        TextView assetName = ((TextView) rowView.findViewById(R.id.assetName));
+        TextView issuerName = ((TextView) rowView.findViewById(R.id.issuerName));
+
+        AssetBalance balance = values.get(position);
+        if (balance.getAsset().getIsUnknown())
+        {
+            assetName.setText("Unknown colored coins");
+        }
+        else
+        {
+            assetName.setText(values.get(position).getAsset().getName());
+        }
+
+        issuerName.setText(balance.getAsset().getAssetAddress());
 
         return rowView;
     }

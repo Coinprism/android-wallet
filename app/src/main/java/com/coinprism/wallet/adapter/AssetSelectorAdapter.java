@@ -31,7 +31,13 @@ public class AssetSelectorAdapter extends ArrayAdapter<AssetDefinition>
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         TextView rowView = (TextView)inflater.inflate(R.layout.asset_selector_item, parent, false);
-        rowView.setText(values.get(position).getName());
+
+        AssetDefinition item = values.get(position);
+
+        if (item == null)
+            rowView.setText("Bitcoin");
+        else
+            rowView.setText(item.getName());
 
         return rowView;
     }
