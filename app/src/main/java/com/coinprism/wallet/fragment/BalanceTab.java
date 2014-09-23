@@ -1,5 +1,8 @@
 package com.coinprism.wallet.fragment;
 
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,7 +27,7 @@ import java.util.ArrayList;
 public class BalanceTab extends Fragment implements IUpdatable
 {
     private AssetBalanceAdapter adapter;
-
+    private TextView assetsHeader;
     //private TextView btcBalance;
 
     @Override
@@ -38,7 +41,7 @@ public class BalanceTab extends Fragment implements IUpdatable
         ListView listView = (ListView) rootView.findViewById(R.id.assetBalances);
 
         View listHeaderView = inflater.inflate(R.layout.fragment_tab_balances_bitcoin, listView, false);
-
+        assetsHeader = (TextView) listHeaderView.findViewById(R.id.assetsHeader);
         listView.addHeaderView(listHeaderView, null, false);
         listView.setAdapter(adapter);
 
@@ -68,12 +71,17 @@ public class BalanceTab extends Fragment implements IUpdatable
         {
             BigDecimal bitcoinValue = new BigDecimal(balance.getSatoshiBalance())
                 .scaleByPowerOfTen(-8);
-            //this.btcBalance.setText(balance.getSatoshiBalance().toString());
+
+            Drawable btc = getResources().getDrawable(R.drawable.btc);
+
             AssetBalanceAdapter.setBalanceItemContents(this.getView(),
-                NumberFormat.getNumberInstance().format(bitcoinValue) + " BTC", "");
+                NumberFormat.getNumberInstance().format(bitcoinValue) + " BTC", "", btc);
 
             this.adapter.clear();
             this.adapter.addAll(balance.getAssetBalances());
+
+            //if (balance.getAssetBalances().isEmpty())
+                //this.assetsHeader.
         }
     }
 }

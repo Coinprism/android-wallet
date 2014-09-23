@@ -58,5 +58,6 @@
         android:padding="8dp"
         android:gravity="center"
         android:background="#D6D6D6"
-        android:text="Assets"/>
+        android:text="Assets"
+        android:id="@+id/assetsHeader"/>
 </LinearLayout>

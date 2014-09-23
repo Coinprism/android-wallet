@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:padding="4px"
+        android:padding="5dp"
         android:layout_marginRight="16dp"
         android:id="@+id/assetIcon"
         android:background="@drawable/rounded_corners"/>

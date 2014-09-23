@@ -1,6 +1,7 @@
 package com.coinprism.wallet.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +43,13 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
 
         if (balance.getAsset().getIsUnknown())
         {
+            Drawable placeholder = this.context.getResources().getDrawable(R.drawable.placeholder);
+
             setBalanceItemContents(
                 rowView,
                 NumberFormat.getNumberInstance().format(balance.getQuantity()) + " Units",
-                "Unknown colored coins");
+                "Unknown colored coins",
+                placeholder);
         }
         else
         {
@@ -55,13 +59,15 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
                 rowView,
                 NumberFormat.getNumberInstance().format(decimalQuantity)
                     + " " + balance.getAsset().getTicker(),
-                balance.getAsset().getName());
+                balance.getAsset().getName(),
+                null);
         }
 
         return rowView;
     }
 
-    public static void setBalanceItemContents(View rootView, String mainText, String subText)
+    public static void setBalanceItemContents(View rootView, String mainText, String subText,
+        Drawable icon)
     {
         TextView assetName = (TextView) rootView.findViewById(R.id.assetName);
         TextView assetBalance = (TextView) rootView.findViewById(R.id.assetBalance);
@@ -69,5 +75,6 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
 
         assetName.setText(subText);
         assetBalance.setText(mainText);
+        assetIcon.setImageDrawable(icon);
     }
 }
