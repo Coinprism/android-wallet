@@ -27,8 +27,10 @@ import java.util.ArrayList;
 public class BalanceTab extends Fragment implements IUpdatable
 {
     private AssetBalanceAdapter adapter;
-    private TextView assetsHeader;
-    //private TextView btcBalance;
+    private View listHeaderView;
+    private View assetHeaderText;
+    private ListView listView;
+    private View loadingIndicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,14 +40,14 @@ public class BalanceTab extends Fragment implements IUpdatable
 
         this.adapter = new AssetBalanceAdapter(this.getActivity(), new ArrayList<AssetBalance>());
 
-        ListView listView = (ListView) rootView.findViewById(R.id.assetBalances);
+        listView = (ListView) rootView.findViewById(R.id.assetBalances);
 
-        View listHeaderView = inflater.inflate(R.layout.fragment_tab_balances_bitcoin, listView, false);
-        assetsHeader = (TextView) listHeaderView.findViewById(R.id.assetsHeader);
+        listHeaderView = inflater.inflate(R.layout.fragment_tab_balances_bitcoin, listView, false);
+        assetHeaderText = listHeaderView.findViewById(R.id.assetsHeader);
         listView.addHeaderView(listHeaderView, null, false);
         listView.setAdapter(adapter);
 
-        //btcBalance = (TextView) listHeaderView.findViewById(R.id.btcBalance);
+        loadingIndicator = rootView.findViewById(R.id.loadingIndicator);
 
         this.setupUI(rootView);
 
@@ -61,7 +63,7 @@ public class BalanceTab extends Fragment implements IUpdatable
 
         ImageView qrCode = (ImageView) rootView.findViewById(R.id.qrAddress);
 
-        QRCodeEncoder.createQRCode(state.getConfiguration().getAddress(), qrCode, 400, 400, 2);
+        QRCodeEncoder.createQRCode(state.getConfiguration().getAddress(), qrCode, 400, 400, 20);
     }
 
     public void updateWallet()
@@ -74,14 +76,19 @@ public class BalanceTab extends Fragment implements IUpdatable
 
             Drawable btc = getResources().getDrawable(R.drawable.btc);
 
-            AssetBalanceAdapter.setBalanceItemContents(this.getView(),
+            AssetBalanceAdapter.setBalanceItemContents(this.listHeaderView,
                 NumberFormat.getNumberInstance().format(bitcoinValue) + " BTC", "", btc);
 
             this.adapter.clear();
             this.adapter.addAll(balance.getAssetBalances());
 
-            //if (balance.getAssetBalances().isEmpty())
-                //this.assetsHeader.
+            if (balance.getAssetBalances().isEmpty())
+                this.assetHeaderText.setVisibility(View.GONE);
+            else
+                this.assetHeaderText.setVisibility(View.VISIBLE);
+
+            loadingIndicator.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
         }
     }
 }

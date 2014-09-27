@@ -12,7 +12,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Destination Address"
-            android:layout_gravity="start"/>
+            android:layout_gravity="start"
+            android:textColor="@color/text_muted" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -21,7 +22,8 @@
             android:layout_height="wrap_content"
             android:text="Amount"
             android:layout_gravity="start"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:textColor="@color/text_muted" />
 
         <LinearLayout
             android:orientation="horizontal"

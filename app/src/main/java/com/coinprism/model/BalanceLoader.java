@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 
 public class BalanceLoader extends AsyncTask<String, Integer, AddressBalance>
 {
-    private AddressBalance addressBalance;
     private WalletState parent;
 
     public BalanceLoader(WalletState parent)
@@ -30,7 +29,6 @@ public class BalanceLoader extends AsyncTask<String, Integer, AddressBalance>
     protected void onPostExecute(AddressBalance result)
     {
         super.onPostExecute(result);
-        //Do anything with response..
 
         this.parent.updateData(result);
     }
@@ -38,10 +36,5 @@ public class BalanceLoader extends AsyncTask<String, Integer, AddressBalance>
     private void notifyError()
     {
 
-    }
-
-    public AddressBalance getAddressBalance()
-    {
-        return this.addressBalance;
     }
 }

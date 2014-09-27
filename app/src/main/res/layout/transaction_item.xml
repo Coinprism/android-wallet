@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
     <ImageView
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:padding="5dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_alignParentRight="true"
         android:id="@+id/assetIcon"
         android:background="@drawable/rounded_corners"/>
 
@@ -20,23 +21,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:layout_toRightOf="@id/assetIcon">
+        android:layout_toLeftOf="@id/assetIcon">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:id="@+id/date"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/text_muted" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/assetBalance"
+            android:gravity="right"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:maxLines="1"
             android:ellipsize="end"
             android:paddingBottom="4dp" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:id="@+id/assetName"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/text_muted" />
     </LinearLayout>
 
 </RelativeLayout>

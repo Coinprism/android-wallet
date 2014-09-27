@@ -1,7 +1,5 @@
 package com.coinprism.model;
 
-import android.util.JsonToken;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
@@ -23,18 +21,16 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,8 +69,8 @@ public class APIClient
                     jObject.getString("asset_address"),
                     jObject.getString("name"),
                     jObject.getString("name_short"),
-                    jObject.getInt("divisibility")
-                );
+                    jObject.getInt("divisibility"),
+                    jObject.getString("icon_url"));
             }
             catch (JSONException ex)
             {
@@ -110,29 +106,98 @@ public class APIClient
         }
 
         return new AddressBalance(bitcoinBalance, assetBalances);
-//        Calendar c = Calendar.getInstance();
-//        int seconds = c.get(Calendar.SECOND);
-//        AssetBalance[] assetBalances = new AssetBalance[]
-//                {
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test Coin" + seconds, "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test1 Coin", "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test2 Coin" + seconds, "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test2 Coin", "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test3 Coin" + seconds, "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test4 Coin", "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test5 Coin" + seconds, "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test Coin", "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test1 Coin" + seconds, "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test2 Coin", "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test2 Coin", "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test3 Coin" + seconds, "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test4 Coin", "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test5 Coin" + seconds, "MACO", 2), new BigInteger("15000")),
-//                        new AssetBalance(new AssetDefinition("abcdef", "Test6 Coin", "MACO", 2), new BigInteger("15000"))
-//                };
-//
-//        AddressBalance addressBalance = new AddressBalance(156580L, assetBalances);
-//        return addressBalance;
+    }
+
+    public List<SingleAssetTransaction> getTransactions(String address)
+        throws IOException, JSONException, ParseException
+    {
+        String json = executeHttp(new HttpGet(
+            this.baseUrl + "/v1/addresses/" + address + "/transactions"));
+
+        JSONArray transactions = new JSONArray(json);
+
+        ArrayList<SingleAssetTransaction> assetBalances = new ArrayList<SingleAssetTransaction>();
+
+        for (int i = 0; i < transactions.length(); i++)
+        {
+            JSONObject transactionObject = (JSONObject) transactions.get(i);
+            String transactionId = transactionObject.getString("hash");
+            Date date = parseDate(
+                transactionObject.getString("block_time"));
+
+            HashMap<String, BigInteger> quantities = new HashMap<String, BigInteger>();
+            BigInteger satoshiDelta = BigInteger.ZERO;
+
+            JSONArray inputs = transactionObject.getJSONArray("inputs");
+            for (int j = 0; j < inputs.length(); j++)
+            {
+                JSONObject input = (JSONObject) inputs.get(j);
+                if (isAddress(input, address))
+                {
+                    if (!input.isNull("asset_address"))
+                        addQuantity(quantities,
+                            input.getString("asset_address"),
+                            new BigInteger(input.getString("asset_quantity")).negate());
+
+                    satoshiDelta = satoshiDelta.subtract(
+                        BigInteger.valueOf(input.getLong("value")));
+                }
+            }
+
+            JSONArray outputs = transactionObject.getJSONArray("outputs");
+            for (int j = 0; j < outputs.length(); j++)
+            {
+                JSONObject output = (JSONObject) outputs.get(j);
+                if (isAddress(output, address))
+                {
+                    if (!output.isNull("asset_address"))
+                        addQuantity(quantities,
+                            output.getString("asset_address"),
+                            new BigInteger(output.getString("asset_quantity")));
+
+                    satoshiDelta = satoshiDelta.add(
+                        BigInteger.valueOf(output.getLong("value")));
+                }
+            }
+
+            if (!satoshiDelta.equals(BigInteger.ZERO))
+                assetBalances.add(
+                    new SingleAssetTransaction(transactionId, date, null, satoshiDelta));
+
+            for (String key : quantities.keySet())
+            {
+                assetBalances.add(new SingleAssetTransaction(
+                    transactionId,
+                    date,
+                    getAssetDefinition(key),
+                    quantities.get(key)));
+            }
+        }
+
+        return assetBalances;
+    }
+
+    private void addQuantity(HashMap<String, BigInteger> map, String assetAddress,
+        BigInteger quantity)
+    {
+        if (!map.containsKey(assetAddress))
+            map.put(assetAddress, quantity);
+        else
+            map.put(assetAddress, quantity.add(map.get(assetAddress)));
+    }
+
+    private static Date parseDate(String input) throws java.text.ParseException
+    {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+        return df.parse(input.substring(0, 21));
+    }
+
+    private boolean isAddress(JSONObject member, String localAddress) throws JSONException
+    {
+        JSONArray addresses = member.getJSONArray("addresses");
+
+        return addresses.length() == 1 && addresses.getString(0).equals(localAddress);
     }
 
     private static String executeHttp(HttpUriRequest url) throws IOException

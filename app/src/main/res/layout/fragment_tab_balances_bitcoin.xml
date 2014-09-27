@@ -11,7 +11,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:padding="8dp"
         android:gravity="center"
-        android:background="#D6D6D6"
+        android:background="@color/light_background"
         android:text="Balance"/>
     <!--<TextView-->
         <!--android:layout_width="match_parent"-->
@@ -57,7 +57,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:padding="8dp"
         android:gravity="center"
-        android:background="#D6D6D6"
+        android:background="@color/light_background"
         android:text="Assets"
         android:id="@+id/assetsHeader"/>
 </LinearLayout>

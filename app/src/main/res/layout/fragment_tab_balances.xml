@@ -41,6 +41,7 @@
             android:id="@+id/qrAddress"
             android:scaleType="centerCrop"
             android:background="#ffff00"
+            android:contentDescription="QR Code"
             />
     </LinearLayout>
 
@@ -48,6 +49,29 @@
         android:id="@+id/assetBalances"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topArea"></ListView>
+        android:layout_below="@id/topArea"
+        android:visibility="gone"></ListView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/loadingIndicator">
+        <ProgressBar
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/ctrlActivityIndicator"
+            android:indeterminateOnly="true"
+            android:keepScreenOn="true"
+            android:paddingRight="16dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading wallet..."
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingRight="16dp" />
+    </LinearLayout>
 
 </RelativeLayout>

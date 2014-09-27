@@ -35,9 +35,11 @@ public class AssetSelectorAdapter extends ArrayAdapter<AssetDefinition>
         AssetDefinition item = values.get(position);
 
         if (item == null)
-            rowView.setText("Bitcoin");
+            rowView.setText("BTC");
+        else if (item.getTicker() != null)
+            rowView.setText(item.getTicker());
         else
-            rowView.setText(item.getName());
+            rowView.setText("Units");
 
         return rowView;
     }
@@ -45,6 +47,20 @@ public class AssetSelectorAdapter extends ArrayAdapter<AssetDefinition>
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent)
     {
-        return getView(position, convertView, parent);
+        LayoutInflater inflater = (LayoutInflater) context
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        TextView rowView = (TextView)inflater.inflate(R.layout.asset_selector_item_padding, parent,
+            false);
+
+        AssetDefinition item = values.get(position);
+
+        if (item == null)
+            rowView.setText("Bitcoin");
+        else if (item.getName() != null)
+            rowView.setText(item.getName());
+        else
+            rowView.setText("Asset ID: " + item.getAssetAddress().substring(0, 10) + "...");
+
+        return rowView;
     }
 }

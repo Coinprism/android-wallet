@@ -1,6 +1,8 @@
 package com.coinprism.wallet.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coinprism.model.AssetBalance;
+import com.coinprism.model.DownloadImageTask;
+import com.coinprism.utils.Formatting;
 import com.coinprism.wallet.R;
 
 import java.math.BigDecimal;
@@ -47,7 +51,7 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
 
             setBalanceItemContents(
                 rowView,
-                NumberFormat.getNumberInstance().format(balance.getQuantity()) + " Units",
+                Formatting.formatNumber(balance.getQuantity()) + " Units",
                 "Unknown colored coins",
                 placeholder);
         }
@@ -55,12 +59,20 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
         {
             BigDecimal decimalQuantity = new BigDecimal(balance.getQuantity())
                 .scaleByPowerOfTen(-balance.getAsset().getDivisibility());
+
+            Bitmap defaultBitmap = BitmapFactory.decodeResource(this.context.getResources(),
+                R.drawable.placeholder);
+
             setBalanceItemContents(
                 rowView,
-                NumberFormat.getNumberInstance().format(decimalQuantity)
+                Formatting.formatNumber(decimalQuantity)
                     + " " + balance.getAsset().getTicker(),
                 balance.getAsset().getName(),
                 null);
+
+            new DownloadImageTask(
+                (ImageView) rowView.findViewById(R.id.assetIcon), defaultBitmap)
+                .execute(balance.getAsset().getIconUrl());
         }
 
         return rowView;
@@ -75,6 +87,7 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
 
         assetName.setText(subText);
         assetBalance.setText(mainText);
-        assetIcon.setImageDrawable(icon);
+        if (icon != null)
+            assetIcon.setImageDrawable(icon);
     }
 }
