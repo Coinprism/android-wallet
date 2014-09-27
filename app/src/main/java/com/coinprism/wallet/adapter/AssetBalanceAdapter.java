@@ -38,7 +38,12 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
     {
         LayoutInflater inflater = (LayoutInflater) context
             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.asset_balance_item, parent, false);
+        View rowView;
+        if (convertView == null)
+            rowView = inflater.inflate(R.layout.asset_balance_item, parent, false);
+        else
+            rowView = convertView;
+
         AssetBalance balance = values.get(position);
 
         TextView assetName = (TextView) rowView.findViewById(R.id.assetName);

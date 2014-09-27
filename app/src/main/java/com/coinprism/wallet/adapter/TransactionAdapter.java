@@ -1,6 +1,8 @@
 package com.coinprism.wallet.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coinprism.model.AssetBalance;
+import com.coinprism.model.DownloadImageTask;
 import com.coinprism.model.SingleAssetTransaction;
 import com.coinprism.utils.Formatting;
 import com.coinprism.wallet.R;
@@ -38,7 +41,12 @@ public class TransactionAdapter extends ArrayAdapter<SingleAssetTransaction>
     {
         LayoutInflater inflater = (LayoutInflater) context
             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.transaction_item, parent, false);
+        View rowView;
+        if (convertView == null)
+            rowView = inflater.inflate(R.layout.transaction_item, parent, false);
+        else
+            rowView = convertView;
+
         SingleAssetTransaction balance = values.get(position);
 
         TextView date = (TextView) rowView.findViewById(R.id.date);
@@ -73,13 +81,20 @@ public class TransactionAdapter extends ArrayAdapter<SingleAssetTransaction>
 
             assetBalance.setText(Formatting.formatNumber(decimalQuantity)
                     + " " + balance.getAsset().getTicker());
+
+            Bitmap defaultBitmap = BitmapFactory.decodeResource(this.context.getResources(),
+                R.drawable.placeholder);
+
+            new DownloadImageTask(assetIcon, defaultBitmap)
+                .execute(balance.getAsset().getIconUrl());
         }
 
         if (balance.getQuantity().compareTo(BigInteger.ZERO) < 0)
-        {
             assetBalance.setTextColor(
                 context.getResources().getColor(R.color.negative_transaction));
-        }
+        else
+            assetBalance.setTextColor(
+                context.getResources().getColor(R.color.positive_transaction));
 
         return rowView;
     }

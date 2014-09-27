@@ -1,6 +1,7 @@
 package com.coinprism.model;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.coinprism.utils.FontsOverride;
 
@@ -9,13 +10,25 @@ import com.coinprism.utils.FontsOverride;
  */
 public class CoinprismWalletApplication extends Application
 {
+    private static CoinprismWalletApplication instance;
+
+    public CoinprismWalletApplication()
+    {
+        instance = this;
+    }
+
     @Override
     public void onCreate()
     {
         super.onCreate();
 
-        FontsOverride.setDefaultFont(this, "SANS_SERIF", "fonts/OpenSans-Regular.ttf");
-        FontsOverride.setDefaultFont(this, "SANS_SERIF_BOLD", "fonts/OpenSans-Bold.ttf");
-        FontsOverride.setDefaultFont(this, "SANS_SERIF_BOLD_ITALIC", "fonts/OpenSans-BoldItalic.ttf");
+        FontsOverride.setDefaultFont(this, "DEFAULT", "fonts/OpenSans-Regular.ttf");
+        FontsOverride.setDefaultFont(this, "DEFAULT_BOLD", "fonts/OpenSans-Bold.ttf");
+        FontsOverride.setDefaultFont(this, "DEFAULT_BOLD_ITALIC", "fonts/OpenSans-BoldItalic.ttf");
+    }
+
+    public static Context getContext()
+    {
+        return instance;
     }
 }
