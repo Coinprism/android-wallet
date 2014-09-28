@@ -25,7 +25,6 @@ public class TransactionsLoader extends AsyncTask<String, Integer, List<SingleAs
         }
         catch (Exception e)
         {
-            this.notifyError();
             return null;
         }
     }
@@ -36,10 +35,5 @@ public class TransactionsLoader extends AsyncTask<String, Integer, List<SingleAs
         super.onPostExecute(result);
 
         this.parent.updateTransactions(result);
-    }
-
-    private void notifyError()
-    {
-
     }
 }

@@ -7,15 +7,25 @@
 
   <style name="_AppTheme" parent="android:Theme.Holo.Light">
 
+    <!-- Coinprism -->
+
     <!-- Tab -->
     <item name="android:actionBarItemBackground">@drawable/selectable_background_coinprism</item>
+
     <item name="android:popupMenuStyle">@style/PopupMenu.Coinprism</item>
+
     <item name="android:dropDownListViewStyle">@style/DropDownListView.Coinprism</item>
+
     <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Coinprism</item>
+
     <item name="android:actionDropDownStyle">@style/DropDownNav.Coinprism</item>
-    <item name="android:actionBarStyle">@style/ActionBar.Solid.Coinprism</item>
+
+    <!--<item name="android:actionBarStyle">@style/ActionBar.Solid.Coinprism</item>-->
+
     <item name="android:actionModeBackground">@drawable/cab_background_top_coinprism</item>
+
     <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_coinprism</item>
+
     <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Coinprism</item>
 
     <!-- Other components -->
@@ -51,9 +61,12 @@
 
     <item name="android:buttonStyleToggle">@style/ToggleAppTheme</item>
 
-    <item name="android:listChoiceBackgroundIndicator">@drawable/apptheme_list_selector_holo_light</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/apptheme_list_selector_holo_light
+    </item>
 
-    <item name="android:activatedBackgroundIndicator">@drawable/apptheme_activated_background_holo_light</item>
+    <item name="android:activatedBackgroundIndicator">
+      @drawable/apptheme_activated_background_holo_light
+    </item>
 
     <item name="android:fastScrollThumbDrawable">@drawable/apptheme_fastscroll_thumb_holo</item>
 

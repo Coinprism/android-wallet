@@ -53,7 +53,10 @@ public class TransactionsTab extends Fragment implements IUpdatable
 
     public void updateTransactions(List<SingleAssetTransaction> transactions)
     {
-        this.adapter.clear();
-        this.adapter.addAll(transactions);
+        if (transactions != null)
+        {
+            this.adapter.clear();
+            this.adapter.addAll(transactions);
+        }
     }
 }

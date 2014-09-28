@@ -20,7 +20,6 @@ public class BalanceLoader extends AsyncTask<String, Integer, AddressBalance>
         }
         catch (Exception e)
         {
-            this.notifyError();
             return null;
         }
     }
@@ -31,10 +30,5 @@ public class BalanceLoader extends AsyncTask<String, Integer, AddressBalance>
         super.onPostExecute(result);
 
         this.parent.updateData(result);
-    }
-
-    private void notifyError()
-    {
-
     }
 }

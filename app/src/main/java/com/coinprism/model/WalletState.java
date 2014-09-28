@@ -82,7 +82,9 @@ public class WalletState
 
     public void updateData(AddressBalance data)
     {
-        this.walletData = data;
+        if (data != null)
+            this.walletData = data;
+
         this.currentActivity.updateWallet();
     }
 
