@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp">
+
+  <ImageView
+    android:id="@+id/assetIcon"
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:layout_marginRight="16dp"
+    android:background="@drawable/rounded_corners"
+    android:padding="5dp"/>
+
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:layout_marginTop="2dp"
+    android:layout_toRightOf="@id/assetIcon"
+    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:padding="5dp"
-        android:layout_marginRight="16dp"
-        android:id="@+id/assetIcon"
-        android:background="@drawable/rounded_corners"/>
+    <TextView
+      android:id="@+id/assetBalance"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:paddingBottom="4dp"
+      android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_toRightOf="@id/assetIcon">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/assetBalance"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingBottom="4dp" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:id="@+id/assetName"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/text_muted" />
-    </LinearLayout>
+    <TextView
+      android:id="@+id/assetName"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:textColor="@color/text_muted"/>
+  </LinearLayout>
 
 </RelativeLayout>

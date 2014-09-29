@@ -15,36 +15,36 @@
 -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true"
-        android:state_window_focused="false" android:state_enabled="true"
-        android:drawable="@drawable/apptheme_btn_toggle_on_normal_holo_light" />
-    <item android:state_checked="true"
-        android:state_window_focused="false" android:state_enabled="false"
-        android:drawable="@drawable/apptheme_btn_toggle_on_disabled_holo_light" />
-    <item android:state_checked="true" android:state_pressed="true"
-        android:drawable="@drawable/apptheme_btn_toggle_on_pressed_holo_light" />
-    <item android:state_checked="true"
-        android:state_focused="true" android:state_enabled="true"
-        android:drawable="@drawable/apptheme_btn_toggle_on_focused_holo_light" />
-    <item android:state_checked="true" android:state_enabled="true"
-        android:drawable="@drawable/apptheme_btn_toggle_on_normal_holo_light" />
-    <item android:state_checked="true"  android:state_focused="true"
-        android:drawable="@drawable/apptheme_btn_toggle_on_disabled_focused_holo_light" />
-    <item android:state_checked="true"
-         android:drawable="@drawable/apptheme_btn_toggle_on_disabled_holo_light" />
+  <item android:drawable="@drawable/apptheme_btn_toggle_on_normal_holo_light"
+        android:state_checked="true" android:state_enabled="true"
+        android:state_window_focused="false"/>
+  <item android:drawable="@drawable/apptheme_btn_toggle_on_disabled_holo_light"
+        android:state_checked="true" android:state_enabled="false"
+        android:state_window_focused="false"/>
+  <item android:drawable="@drawable/apptheme_btn_toggle_on_pressed_holo_light" android:state_checked="true"
+        android:state_pressed="true"/>
+  <item android:drawable="@drawable/apptheme_btn_toggle_on_focused_holo_light"
+        android:state_checked="true" android:state_enabled="true"
+        android:state_focused="true"/>
+  <item android:drawable="@drawable/apptheme_btn_toggle_on_normal_holo_light" android:state_checked="true"
+        android:state_enabled="true"/>
+  <item android:drawable="@drawable/apptheme_btn_toggle_on_disabled_focused_holo_light" android:state_checked="true"
+        android:state_focused="true"/>
+  <item android:drawable="@drawable/apptheme_btn_toggle_on_disabled_holo_light"
+        android:state_checked="true"/>
 
-    <item android:state_window_focused="false" android:state_enabled="true"
-        android:drawable="@drawable/apptheme_btn_toggle_off_normal_holo_light" />
-    <item android:state_window_focused="false" android:state_enabled="false"
-        android:drawable="@drawable/apptheme_btn_toggle_off_disabled_holo_light" />
-    <item android:state_pressed="true"
-        android:drawable="@drawable/apptheme_btn_toggle_off_pressed_holo_light" />
-    <item android:state_focused="true" android:state_enabled="true"
-        android:drawable="@drawable/apptheme_btn_toggle_off_focused_holo_light" />
-    <item android:state_enabled="true"
-        android:drawable="@drawable/apptheme_btn_toggle_off_normal_holo_light" />
-    <item android:state_focused="true"
-        android:drawable="@drawable/apptheme_btn_toggle_off_disabled_focused_holo_light" />
-    <item
-         android:drawable="@drawable/apptheme_btn_toggle_off_disabled_holo_light" />
+  <item android:drawable="@drawable/apptheme_btn_toggle_off_normal_holo_light" android:state_enabled="true"
+        android:state_window_focused="false"/>
+  <item android:drawable="@drawable/apptheme_btn_toggle_off_disabled_holo_light" android:state_enabled="false"
+        android:state_window_focused="false"/>
+  <item android:drawable="@drawable/apptheme_btn_toggle_off_pressed_holo_light"
+        android:state_pressed="true"/>
+  <item android:drawable="@drawable/apptheme_btn_toggle_off_focused_holo_light" android:state_enabled="true"
+        android:state_focused="true"/>
+  <item android:drawable="@drawable/apptheme_btn_toggle_off_normal_holo_light"
+        android:state_enabled="true"/>
+  <item android:drawable="@drawable/apptheme_btn_toggle_off_disabled_focused_holo_light"
+        android:state_focused="true"/>
+  <item
+    android:drawable="@drawable/apptheme_btn_toggle_off_disabled_holo_light"/>
 </selector>

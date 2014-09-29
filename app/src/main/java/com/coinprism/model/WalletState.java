@@ -1,7 +1,5 @@
 package com.coinprism.model;
 
-import android.content.Context;
-
 import com.coinprism.utils.SecurePreferences;
 import com.coinprism.wallet.IUpdatable;
 import com.coinprism.wallet.WalletOverview;

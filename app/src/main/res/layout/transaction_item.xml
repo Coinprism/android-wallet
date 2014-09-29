@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp">
 
-    <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:padding="5dp"
-        android:layout_marginLeft="16dp"
-        android:layout_alignParentRight="true"
-        android:id="@+id/assetIcon"
-        android:background="@drawable/rounded_corners"/>
+  <ImageView
+    android:id="@+id/assetIcon"
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:layout_alignParentRight="true"
+    android:layout_marginLeft="16dp"
+    android:background="@drawable/rounded_corners"
+    android:padding="5dp"/>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_toLeftOf="@id/assetIcon">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:id="@+id/date"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/text_muted" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/assetBalance"
-            android:gravity="right"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingBottom="4dp" />
-    </LinearLayout>
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:layout_toLeftOf="@id/assetIcon"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/date"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:textColor="@color/text_muted"/>
+
+    <TextView
+      android:id="@+id/assetBalance"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:gravity="right"
+      android:maxLines="1"
+      android:paddingBottom="4dp"
+      android:textAppearance="?android:attr/textAppearanceLarge"/>
+  </LinearLayout>
 
 </RelativeLayout>

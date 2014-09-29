@@ -1,6 +1,5 @@
 package com.coinprism.utils;
 
-import java.math.BigInteger;
 import java.text.NumberFormat;
 
 /**

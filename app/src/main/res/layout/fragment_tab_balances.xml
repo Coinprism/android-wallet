@@ -3,75 +3,80 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                >
+  >
+
+  <LinearLayout
+    android:id="@+id/topArea"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/activity_vertical_margin">
 
     <LinearLayout
-        android:id="@+id/topArea"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:orientation="vertical"
+      android:paddingBottom="16dp"
+      android:paddingLeft="16dp"
+      android:paddingRight="16dp"
+      android:paddingTop="16dp"
+      >
+
+      <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/activity_vertical_margin">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="16dp"
-            >
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="Your address"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:paddingBottom="8dp"/>
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:textSize="16sp"
-                android:id="@+id/address" />
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:id="@+id/qrAddress"
-            android:scaleType="centerCrop"
-            android:background="#ffff00"
-            android:contentDescription="QR Code"
-            />
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/assetBalances"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/topArea"
-        android:visibility="gone"></ListView>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:id="@+id/loadingIndicator">
-        <ProgressBar
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/ctrlActivityIndicator"
-            android:indeterminateOnly="true"
-            android:keepScreenOn="true"
-            android:paddingRight="16dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Loading wallet..."
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingRight="16dp" />
+        android:paddingBottom="8dp"
+        android:text="Your address"
+        android:textSize="20sp"/>
+
+      <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"/>
     </LinearLayout>
+
+    <ImageView
+      android:id="@+id/qrAddress"
+      android:layout_width="150dp"
+      android:layout_height="150dp"
+      android:background="#ffff00"
+      android:contentDescription="QR Code"
+      android:scaleType="centerCrop"
+      />
+  </LinearLayout>
+
+  <ListView
+    android:id="@+id/assetBalances"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/topArea"
+    android:visibility="gone"></ListView>
+
+  <LinearLayout
+    android:id="@+id/loadingIndicator"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:gravity="center">
+
+    <ProgressBar
+      android:id="@+id/ctrlActivityIndicator"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:indeterminateOnly="true"
+      android:keepScreenOn="true"
+      android:paddingRight="16dp"/>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingRight="16dp"
+      android:text="Loading wallet..."
+      android:textAppearance="?android:attr/textAppearanceMedium"/>
+  </LinearLayout>
 
 </RelativeLayout>

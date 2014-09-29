@@ -3,7 +3,6 @@ package com.coinprism.model;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.InputStream;

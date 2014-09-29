@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.coinprism.model.AssetBalance;
 import com.coinprism.model.DownloadImageTask;
 import com.coinprism.model.SingleAssetTransaction;
 import com.coinprism.utils.Formatting;
@@ -21,7 +20,6 @@ import com.coinprism.wallet.R;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.util.List;
 
 public class TransactionAdapter extends ArrayAdapter<SingleAssetTransaction>

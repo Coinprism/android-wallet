@@ -9,6 +9,9 @@
 
     <!-- Coinprism -->
 
+    <item name="android:typeface">sans</item>
+
+
     <!-- Tab -->
     <item name="android:actionBarItemBackground">@drawable/selectable_background_coinprism</item>
 

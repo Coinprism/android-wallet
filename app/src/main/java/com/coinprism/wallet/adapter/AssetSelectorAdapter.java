@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.coinprism.model.AssetBalance;
 import com.coinprism.model.AssetDefinition;
 import com.coinprism.wallet.R;
 

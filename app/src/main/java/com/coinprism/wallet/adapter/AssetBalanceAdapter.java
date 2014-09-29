@@ -17,8 +17,6 @@ import com.coinprism.utils.Formatting;
 import com.coinprism.wallet.R;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.NumberFormat;
 import java.util.List;
 
 public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>

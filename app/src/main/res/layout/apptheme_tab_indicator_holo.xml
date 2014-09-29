@@ -14,25 +14,25 @@
      limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="@dimen/tab_host_default_height"
-    android:orientation="horizontal"
-    style="@style/TabAppTheme"
-    android:gravity="center">
+<LinearLayout style="@style/TabAppTheme"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_height="@dimen/tab_host_default_height"
+              android:gravity="center"
+              android:orientation="horizontal">
 
-    <ImageView
-        android:id="@android:id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:visibility="gone"
-        android:contentDescription="@null" />
+  <ImageView
+    android:id="@android:id/icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:contentDescription="@null"
+    android:visibility="gone"/>
 
-    <TextView
-        android:id="@android:id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        style="@style/TabTextAppTheme" />
+  <TextView
+    android:id="@android:id/title"
+    style="@style/TabTextAppTheme"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"/>
 
 </LinearLayout>

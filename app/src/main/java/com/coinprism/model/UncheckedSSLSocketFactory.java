@@ -3,9 +3,20 @@ package com.coinprism.model;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.security.*;
-import java.security.cert.*;
-import javax.net.ssl.*;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class UncheckedSSLSocketFactory extends org.apache.http.conn.ssl.SSLSocketFactory
 {

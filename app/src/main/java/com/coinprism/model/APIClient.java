@@ -1,17 +1,23 @@
 package com.coinprism.model;
 
+import android.util.JsonReader;
+
+import com.google.bitcoin.core.Transaction;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
@@ -24,8 +30,10 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -177,6 +185,48 @@ public class APIClient
         return assetBalances;
     }
 
+    public Transaction buildAssetTransaction(String fromAddress, String toAddress, String amount,
+        String assetAddress)
+    {
+        return null;
+    }
+
+    public Transaction buildBitcoinTransaction(String fromAddress, String toAddress, String amount)
+        throws JSONException, IOException
+    {
+        try
+        {
+            JSONObject toObject = new JSONObject();
+            toObject.put("address", toAddress);
+            toObject.put("amount", amount);
+            JSONArray array = new JSONArray();
+            array.put(toObject);
+            JSONObject postData = new JSONObject();
+            postData.put("fees", 10000);
+            postData.put("from", fromAddress);
+            postData.put("to", array);
+
+            HttpPost post = new HttpPost(this.baseUrl + "/v1/sendbitcoin");
+            post.setEntity(new StringEntity(postData.toString()));
+            post.addHeader("Content-Type", "application/json");
+            String result = executeHttp(post);
+            Reader stringReader = new StringReader(result);
+            JsonReader reader = new JsonReader(stringReader);
+
+            String stringTransaction = reader.nextString();
+
+            return null;
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            return null;
+        }
+    }
+
+    public void broadcastTransaction(Transaction result)
+    {
+    }
+
     private void addQuantity(HashMap<String, BigInteger> map, String assetAddress,
         BigInteger quantity)
     {
@@ -200,7 +250,7 @@ public class APIClient
         return addresses.length() == 1 && addresses.getString(0).equals(localAddress);
     }
 
-    private static String executeHttp(HttpUriRequest url) throws IOException
+    private static String executeHttp(HttpRequestBase url) throws IOException
     {
         HttpClient httpclient;
         UncheckedSSLSocketFactory sslFactory;

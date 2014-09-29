@@ -1,8 +1,5 @@
 package com.coinprism.model;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
@@ -11,6 +8,9 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 public class QRCodeEncoder
 {

@@ -3,54 +3,62 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                >
+  >
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="start"
+      android:text="Destination Address"
+      android:textColor="@color/text_muted"/>
+
+    <EditText
+      android:id="@+id/toAddress"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="mjxBP2B9AXcptb9Dha383zVZWqabZEu1yh"/>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="start"
+      android:layout_marginTop="16dp"
+      android:text="Amount"
+      android:textColor="@color/text_muted"/>
+
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Destination Address"
-            android:layout_gravity="start"
-            android:textColor="@color/text_muted" />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Amount"
-            android:layout_gravity="start"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/text_muted" />
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      android:orientation="horizontal">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_weight="0.4"
-                android:inputType="numberDecimal" />
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_weight="0.4"
-                android:id="@+id/assetSpinner" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <Button
+      <EditText
+        android:id="@+id/amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Send"
-        android:id="@+id/sendButton" />
+        android:layout_gravity="start"
+        android:layout_weight="0.4"
+        android:inputType="numberDecimal"/>
+
+      <Spinner
+        android:id="@+id/assetSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_weight="0.4"/>
+
+    </LinearLayout>
+  </LinearLayout>
+
+  <Button
+    android:id="@+id/sendButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:text="Send"/>
 </RelativeLayout>

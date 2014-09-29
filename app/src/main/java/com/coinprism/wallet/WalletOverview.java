@@ -4,9 +4,9 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.view.ViewPager;
 
 import com.coinprism.model.WalletState;
 import com.coinprism.wallet.adapter.TabsPagerAdapter;
@@ -100,7 +100,7 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
             }
         };
 
-        updateTimer.schedule(task, 0, 60000);
+        updateTimer.schedule(task, 0, 10000);
     }
 
     @Override

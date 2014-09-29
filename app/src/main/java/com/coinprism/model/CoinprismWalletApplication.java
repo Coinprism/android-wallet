@@ -22,9 +22,9 @@ public class CoinprismWalletApplication extends Application
     {
         super.onCreate();
 
-        FontsOverride.setDefaultFont(this, "DEFAULT", "fonts/OpenSans-Regular.ttf");
-        FontsOverride.setDefaultFont(this, "DEFAULT_BOLD", "fonts/OpenSans-Bold.ttf");
-        FontsOverride.setDefaultFont(this, "DEFAULT_BOLD_ITALIC", "fonts/OpenSans-BoldItalic.ttf");
+        FontsOverride.setDefaultFont(this, "SANS", "fonts/OpenSans-Regular.ttf");
+        FontsOverride.setDefaultFont(this, "SANS_BOLD", "fonts/OpenSans-Bold.ttf");
+        FontsOverride.setDefaultFont(this, "SANS_BOLD_ITALIC", "fonts/OpenSans-BoldItalic.ttf");
     }
 
     public static Context getContext()

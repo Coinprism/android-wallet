@@ -7,13 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.coinprism.model.AssetBalance;
 import com.coinprism.model.SingleAssetTransaction;
 import com.coinprism.model.TransactionsLoader;
 import com.coinprism.model.WalletState;
 import com.coinprism.wallet.IUpdatable;
 import com.coinprism.wallet.R;
-import com.coinprism.wallet.adapter.AssetBalanceAdapter;
 import com.coinprism.wallet.adapter.TransactionAdapter;
 
 import java.util.ArrayList;
