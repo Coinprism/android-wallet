@@ -4,11 +4,14 @@ import android.util.Base64;
 
 import com.google.bitcoin.core.ECKey;
 import com.google.bitcoin.core.NetworkParameters;
+import com.google.bitcoin.core.Wallet;
 
 public class WalletConfiguration
 {
     private final ECKey key;
     private final String address;
+    private final NetworkParameters networkParameters;
+    private final Wallet wallet;
 
     public WalletConfiguration(String privateKey, String publicKey, NetworkParameters network)
     {
@@ -16,6 +19,9 @@ public class WalletConfiguration
         byte[] publicKeyData = Base64.decode(publicKey, Base64.DEFAULT);
         this.key = new ECKey(privateKeyData, publicKeyData);
         this.address = this.key.toAddress(network).toString();
+        this.networkParameters = network;
+        this.wallet = new Wallet(network);
+        wallet.addKey(this.key);
     }
 
     public String getAddress()
@@ -36,5 +42,15 @@ public class WalletConfiguration
     public ECKey getKey()
     {
         return this.key;
+    }
+
+    public NetworkParameters getNetworkParameters()
+    {
+        return networkParameters;
+    }
+
+    public Wallet getWallet()
+    {
+        return wallet;
     }
 }

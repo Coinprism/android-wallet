@@ -1,8 +1,12 @@
 package com.coinprism.model;
 
 import android.util.JsonReader;
+import android.util.JsonToken;
 
+import com.google.bitcoin.core.Sha256Hash;
 import com.google.bitcoin.core.Transaction;
+import com.google.bitcoin.core.Utils;
+import com.google.bitcoin.core.Wallet;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -206,16 +210,19 @@ public class APIClient
             postData.put("from", fromAddress);
             postData.put("to", array);
 
-            HttpPost post = new HttpPost(this.baseUrl + "/v1/sendbitcoin");
+            HttpPost post = new HttpPost(this.baseUrl + "/v1/sendbitcoin?format=raw");
             post.setEntity(new StringEntity(postData.toString()));
             post.addHeader("Content-Type", "application/json");
             String result = executeHttp(post);
-            Reader stringReader = new StringReader(result);
-            JsonReader reader = new JsonReader(stringReader);
+            JSONObject jsonResponse = new JSONObject(result);
 
-            String stringTransaction = reader.nextString();
+            byte[] data = hexStringToByteArray(jsonResponse.getString("raw"));
+            Transaction transaction = new Transaction(
+                WalletState.getState().getConfiguration().getNetworkParameters(),
+                data);
+            transaction.ensureParsed();
 
-            return null;
+            return transaction;
         }
         catch (UnsupportedEncodingException ex)
         {
@@ -223,8 +230,36 @@ public class APIClient
         }
     }
 
-    public void broadcastTransaction(Transaction result)
+    private static byte[] hexStringToByteArray(String s)
     {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2)
+        {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                + Character.digit(s.charAt(i + 1), 16));
+        }
+        return data;
+    }
+
+    public String broadcastTransaction(Transaction transaction) throws IOException, JSONException
+    {
+        String serializedTransaction =
+            Utils.bytesToHexString(transaction.bitcoinSerialize());
+
+        try
+        {
+            HttpPost post = new HttpPost(this.baseUrl + "/v1/sendrawtransaction");
+            post.setEntity(new StringEntity("\"" + serializedTransaction + "\""));
+            post.addHeader("Content-Type", "application/json");
+            String result = executeHttp(post);
+
+            return result.substring(1, result.length() - 2);
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            return null;
+        }
     }
 
     private void addQuantity(HashMap<String, BigInteger> map, String assetAddress,
