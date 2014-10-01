@@ -189,13 +189,7 @@ public class APIClient
         return assetBalances;
     }
 
-    public Transaction buildAssetTransaction(String fromAddress, String toAddress, String amount,
-        String assetAddress)
-    {
-        return null;
-    }
-
-    public Transaction buildBitcoinTransaction(String fromAddress, String toAddress, String amount)
+    public Transaction buildTransaction(String fromAddress, String toAddress, String amount, String assetAddress)
         throws JSONException, IOException
     {
         try
@@ -203,6 +197,9 @@ public class APIClient
             JSONObject toObject = new JSONObject();
             toObject.put("address", toAddress);
             toObject.put("amount", amount);
+            if (assetAddress != null)
+                toObject.put("asset_address", assetAddress);
+
             JSONArray array = new JSONArray();
             array.put(toObject);
             JSONObject postData = new JSONObject();
@@ -210,7 +207,12 @@ public class APIClient
             postData.put("from", fromAddress);
             postData.put("to", array);
 
-            HttpPost post = new HttpPost(this.baseUrl + "/v1/sendbitcoin?format=raw");
+            HttpPost post;
+            if (assetAddress != null)
+                post = new HttpPost(this.baseUrl + "/v1/sendasset?format=raw");
+            else
+                post = new HttpPost(this.baseUrl + "/v1/sendbitcoin?format=raw");
+
             post.setEntity(new StringEntity(postData.toString()));
             post.addHeader("Content-Type", "application/json");
             String result = executeHttp(post);

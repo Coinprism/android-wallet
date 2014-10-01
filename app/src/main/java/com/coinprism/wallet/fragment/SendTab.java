@@ -90,15 +90,15 @@ public class SendTab extends Fragment implements IUpdatable
                 {
                     if (selectedAsset == null)
                     {
-                        return WalletState.getState().getAPIClient().buildBitcoinTransaction(
+                        return WalletState.getState().getAPIClient().buildTransaction(
                             WalletState.getState().getConfiguration().getAddress(),
-                            to, decimalAmount.scaleByPowerOfTen(8).toBigInteger().toString());
+                            to, decimalAmount.scaleByPowerOfTen(8).toBigInteger().toString(), null);
                     }
                     else
                     {
                         BigInteger unitAmount = decimalAmount
                             .scaleByPowerOfTen(selectedAsset.getDivisibility()).toBigInteger();
-                        return WalletState.getState().getAPIClient().buildAssetTransaction(
+                        return WalletState.getState().getAPIClient().buildTransaction(
                             WalletState.getState().getConfiguration().getAddress(),
                             to, unitAmount.toString(), selectedAsset.getAssetAddress());
                     }
@@ -247,7 +247,7 @@ public class SendTab extends Fragment implements IUpdatable
         {
             public void onClick(DialogInterface dialog, int which)
             {
-                String url = String.format("https://www.coinprism.info/tx/%r", transactionId);
+                String url = String.format("https://www.coinprism.info/tx/%s", transactionId);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 startActivity(intent);

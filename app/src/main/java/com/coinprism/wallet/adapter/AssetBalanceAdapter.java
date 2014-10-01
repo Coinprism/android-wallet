@@ -55,7 +55,7 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
             setBalanceItemContents(
                 rowView,
                 Formatting.formatNumber(balance.getQuantity()) + " Units",
-                "Unknown colored coins",
+                String.format("Asset ID: %s", balance.getAsset().getAssetAddress()),
                 placeholder);
         }
         else

@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class QRCodeEncoder
 {
-    private static final int WHITE = 0xFFFFFFFF;
+    private static final int WHITE = 0x00FFFFFF;
     private static final int BLACK = 0xFF000000;
 
     public static void createQRCode(String text, ImageView iv, int width, int height, int quietZone)

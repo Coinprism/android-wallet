@@ -1,12 +1,16 @@
 package com.coinprism.wallet.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.coinprism.model.AssetBalance;
 import com.coinprism.model.SingleAssetTransaction;
 import com.coinprism.model.TransactionsLoader;
 import com.coinprism.model.WalletState;
@@ -25,13 +29,25 @@ public class TransactionsTab extends Fragment implements IUpdatable
     public View onCreateView(
         LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View rootView = inflater.inflate(R.layout.fragment_tab_transactions, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_tab_transactions, container, false);
 
         this.adapter = new TransactionAdapter(this.getActivity(),
             new ArrayList<SingleAssetTransaction>());
 
-        ListView listView = (ListView) rootView.findViewById(R.id.transactionList);
+        final ListView listView = (ListView) rootView.findViewById(R.id.transactionList);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                final SingleAssetTransaction transaction = adapter.getItem(position);
+                final String url = String.format("https://www.coinprism.info/tx/%s",
+                    transaction.getAsset().getAssetAddress());
+                final Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }
@@ -41,7 +57,7 @@ public class TransactionsTab extends Fragment implements IUpdatable
     {
         super.onStart();
 
-        TransactionsLoader loader = new TransactionsLoader(this);
+        final TransactionsLoader loader = new TransactionsLoader(this);
         loader.execute(WalletState.getState().getConfiguration().getAddress());
     }
 
