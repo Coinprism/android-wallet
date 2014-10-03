@@ -13,11 +13,14 @@ public class ProgressDialog extends DialogFragment
 {
     private String title;
     private String content;
+    private Boolean canCancel;
+    private Boolean isCancelled = false;
 
-    public void configure(String title, String content)
+    public void configure(String title, String content, Boolean canCancel)
     {
         this.title = title;
         this.content = content;
+        this.canCancel = canCancel;
     }
 
     @Override
@@ -30,14 +33,18 @@ public class ProgressDialog extends DialogFragment
         View view = inflater.inflate(R.layout.dialog_progress, null);
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        builder.setView(view)
-            .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        builder.setView(view);
+        if (canCancel)
+        {
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
             {
                 public void onClick(DialogInterface dialog, int id)
                 {
                     ProgressDialog.this.getDialog().cancel();
+                    isCancelled = true;
                 }
             });
+        }
 
         Dialog result = builder.create();
         result.setTitle(this.title);
@@ -46,5 +53,10 @@ public class ProgressDialog extends DialogFragment
         text.setText(this.content);
 
         return result;
+    }
+
+    public Boolean getIsCancelled()
+    {
+        return isCancelled;
     }
 }

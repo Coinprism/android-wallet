@@ -24,6 +24,8 @@ import java.util.List;
 public class TransactionsTab extends Fragment implements IUpdatable
 {
     private TransactionAdapter adapter;
+    private View loadingIndicator;
+    private View errorMessageView;
 
     @Override
     public View onCreateView(
@@ -49,6 +51,9 @@ public class TransactionsTab extends Fragment implements IUpdatable
             }
         });
 
+        errorMessageView = rootView.findViewById(R.id.errorMessage);
+        loadingIndicator = rootView.findViewById(R.id.loadingIndicator);
+
         return rootView;
     }
 
@@ -71,6 +76,14 @@ public class TransactionsTab extends Fragment implements IUpdatable
         {
             this.adapter.clear();
             this.adapter.addAll(transactions);
+
+            loadingIndicator.setVisibility(View.GONE);
+            errorMessageView.setVisibility(View.GONE);
+        }
+        else
+        {
+            loadingIndicator.setVisibility(View.GONE);
+            errorMessageView.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -22,7 +22,8 @@
       android:id="@+id/dialogContent"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Preparing transaction..."/>
+      android:text="Preparing transaction..."
+      android:textAppearance="@android:style/TextAppearance.Medium"/>
   </LinearLayout>
 
 </RelativeLayout>

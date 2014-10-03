@@ -32,6 +32,7 @@ public class BalanceTab extends Fragment implements IUpdatable
     private View assetHeaderText;
     private ListView listView;
     private View loadingIndicator;
+    private View errorMessageView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -59,6 +60,7 @@ public class BalanceTab extends Fragment implements IUpdatable
         listView.addHeaderView(listHeaderView, null, false);
         listView.setAdapter(adapter);
 
+        errorMessageView = rootView.findViewById(R.id.errorMessage);
         loadingIndicator = rootView.findViewById(R.id.loadingIndicator);
 
         this.setupUI(rootView);
@@ -101,6 +103,13 @@ public class BalanceTab extends Fragment implements IUpdatable
 
             loadingIndicator.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
+            errorMessageView.setVisibility(View.GONE);
+        }
+        else
+        {
+            loadingIndicator.setVisibility(View.GONE);
+            listView.setVisibility(View.GONE);
+            errorMessageView.setVisibility(View.VISIBLE);
         }
     }
 }

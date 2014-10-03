@@ -66,7 +66,7 @@ public class APIClient
         return cache.values();
     }
 
-    private AssetDefinition fetchAssetDefinition(String address) throws IOException
+    private AssetDefinition fetchAssetDefinition(String address) throws IOException, APIException
     {
         AssetDefinition definition = cache.get(address);
         if (definition == null)
@@ -95,7 +95,7 @@ public class APIClient
         return definition;
     }
 
-    public AddressBalance getAddressBalance(String address) throws IOException, JSONException
+    public AddressBalance getAddressBalance(String address) throws IOException, JSONException, APIException
     {
         String json = executeHttp(new HttpGet(this.baseUrl + "/v1/addresses/" + address));
 
@@ -121,7 +121,7 @@ public class APIClient
     }
 
     public List<SingleAssetTransaction> getTransactions(String address)
-        throws IOException, JSONException, ParseException
+        throws IOException, JSONException, ParseException, APIException
     {
         String json = executeHttp(new HttpGet(
             this.baseUrl + "/v1/addresses/" + address + "/transactions"));
@@ -190,7 +190,7 @@ public class APIClient
     }
 
     public Transaction buildTransaction(String fromAddress, String toAddress, String amount, String assetAddress)
-        throws JSONException, IOException
+        throws JSONException, IOException, APIException
     {
         try
         {
@@ -244,7 +244,7 @@ public class APIClient
         return data;
     }
 
-    public String broadcastTransaction(Transaction transaction) throws IOException, JSONException
+    public String broadcastTransaction(Transaction transaction) throws IOException, JSONException, APIException
     {
         String serializedTransaction =
             Utils.bytesToHexString(transaction.bitcoinSerialize());
@@ -287,7 +287,7 @@ public class APIClient
         return addresses.length() == 1 && addresses.getString(0).equals(localAddress);
     }
 
-    private static String executeHttp(HttpRequestBase url) throws IOException
+    private static String executeHttp(HttpRequestBase url) throws IOException, APIException
     {
         HttpClient httpclient;
         UncheckedSSLSocketFactory sslFactory;
@@ -339,6 +339,26 @@ public class APIClient
             response.getEntity().writeTo(out);
             out.close();
             responseString = out.toString();
+        }
+        else if (statusLine.getStatusCode() == HttpStatus.SC_BAD_REQUEST)
+        {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            response.getEntity().writeTo(out);
+            out.close();
+            responseString = out.toString();
+
+            try
+            {
+                JSONObject error = new JSONObject(responseString);
+                String errorCode = error.getString("ErrorCode");
+                String subCode = error.optString("SubCode");
+
+                throw new APIException(errorCode, subCode);
+            }
+            catch (JSONException exception)
+            {
+                throw new IOException(exception.getMessage());
+            }
         }
         else
         {

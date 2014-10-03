@@ -43,7 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_weight="0.4"
-        android:inputType="numberDecimal"/>
+        android:inputType="numberDecimal"
+        android:gravity="right" />
 
       <Spinner
         android:id="@+id/assetSpinner"

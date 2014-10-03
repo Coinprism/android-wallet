@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.coinprism.model.APIException;
 import com.coinprism.model.AssetDefinition;
 import com.coinprism.model.WalletState;
 import com.coinprism.utils.Formatting;
@@ -76,14 +77,26 @@ public class SendTab extends Fragment implements IUpdatable
     {
         final String to = toAddress.getText().toString();
         final String unitString = amount.getText().toString();
-        final BigDecimal decimalAmount = new BigDecimal(unitString);
+        final BigDecimal decimalAmount;
 
         final AssetDefinition selectedAsset = (AssetDefinition) assetSpinner.getSelectedItem();
 
         final ProgressDialog progressDialog = new ProgressDialog();
 
+        try
+        {
+            decimalAmount = new BigDecimal(unitString);
+        }
+        catch (NumberFormatException exception)
+        {
+            showError("The amount is invalid.");
+            return;
+        }
+
         AsyncTask<Void, Void, Transaction> getTransaction = new AsyncTask<Void, Void, Transaction>()
         {
+            private String subCode;
+
             protected Transaction doInBackground(Void... _)
             {
                 try
@@ -103,7 +116,12 @@ public class SendTab extends Fragment implements IUpdatable
                             to, unitAmount.toString(), selectedAsset.getAssetAddress());
                     }
                 }
-                catch (Exception e)
+                catch (APIException exception)
+                {
+                    subCode = exception.getSubCode();
+                    return null;
+                }
+                catch (Exception exception)
                 {
                     return null;
                 }
@@ -113,19 +131,35 @@ public class SendTab extends Fragment implements IUpdatable
             protected void onPostExecute(Transaction result)
             {
                 super.onPostExecute(result);
-                progressDialog.dismiss();
-                if (result != null)
+
+                if (!progressDialog.getIsCancelled())
                 {
-                    onConfirm(result, decimalAmount, selectedAsset, to);
-                }
-                else
-                {
-                    showError("An error occurred.");
+                    progressDialog.dismiss();
+                    if (result != null)
+                    {
+                        onConfirm(result, decimalAmount, selectedAsset, to);
+                    }
+                    else if (subCode.equals("InsufficientFunds"))
+                    {
+                        showError("You don't have enough bitcoins on your address.");
+                    }
+                    else if (subCode.equals("InsufficientColoredFunds"))
+                    {
+                        showError("You don't have enough assets on your address.");
+                    }
+                    else if (subCode != null)
+                    {
+                        showError("The amount you entered is too low.");
+                    }
+                    else
+                    {
+                        showError("An error occurred.");
+                    }
                 }
             }
         };
 
-        progressDialog.configure("Please wait", "Verifying balance...");
+        progressDialog.configure("Please wait", "Verifying balance...", true);
         progressDialog.show(this.getActivity().getSupportFragmentManager(), "");
 
         getTransaction.execute();
@@ -155,8 +189,7 @@ public class SendTab extends Fragment implements IUpdatable
             }
         }
 
-        String message = String.format("You are about to send %s %s to the following address:\n" +
-            "%s",
+        String message = String.format("You are about to send %s %s to the following address:\n\n%s",
             Formatting.formatNumber(decimalAmount), assetName, to);
 
         alertDialog.setMessage(message);
@@ -228,7 +261,7 @@ public class SendTab extends Fragment implements IUpdatable
             }
         };
 
-        progressDialog.configure("Please wait", "Broadcasting transaction...");
+        progressDialog.configure("Please wait", "Broadcasting transaction...", false);
         progressDialog.show(this.getActivity().getSupportFragmentManager(), "");
 
         broadcastTask.execute();
@@ -241,7 +274,7 @@ public class SendTab extends Fragment implements IUpdatable
         // Setting Dialog Title
         alertDialog.setTitle("Transaction successful");
         alertDialog.setMessage("The transaction has been successfully pushed to the network.");
-
+        alertDialog.setIcon(android.R.drawable.ic_dialog_info);
 
         alertDialog.setPositiveButton("See transaction", new DialogInterface.OnClickListener()
         {
@@ -269,8 +302,9 @@ public class SendTab extends Fragment implements IUpdatable
     {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
 
-        alertDialog.setTitle(message);
-
+        alertDialog.setTitle("Error");
+        alertDialog.setMessage(message);
+        alertDialog.setIcon(R.drawable.ic_dialog_alert_holo_light);
         alertDialog.setPositiveButton("Ok", null);
 
         alertDialog.show();
