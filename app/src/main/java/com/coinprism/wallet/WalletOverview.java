@@ -11,11 +11,8 @@ import android.view.MenuItem;
 import com.coinprism.model.WalletState;
 import com.coinprism.wallet.adapter.TabsPagerAdapter;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
-
-public class WalletOverview extends FragmentActivity implements ActionBar.TabListener, IUpdatable
+public class WalletOverview extends FragmentActivity implements ActionBar.TabListener
 {
     private ViewPager viewPager;
     private TabsPagerAdapter tabsPagerAdapter;
@@ -31,6 +28,7 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         // Initialization
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
+
         tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(tabsPagerAdapter);
@@ -47,7 +45,6 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         // On swiping the viewpager make respective tab selected
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
-
             @Override
             public void onPageSelected(int position)
             {
@@ -68,39 +65,14 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         });
 
         viewPager.setCurrentItem(1);
-
-//        if (savedInstanceState == null)
-//        {
-//            getFragmentManager().beginTransaction()
-//                    .add(R.id.container, new PlaceholderFragment())
-//                    .commit();
-//        }
-    }
-
-    public void updateWallet()
-    {
-        for (int i = 0; i < tabsPagerAdapter.getCount(); i++)
-            ((IUpdatable) tabsPagerAdapter.getItem(i)).updateWallet();
     }
 
     @Override
     public void onStart()
     {
         super.onStart();
-        WalletState.getState().setCurrentActivity(this);
+
         WalletState.getState().triggerUpdate();
-
-        Timer updateTimer = new Timer();
-        TimerTask task = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                WalletState.getState().triggerUpdate();
-            }
-        };
-
-        updateTimer.schedule(task, 0, 10000);
     }
 
     @Override
@@ -119,7 +91,14 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings)
+        {
             return true;
+        }
+        else if (id == R.id.action_refresh)
+        {
+            WalletState.getState().getBalanceTab().triggerRefresh();
+            WalletState.getState().getTransactionsTab().triggerRefresh();
+        }
 
         return super.onOptionsItemSelected(item);
     }

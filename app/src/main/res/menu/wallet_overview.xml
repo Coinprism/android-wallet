@@ -2,8 +2,13 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".WalletOverview">
   <item
-    android:id="@+id/action_settings"
+    android:id="@+id/action_refresh"
     android:orderInCategory="100"
+    android:showAsAction="ifRoom"
+    android:icon="@drawable/ic_menu_refresh"
+    android:title="Refresh"/>
+  <item
+    android:id="@+id/action_settings"
     android:showAsAction="never"
     android:title="@string/action_settings"/>
 </menu>

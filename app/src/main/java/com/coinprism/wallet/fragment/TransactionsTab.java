@@ -14,18 +14,18 @@ import com.coinprism.model.AssetBalance;
 import com.coinprism.model.SingleAssetTransaction;
 import com.coinprism.model.TransactionsLoader;
 import com.coinprism.model.WalletState;
-import com.coinprism.wallet.IUpdatable;
 import com.coinprism.wallet.R;
 import com.coinprism.wallet.adapter.TransactionAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionsTab extends Fragment implements IUpdatable
+public class TransactionsTab extends Fragment
 {
     private TransactionAdapter adapter;
     private View loadingIndicator;
     private View errorMessageView;
+    private ListView listView;
 
     @Override
     public View onCreateView(
@@ -36,7 +36,7 @@ public class TransactionsTab extends Fragment implements IUpdatable
         this.adapter = new TransactionAdapter(this.getActivity(),
             new ArrayList<SingleAssetTransaction>());
 
-        final ListView listView = (ListView) rootView.findViewById(R.id.transactionList);
+        listView = (ListView) rootView.findViewById(R.id.transactionList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -54,6 +54,7 @@ public class TransactionsTab extends Fragment implements IUpdatable
         errorMessageView = rootView.findViewById(R.id.errorMessage);
         loadingIndicator = rootView.findViewById(R.id.loadingIndicator);
 
+        WalletState.getState().setTransactionsTab(this);
         return rootView;
     }
 
@@ -62,12 +63,7 @@ public class TransactionsTab extends Fragment implements IUpdatable
     {
         super.onStart();
 
-        final TransactionsLoader loader = new TransactionsLoader(this);
-        loader.execute(WalletState.getState().getConfiguration().getAddress());
-    }
-
-    public void updateWallet()
-    {
+        triggerRefresh();
     }
 
     public void updateTransactions(List<SingleAssetTransaction> transactions)
@@ -77,13 +73,28 @@ public class TransactionsTab extends Fragment implements IUpdatable
             this.adapter.clear();
             this.adapter.addAll(transactions);
 
+            listView.setVisibility(View.VISIBLE);
             loadingIndicator.setVisibility(View.GONE);
             errorMessageView.setVisibility(View.GONE);
         }
         else
         {
+            listView.setVisibility(View.GONE);
             loadingIndicator.setVisibility(View.GONE);
             errorMessageView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void triggerRefresh()
+    {
+        if (listView.getVisibility() == View.VISIBLE)
+        {
+            listView.setVisibility(View.GONE);
+            loadingIndicator.setVisibility(View.VISIBLE);
+            errorMessageView.setVisibility(View.GONE);
+
+            final TransactionsLoader loader = new TransactionsLoader(this);
+            loader.execute(WalletState.getState().getConfiguration().getAddress());
         }
     }
 }

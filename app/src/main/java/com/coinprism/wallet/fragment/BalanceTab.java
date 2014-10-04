@@ -17,7 +17,6 @@ import com.coinprism.model.AddressBalance;
 import com.coinprism.model.AssetBalance;
 import com.coinprism.model.QRCodeEncoder;
 import com.coinprism.model.WalletState;
-import com.coinprism.wallet.IUpdatable;
 import com.coinprism.wallet.R;
 import com.coinprism.wallet.adapter.AssetBalanceAdapter;
 
@@ -25,7 +24,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class BalanceTab extends Fragment implements IUpdatable
+public class BalanceTab extends Fragment
 {
     private AssetBalanceAdapter adapter;
     private View listHeaderView;
@@ -65,6 +64,7 @@ public class BalanceTab extends Fragment implements IUpdatable
 
         this.setupUI(rootView);
 
+        WalletState.getState().setBalanceTab(this);
         return rootView;
     }
 
@@ -78,6 +78,18 @@ public class BalanceTab extends Fragment implements IUpdatable
         final ImageView qrCode = (ImageView) rootView.findViewById(R.id.qrAddress);
 
         QRCodeEncoder.createQRCode(state.getConfiguration().getAddress(), qrCode, 400, 400, 20);
+    }
+
+    public void triggerRefresh()
+    {
+        if (listView.getVisibility() == View.VISIBLE)
+        {
+            loadingIndicator.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+            errorMessageView.setVisibility(View.GONE);
+
+            WalletState.getState().triggerUpdate();
+        }
     }
 
     public void updateWallet()

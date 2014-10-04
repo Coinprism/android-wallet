@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -47,59 +47,65 @@
       />
   </LinearLayout>
 
-  <ListView
-    android:id="@+id/assetBalances"
+  <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_below="@id/topArea"
-    android:visibility="gone"></ListView>
+    android:layout_height="match_parent">
 
-  <LinearLayout
-    android:id="@+id/loadingIndicator"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
-    android:gravity="center">
+    <ListView
+      android:id="@+id/assetBalances"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:overScrollMode="never"
+      android:visibility="gone" />
 
-    <ProgressBar
+    <LinearLayout
+      android:id="@+id/loadingIndicator"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:indeterminateOnly="true"
-      android:keepScreenOn="true"
-      android:paddingRight="16dp"/>
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
+      android:gravity="center">
 
-    <TextView
+      <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateOnly="true"
+        android:keepScreenOn="true"
+        android:paddingRight="16dp"/>
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="16dp"
+        android:text="Loading wallet..."
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/errorMessage"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingRight="16dp"
-      android:text="Loading wallet..."
-      android:textAppearance="?android:attr/textAppearanceMedium" />
-  </LinearLayout>
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
+      android:gravity="center"
+      android:visibility="gone">
 
-  <LinearLayout
-    android:id="@+id/errorMessage"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
-    android:gravity="center"
-    android:visibility="gone">
+      <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:indeterminateOnly="true"
+        android:keepScreenOn="true"
+        android:paddingRight="16dp"
+        android:src="@drawable/ic_dialog_alert_holo_light" />
 
-    <ImageView
-      android:layout_width="64dp"
-      android:layout_height="64dp"
-      android:indeterminateOnly="true"
-      android:keepScreenOn="true"
-      android:paddingRight="16dp"
-      android:src="@drawable/ic_dialog_alert_holo_light" />
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="16dp"
+        android:text="Error opening wallet"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+  </RelativeLayout>
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingRight="16dp"
-      android:text="Error opening wallet"
-      android:textAppearance="?android:attr/textAppearanceMedium" />
-  </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

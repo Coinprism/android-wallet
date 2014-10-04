@@ -19,7 +19,6 @@ import com.coinprism.model.APIException;
 import com.coinprism.model.AssetDefinition;
 import com.coinprism.model.WalletState;
 import com.coinprism.utils.Formatting;
-import com.coinprism.wallet.IUpdatable;
 import com.coinprism.wallet.ProgressDialog;
 import com.coinprism.wallet.R;
 import com.coinprism.wallet.adapter.AssetSelectorAdapter;
@@ -32,7 +31,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-public class SendTab extends Fragment implements IUpdatable
+public class SendTab extends Fragment
 {
     private AssetSelectorAdapter adapter;
     private Spinner assetSpinner;
@@ -40,8 +39,7 @@ public class SendTab extends Fragment implements IUpdatable
     private EditText amount;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-        Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.fragment_tab_send, container, false);
         this.assetSpinner = (Spinner) rootView.findViewById(R.id.assetSpinner);
@@ -62,6 +60,7 @@ public class SendTab extends Fragment implements IUpdatable
         this.adapter.add(null);
         this.assetSpinner.setAdapter(adapter);
 
+        WalletState.getState().setSendTab(this);
         return rootView;
     }
 
@@ -194,9 +193,6 @@ public class SendTab extends Fragment implements IUpdatable
 
         alertDialog.setMessage(message);
 
-        // Setting Icon to Dialog
-        //alertDialog.setIcon(R.drawable.delete);
-
         alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int which)
@@ -302,9 +298,7 @@ public class SendTab extends Fragment implements IUpdatable
     {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
 
-        alertDialog.setTitle("Error");
         alertDialog.setMessage(message);
-        alertDialog.setIcon(R.drawable.ic_dialog_alert_holo_light);
         alertDialog.setPositiveButton("Ok", null);
 
         alertDialog.show();
