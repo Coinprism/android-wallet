@@ -22,10 +22,10 @@ import com.coinprism.utils.Formatting;
 import com.coinprism.wallet.ProgressDialog;
 import com.coinprism.wallet.R;
 import com.coinprism.wallet.adapter.AssetSelectorAdapter;
-import com.google.bitcoin.core.ECKey;
-import com.google.bitcoin.core.Transaction;
-import com.google.bitcoin.crypto.TransactionSignature;
-import com.google.bitcoin.script.ScriptBuilder;
+import org.bitcoinj.core.ECKey;
+import org.bitcoinj.core.Transaction;
+import org.bitcoinj.crypto.TransactionSignature;
+import org.bitcoinj.script.ScriptBuilder;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -226,7 +226,7 @@ public class SendTab extends Fragment
                     {
                         ECKey key = WalletState.getState().getConfiguration().getKey();
                         TransactionSignature signature =
-                            result.calculateSignature(i, key, null,
+                            result.calculateSignature(i, key,
                                 result.getInputs().get(i).getScriptBytes(), Transaction.SigHash.ALL, false);
 
                         result.getInputs().get(i).setScriptSig(ScriptBuilder.createInputScript(signature, key));

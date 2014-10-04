@@ -5,15 +5,14 @@ import com.coinprism.wallet.WalletOverview;
 import com.coinprism.wallet.fragment.BalanceTab;
 import com.coinprism.wallet.fragment.SendTab;
 import com.coinprism.wallet.fragment.TransactionsTab;
-import com.google.bitcoin.core.NetworkParameters;
+import org.bitcoinj.core.NetworkParameters;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class WalletState
 {
-    private final static String privateKeyKey = "wallet.private_key";
-    private final static String publicKeyKey = "wallet.public_key";
+    private final static String seedKey = "wallet.seed";
     private static WalletState state;
 
     private final SecurePreferences preferences;
@@ -57,31 +56,19 @@ public class WalletState
         SecurePreferences preferences =
             new SecurePreferences(CoinprismWalletApplication.getContext());
 
-        String privateKey = preferences.getString(privateKeyKey, null);
-        String publicKey;
+        String seed = preferences.getString(seedKey, null);
 
         WalletConfiguration wallet;
-        if (privateKey == null)
+        if (seed == null)
         {
-            String[] key = WalletConfiguration.createWallet();
+            seed = WalletConfiguration.createWallet();
 
             SecurePreferences.Editor editor = preferences.edit();
-            editor.putString(privateKeyKey, key[0]);
-            editor.putString(publicKeyKey, key[1]);
+            editor.putString(seedKey, seed);
             editor.commit();
-
-            privateKey = key[0];
-            publicKey = key[1];
-        }
-        else
-        {
-            publicKey = preferences.getString(publicKeyKey, null);
         }
 
-        wallet = new WalletConfiguration(
-            privateKey,
-            publicKey,
-            NetworkParameters.fromID(NetworkParameters.ID_TESTNET));
+        wallet = new WalletConfiguration(seed, NetworkParameters.fromID(NetworkParameters.ID_TESTNET));
 
         return new WalletState(
             wallet,

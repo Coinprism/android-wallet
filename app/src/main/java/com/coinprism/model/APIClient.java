@@ -1,12 +1,7 @@
 package com.coinprism.model;
 
-import android.util.JsonReader;
-import android.util.JsonToken;
-
-import com.google.bitcoin.core.Sha256Hash;
-import com.google.bitcoin.core.Transaction;
-import com.google.bitcoin.core.Utils;
-import com.google.bitcoin.core.Wallet;
+import org.bitcoinj.core.Transaction;
+import org.bitcoinj.core.Utils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -34,8 +29,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.text.ParseException;
@@ -244,10 +237,23 @@ public class APIClient
         return data;
     }
 
+    public static String byteArrayToHexString(byte[] bytes)
+    {
+        final char[] hexArray = "0123456789ABCDEF".toCharArray();
+
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++)
+        {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+
     public String broadcastTransaction(Transaction transaction) throws IOException, JSONException, APIException
     {
-        String serializedTransaction =
-            Utils.bytesToHexString(transaction.bitcoinSerialize());
+        String serializedTransaction = byteArrayToHexString(transaction.bitcoinSerialize());
 
         try
         {
