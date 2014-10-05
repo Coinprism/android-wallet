@@ -6,7 +6,9 @@ import com.coinprism.wallet.fragment.BalanceTab;
 import com.coinprism.wallet.fragment.SendTab;
 import com.coinprism.wallet.fragment.TransactionsTab;
 import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.crypto.MnemonicCode;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,8 +55,7 @@ public class WalletState
 
     private static WalletState initialize()
     {
-        SecurePreferences preferences =
-            new SecurePreferences(CoinprismWalletApplication.getContext());
+        SecurePreferences preferences = new SecurePreferences(CoinprismWalletApplication.getContext());
 
         String seed = preferences.getString(seedKey, null);
 
@@ -69,6 +70,14 @@ public class WalletState
         }
 
         wallet = new WalletConfiguration(seed, NetworkParameters.fromID(NetworkParameters.ID_TESTNET));
+
+        try
+        {
+            MnemonicCode.INSTANCE = new MnemonicCode(CoinprismWalletApplication.getContext().getAssets()
+                .open("bip39-wordlist.txt"), null);
+        }
+        catch (IOException exception)
+        { }
 
         return new WalletState(
             wallet,

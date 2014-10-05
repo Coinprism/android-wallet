@@ -3,14 +3,21 @@
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+  <!-- Coinprism -->
+
+  <style name="ActionButton" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
+    <item name="android:src">@drawable/ic_action_overflow</item>
+  </style>
+
   <!-- Tab -->
 
-  <!--<style name="ActionBar.Solid.Coinprism" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">-->
-  <!--<item name="android:background">@drawable/ab_solid_coinprism</item>-->
-  <!--<item name="android:backgroundStacked">@drawable/ab_stacked_solid_coinprism</item>-->
-  <!--<item name="android:backgroundSplit">@drawable/ab_bottom_solid_coinprism</item>-->
-  <!--<item name="android:progressBarStyle">@style/ProgressBar.Coinprism</item>-->
-  <!--</style>-->
+  <style name="ActionBar.Solid.Coinprism" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+    <!--<item name="android:background">@drawable/ab_solid_coinprism</item>-->
+    <!--<item name="android:backgroundStacked">@drawable/ab_stacked_solid_coinprism</item>-->
+    <!--<item name="android:backgroundSplit">@drawable/ab_bottom_solid_coinprism</item>-->
+    <!--<item name="android:progressBarStyle">@style/ProgressBar.Coinprism</item>-->
+    <item name="android:displayOptions">showHome|useLogo</item>
+  </style>
 
   <style name="ActionBar.Transparent.Coinprism" parent="@android:style/Widget.Holo.Light.ActionBar">
     <item name="android:background">@drawable/ab_transparent_coinprism</item>

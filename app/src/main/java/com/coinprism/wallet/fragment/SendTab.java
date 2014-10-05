@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.coinprism.model.APIException;
 import com.coinprism.model.AssetDefinition;
 import com.coinprism.model.WalletState;
@@ -22,6 +22,9 @@ import com.coinprism.utils.Formatting;
 import com.coinprism.wallet.ProgressDialog;
 import com.coinprism.wallet.R;
 import com.coinprism.wallet.adapter.AssetSelectorAdapter;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.crypto.TransactionSignature;
@@ -60,16 +63,35 @@ public class SendTab extends Fragment
         this.adapter.add(null);
         this.assetSpinner.setAdapter(adapter);
 
+        ImageButton scanButton = (ImageButton)rootView.findViewById(R.id.qrCodeButton);
+        scanButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                IntentIntegrator integrator = new IntentIntegrator(SendTab.this.getActivity());
+                integrator.initiateScan();
+            }
+        });
+
         WalletState.getState().setSendTab(this);
         return rootView;
     }
 
     public void updateWallet()
     {
+        if (!isAdded())
+            return;
+
         this.adapter.clear();
 
         this.adapter.add(null);
         this.adapter.addAll(WalletState.getState().getAPIClient().getAllAssetDefinitions());
+    }
+
+    public void setAddress(String value)
+    {
+        this.toAddress.setText(value);
     }
 
     private void onSend()
@@ -270,7 +292,6 @@ public class SendTab extends Fragment
         // Setting Dialog Title
         alertDialog.setTitle("Transaction successful");
         alertDialog.setMessage("The transaction has been successfully pushed to the network.");
-        alertDialog.setIcon(android.R.drawable.ic_dialog_info);
 
         alertDialog.setPositiveButton("See transaction", new DialogInterface.OnClickListener()
         {

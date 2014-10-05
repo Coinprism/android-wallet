@@ -6,6 +6,7 @@
         android:name="com.coinprism.model.CoinprismWalletApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
+        android:logo="@drawable/app_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
@@ -13,10 +14,17 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+      <activity
+        android:name=".UserPreferences"
+        android:label=""
+        android:parentActivityName=".WalletOverview">
+        <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="com.coinprism.wallet.WalletOverview" />
+      </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

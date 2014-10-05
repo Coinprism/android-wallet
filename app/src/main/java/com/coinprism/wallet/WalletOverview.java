@@ -1,7 +1,13 @@
 package com.coinprism.wallet;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -10,6 +16,15 @@ import android.view.MenuItem;
 
 import com.coinprism.model.WalletState;
 import com.coinprism.wallet.adapter.TabsPagerAdapter;
+import com.google.common.base.Joiner;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import org.bitcoinj.crypto.MnemonicCode;
+import org.bitcoinj.crypto.MnemonicException;
+
+import java.io.IOException;
+import java.util.List;
 
 
 public class WalletOverview extends FragmentActivity implements ActionBar.TabListener
@@ -38,8 +53,7 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         // Adding Tabs
         for (String tab_name : tabs)
         {
-            actionBar.addTab(
-                    actionBar.newTab().setText(tab_name).setTabListener(this));
+            actionBar.addTab(actionBar.newTab().setText(tab_name).setTabListener(this));
         }
 
         // On swiping the viewpager make respective tab selected
@@ -83,6 +97,15 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         return true;
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null)
+        {
+            WalletState.getState().getSendTab().setAddress(scanResult.getContents());
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -92,12 +115,53 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
+            Intent intent = new Intent(this, UserPreferences.class);
+            startActivity(intent);
             return true;
         }
         else if (id == R.id.action_refresh)
         {
             WalletState.getState().getBalanceTab().triggerRefresh();
             WalletState.getState().getTransactionsTab().triggerRefresh();
+            return true;
+        }
+        else if (id == R.id.export_seed)
+        {
+            try
+            {
+                final List<String> mnemonic = MnemonicCode.INSTANCE.toMnemonic(
+                    WalletState.getState().getConfiguration().getSeed());
+
+                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                final String fullMnemonic = Joiner.on(" ").join(mnemonic);
+                // Setting Dialog Title
+                alertDialog.setTitle("Wallet seed");
+                alertDialog.setMessage(
+                    String.format("Your wallet seed encoded in mnemonic form is:\n\n%s", fullMnemonic));
+
+                alertDialog.setPositiveButton("Copy", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("label", fullMnemonic);
+                        clipboard.setPrimaryClip(clip);
+                    }
+                });
+
+                alertDialog.setNegativeButton("Close", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.cancel();
+                    }
+                });
+
+                alertDialog.show();
+                return true;
+            }
+            catch (MnemonicException.MnemonicLengthException exception)
+            { }
         }
 
         return super.onOptionsItemSelected(item);

@@ -27,9 +27,12 @@ public class AssetSelectorAdapter extends ArrayAdapter<AssetDefinition>
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        TextView rowView = (TextView)inflater.inflate(R.layout.asset_selector_item, parent, false);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        TextView rowView;
+        if (convertView == null)
+            rowView = (TextView)inflater.inflate(R.layout.asset_selector_item, parent, false);
+        else
+            rowView = (TextView)convertView;
 
         AssetDefinition item = values.get(position);
 

@@ -9,8 +9,7 @@
 
     <!-- Coinprism -->
 
-    <item name="android:typeface">sans</item>
-
+    <item name="android:actionOverflowButtonStyle">@style/ActionButton</item>
 
     <!-- Tab -->
     <item name="android:actionBarItemBackground">@drawable/selectable_background_coinprism</item>
@@ -23,7 +22,7 @@
 
     <item name="android:actionDropDownStyle">@style/DropDownNav.Coinprism</item>
 
-    <!--<item name="android:actionBarStyle">@style/ActionBar.Solid.Coinprism</item>-->
+    <item name="android:actionBarStyle">@style/ActionBar.Solid.Coinprism</item>
 
     <item name="android:actionModeBackground">@drawable/cab_background_top_coinprism</item>
 

@@ -68,6 +68,9 @@ public class TransactionsTab extends Fragment
 
     public void updateTransactions(List<SingleAssetTransaction> transactions)
     {
+        if (!isAdded())
+            return;
+
         if (transactions != null)
         {
             this.adapter.clear();

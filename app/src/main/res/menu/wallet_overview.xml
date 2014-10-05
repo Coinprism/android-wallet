@@ -5,8 +5,12 @@
     android:id="@+id/action_refresh"
     android:orderInCategory="100"
     android:showAsAction="ifRoom"
-    android:icon="@drawable/ic_menu_refresh"
+    android:icon="@drawable/ic_action_refresh"
     android:title="Refresh"/>
+  <item
+    android:id="@+id/export_seed"
+    android:showAsAction="never"
+    android:title="Export seed"/>
   <item
     android:id="@+id/action_settings"
     android:showAsAction="never"

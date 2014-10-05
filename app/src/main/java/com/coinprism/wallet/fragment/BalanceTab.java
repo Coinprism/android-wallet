@@ -1,5 +1,7 @@
 package com.coinprism.wallet.fragment;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -78,6 +81,19 @@ public class BalanceTab extends Fragment
         final ImageView qrCode = (ImageView) rootView.findViewById(R.id.qrAddress);
 
         QRCodeEncoder.createQRCode(state.getConfiguration().getAddress(), qrCode, 400, 400, 20);
+
+        LinearLayout addressPanel = (LinearLayout)rootView.findViewById(R.id.addressPanel);
+        addressPanel.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ClipboardManager clipboard = (ClipboardManager) getActivity()
+                    .getSystemService(getActivity().CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("label", state.getConfiguration().getAddress());
+                clipboard.setPrimaryClip(clip);
+            }
+        });
     }
 
     public void triggerRefresh()
@@ -94,6 +110,9 @@ public class BalanceTab extends Fragment
 
     public void updateWallet()
     {
+        if (!isAdded())
+            return;
+
         final AddressBalance balance = WalletState.getState().getBalance();
         if (balance != null)
         {
