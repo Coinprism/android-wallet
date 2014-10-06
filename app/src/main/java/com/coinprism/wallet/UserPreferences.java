@@ -14,6 +14,8 @@ import java.util.List;
 
 public class UserPreferences extends PreferenceActivity
 {
+    public final static String defaultFeesKey = "default_fees";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -26,8 +28,6 @@ public class UserPreferences extends PreferenceActivity
     public static class GeneralPreferences extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener
     {
-        private final String defaultFees = "0.0001";
-
         @Override
         public void onCreate(Bundle savedInstanceState)
         {
@@ -38,9 +38,12 @@ public class UserPreferences extends PreferenceActivity
 
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.user_settings);
+            PreferenceManager.setDefaultValues(GeneralPreferences.this.getActivity(), R.xml.user_settings, false);
 
-            EditTextPreference defaultFeeText = (EditTextPreference) findPreference("default_fees");
-            String currentValue = sharedPrefs.getString("default_fees", defaultFees);
+            EditTextPreference defaultFeeText = (EditTextPreference) findPreference(defaultFeesKey);
+            String currentValue = sharedPrefs.getString(
+                defaultFeesKey, getResources().getString(R.string.default_fees));
+
             //p.setText(currentValue);
             defaultFeeText.setSummary(currentValue + " BTC");
 
@@ -55,6 +58,7 @@ public class UserPreferences extends PreferenceActivity
             if ("default_fees".equals(key))
             {
                 EditTextPreference textPreference = (EditTextPreference) findPreference(key);
+                String defaultFees = getResources().getString(R.string.default_fees);
                 String value = sharedPreferences.getString(key, defaultFees);
                 try
                 {

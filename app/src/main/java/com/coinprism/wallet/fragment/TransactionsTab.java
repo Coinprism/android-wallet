@@ -90,7 +90,7 @@ public class TransactionsTab extends Fragment
 
     public void triggerRefresh()
     {
-        if (listView.getVisibility() == View.VISIBLE)
+        if (loadingIndicator.getVisibility() == View.GONE)
         {
             listView.setVisibility(View.GONE);
             loadingIndicator.setVisibility(View.VISIBLE);

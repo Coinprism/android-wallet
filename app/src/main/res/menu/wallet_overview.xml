@@ -10,7 +10,7 @@
   <item
     android:id="@+id/export_seed"
     android:showAsAction="never"
-    android:title="Export seed"/>
+    android:title="Backup seed"/>
   <item
     android:id="@+id/action_settings"
     android:showAsAction="never"

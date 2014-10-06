@@ -4,14 +4,13 @@
   <PreferenceCategory android:title="Transaction settings">
     <EditTextPreference
       android:title="Default transaction fees"
-      android:summary="0.0001 BTC"
+      android:defaultValue="@string/default_fees"
       android:key="default_fees"
       android:inputType="numberDecimal" />
   </PreferenceCategory>
   <PreferenceCategory android:title="About">
     <Preference
       android:title="Application version"
-      android:summary="0.9.0"
       android:key="version_number" />
   </PreferenceCategory>
 </PreferenceScreen>

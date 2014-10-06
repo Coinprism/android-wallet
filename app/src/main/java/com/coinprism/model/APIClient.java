@@ -127,8 +127,10 @@ public class APIClient
         {
             JSONObject transactionObject = (JSONObject) transactions.get(i);
             String transactionId = transactionObject.getString("hash");
-            Date date = parseDate(
-                transactionObject.getString("block_time"));
+
+            Date date = null;
+            if (!transactionObject.isNull("block_time"))
+                date = parseDate(transactionObject.getString("block_time"));
 
             HashMap<String, BigInteger> quantities = new HashMap<String, BigInteger>();
             BigInteger satoshiDelta = BigInteger.ZERO;
@@ -182,7 +184,8 @@ public class APIClient
         return assetBalances;
     }
 
-    public Transaction buildTransaction(String fromAddress, String toAddress, String amount, String assetAddress)
+    public Transaction buildTransaction(String fromAddress, String toAddress, String amount, String assetAddress,
+        long fees)
         throws JSONException, IOException, APIException
     {
         try
@@ -196,7 +199,7 @@ public class APIClient
             JSONArray array = new JSONArray();
             array.put(toObject);
             JSONObject postData = new JSONObject();
-            postData.put("fees", 10000);
+            postData.put("fees", fees);
             postData.put("from", fromAddress);
             postData.put("to", array);
 

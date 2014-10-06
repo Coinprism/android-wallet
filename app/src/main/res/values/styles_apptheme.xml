@@ -64,11 +64,13 @@
   </style>
 
   <style name="ButtonAppTheme" parent="android:Widget.Holo.Light.Button">
-    <item name="android:background">@drawable/apptheme_btn_default_holo_light</item>
+    <item name="android:background">@drawable/apptheme_btn</item>
+    <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+    <item name="android:textColor">#ffffff</item>
   </style>
 
   <style name="ImageButtonAppTheme" parent="android:Widget.Holo.Light.ImageButton">
-    <item name="android:background">@drawable/apptheme_btn_default_holo_light</item>
+    <item name="android:background">@drawable/apptheme_btn_default</item>
   </style>
 
   <style name="SpinnerAppTheme" parent="android:Widget.Holo.Light.Spinner">

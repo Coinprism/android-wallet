@@ -51,9 +51,16 @@ public class TransactionAdapter extends ArrayAdapter<SingleAssetTransaction>
         TextView assetBalance = (TextView) rowView.findViewById(R.id.assetBalance);
         ImageView assetIcon = (ImageView) rowView.findViewById(R.id.assetIcon);
 
-        DateFormat dateFormat = android.text.format.DateFormat.getMediumDateFormat(context);
-        date.setText(DateUtils.formatDateTime(context, balance.getDate().getTime(),
-            DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
+        if (balance.getDate() != null)
+        {
+            DateFormat dateFormat = android.text.format.DateFormat.getMediumDateFormat(context);
+            date.setText(DateUtils.formatDateTime(context, balance.getDate().getTime(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
+        }
+        else
+        {
+            date.setText("Unconfirmed");
+        }
 
         if (balance.getAsset() == null)
         {

@@ -20,8 +20,12 @@ import com.coinprism.model.AddressBalance;
 import com.coinprism.model.AssetBalance;
 import com.coinprism.model.QRCodeEncoder;
 import com.coinprism.model.WalletState;
+import com.coinprism.utils.Formatting;
+import com.coinprism.wallet.QRCodeDialog;
 import com.coinprism.wallet.R;
 import com.coinprism.wallet.adapter.AssetBalanceAdapter;
+
+import org.bitcoinj.core.Wallet;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -82,23 +86,22 @@ public class BalanceTab extends Fragment
 
         QRCodeEncoder.createQRCode(state.getConfiguration().getAddress(), qrCode, 400, 400, 20);
 
-        LinearLayout addressPanel = (LinearLayout)rootView.findViewById(R.id.addressPanel);
+        LinearLayout addressPanel = (LinearLayout)rootView.findViewById(R.id.topArea);
         addressPanel.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                ClipboardManager clipboard = (ClipboardManager) getActivity()
-                    .getSystemService(getActivity().CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("label", state.getConfiguration().getAddress());
-                clipboard.setPrimaryClip(clip);
+                final QRCodeDialog dialog = new QRCodeDialog();
+                dialog.configure(WalletState.getState().getConfiguration().getAddress());
+                dialog.show(BalanceTab.this.getActivity().getSupportFragmentManager(), "");
             }
         });
     }
 
     public void triggerRefresh()
     {
-        if (listView.getVisibility() == View.VISIBLE)
+        if (loadingIndicator.getVisibility() == View.GONE)
         {
             loadingIndicator.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
@@ -122,7 +125,7 @@ public class BalanceTab extends Fragment
             final Drawable btc = getResources().getDrawable(R.drawable.btc);
 
             AssetBalanceAdapter.setBalanceItemContents(this.listHeaderView,
-                NumberFormat.getNumberInstance().format(bitcoinValue) + " BTC", "", btc);
+                Formatting.formatNumber(bitcoinValue) + " BTC", "", btc);
 
             this.adapter.clear();
             this.adapter.addAll(balance.getAssetBalances());

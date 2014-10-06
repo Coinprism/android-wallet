@@ -3,9 +3,11 @@ package com.coinprism.wallet.fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.coinprism.model.WalletState;
 import com.coinprism.utils.Formatting;
 import com.coinprism.wallet.ProgressDialog;
 import com.coinprism.wallet.R;
+import com.coinprism.wallet.UserPreferences;
 import com.coinprism.wallet.adapter.AssetSelectorAdapter;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -33,6 +36,8 @@ import org.bitcoinj.script.ScriptBuilder;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 public class SendTab extends Fragment
 {
@@ -122,11 +127,20 @@ public class SendTab extends Fragment
             {
                 try
                 {
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                        SendTab.this.getActivity());
+
+                    String value = sharedPreferences.getString(
+                        UserPreferences.defaultFeesKey, getResources().getString(R.string.default_fees));
+
+                    BigDecimal decimal = new BigDecimal(value);
+                    long fees = decimal.scaleByPowerOfTen(8).toBigInteger().longValue();
+
                     if (selectedAsset == null)
                     {
                         return WalletState.getState().getAPIClient().buildTransaction(
                             WalletState.getState().getConfiguration().getAddress(),
-                            to, decimalAmount.scaleByPowerOfTen(8).toBigInteger().toString(), null);
+                            to, decimalAmount.scaleByPowerOfTen(8).toBigInteger().toString(), null, fees);
                     }
                     else
                     {
@@ -134,7 +148,7 @@ public class SendTab extends Fragment
                             .scaleByPowerOfTen(selectedAsset.getDivisibility()).toBigInteger();
                         return WalletState.getState().getAPIClient().buildTransaction(
                             WalletState.getState().getConfiguration().getAddress(),
-                            to, unitAmount.toString(), selectedAsset.getAssetAddress());
+                            to, unitAmount.toString(), selectedAsset.getAssetAddress(), fees);
                     }
                 }
                 catch (APIException exception)
@@ -162,19 +176,23 @@ public class SendTab extends Fragment
                     }
                     else if (subCode.equals("InsufficientFunds"))
                     {
-                        showError("You don't have enough bitcoins on your address.");
+                        showError("You don't have enough bitcoins on your address. Make sure incoming transactions are confirmed.");
                     }
                     else if (subCode.equals("InsufficientColoredFunds"))
                     {
-                        showError("You don't have enough assets on your address.");
+                        showError("You don't have enough assets on your address. Make sure incoming transactions are confirmed.");
                     }
-                    else if (subCode != null)
+                    else if (subCode.equals("AmountUnderDustThreshold") || subCode.equals("ChangeUnderDustThreshold"))
                     {
                         showError("The amount you entered is too low.");
                     }
+                    else if (subCode != null)
+                    {
+                        showError("An error occurred. Please make sure the application is up to date.");
+                    }
                     else
                     {
-                        showError("An error occurred.");
+                        showError("An error occurred. Please make sure you have an internet connection.");
                     }
                 }
             }
@@ -287,6 +305,9 @@ public class SendTab extends Fragment
 
     private void showSuccess(final String transactionId)
     {
+        WalletState.getState().getBalanceTab().triggerRefresh();
+        WalletState.getState().getTransactionsTab().triggerRefresh();
+
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
 
         // Setting Dialog Title
@@ -319,6 +340,7 @@ public class SendTab extends Fragment
     {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
 
+        alertDialog.setTitle("Error");
         alertDialog.setMessage(message);
         alertDialog.setPositiveButton("Ok", null);
 
