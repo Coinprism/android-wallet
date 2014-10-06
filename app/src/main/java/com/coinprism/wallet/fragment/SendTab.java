@@ -115,7 +115,7 @@ public class SendTab extends Fragment
         }
         catch (NumberFormatException exception)
         {
-            showError("The amount is invalid.");
+            showError(getString(R.string.tab_send_error_invalid_amount));
             return;
         }
 
@@ -131,7 +131,7 @@ public class SendTab extends Fragment
                         SendTab.this.getActivity());
 
                     String value = sharedPreferences.getString(
-                        UserPreferences.defaultFeesKey, getResources().getString(R.string.default_fees));
+                        UserPreferences.defaultFeesKey, getString(R.string.default_fees));
 
                     BigDecimal decimal = new BigDecimal(value);
                     long fees = decimal.scaleByPowerOfTen(8).toBigInteger().longValue();
@@ -176,29 +176,32 @@ public class SendTab extends Fragment
                     }
                     else if (subCode.equals("InsufficientFunds"))
                     {
-                        showError("You don't have enough bitcoins on your address. Make sure incoming transactions are confirmed.");
+                        showError(getString(R.string.tab_send_error_insufficient_funds));
                     }
                     else if (subCode.equals("InsufficientColoredFunds"))
                     {
-                        showError("You don't have enough assets on your address. Make sure incoming transactions are confirmed.");
+                        showError(getString(R.string.tab_send_error_insufficient_asset));
                     }
                     else if (subCode.equals("AmountUnderDustThreshold") || subCode.equals("ChangeUnderDustThreshold"))
                     {
-                        showError("The amount you entered is too low.");
+                        showError(getString(R.string.tab_send_error_amount_too_low));
                     }
                     else if (subCode != null)
                     {
-                        showError("An error occurred. Please make sure the application is up to date.");
+                        showError(getString(R.string.tab_send_error_server_error));
                     }
                     else
                     {
-                        showError("An error occurred. Please make sure you have an internet connection.");
+                        showError(getString(R.string.tab_send_error_connection_error));
                     }
                 }
             }
         };
 
-        progressDialog.configure("Please wait", "Verifying balance...", true);
+        progressDialog.configure(
+            getString(R.string.tab_send_dialog_please_wait),
+            getString(R.string.tab_send_dialog_verifying_balance),
+            true);
         progressDialog.show(this.getActivity().getSupportFragmentManager(), "");
 
         getTransaction.execute();
@@ -210,44 +213,50 @@ public class SendTab extends Fragment
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
 
         // Setting Dialog Title
-        alertDialog.setTitle("Confirm transaction");
+        alertDialog.setTitle(getString(R.string.tab_send_dialog_confirm_transaction));
 
         final String assetName;
         if (selectedAsset == null)
-            assetName = "BTC";
+            assetName = getString(R.string.tab_send_dialog_confirm_message_amount_bitcoin);
         else
         {
             if (selectedAsset.getName() != null && selectedAsset.getTicker() != null)
             {
-                assetName = String.format("%s (%s)",
+                assetName = String.format(getString(R.string.tab_send_dialog_confirm_message_amount_known_asset),
                     selectedAsset.getTicker(), selectedAsset.getName());
             }
             else
             {
-                assetName = String.format("units (Asset ID: %s)", selectedAsset.getAssetAddress());
+                assetName = String.format(
+                    getString(R.string.tab_send_dialog_confirm_message_amount_unknown_asset),
+                    selectedAsset.getAssetAddress());
             }
         }
 
-        String message = String.format("You are about to send %s %s to the following address:\n\n%s",
+        String message = String.format(getString(R.string.tab_send_dialog_confirm_message),
             Formatting.formatNumber(decimalAmount), assetName, to);
 
         alertDialog.setMessage(message);
 
-        alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int which)
+        alertDialog.setPositiveButton(
+            getString(R.string.tab_send_dialog_confirm_button),
+            new DialogInterface.OnClickListener()
             {
-                onConfirmed(result);
-            }
-        });
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    onConfirmed(result);
+                }
+            });
 
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int which)
+        alertDialog.setNegativeButton(
+            getString(android.R.string.cancel),
+            new DialogInterface.OnClickListener()
             {
-                dialog.cancel();
-            }
-        });
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    dialog.cancel();
+                }
+            });
 
         alertDialog.show();
     }
@@ -292,12 +301,16 @@ public class SendTab extends Fragment
                 }
                 else
                 {
-                    showError("The transaction could not be broadcasted.");
+                    showError(getString(R.string.tab_send_error_broadcast));
                 }
             }
         };
 
-        progressDialog.configure("Please wait", "Broadcasting transaction...", false);
+        progressDialog.configure(
+            getString(R.string.tab_send_dialog_please_wait),
+            getString(R.string.tab_send_dialog_broadcasting),
+            false);
+
         progressDialog.show(this.getActivity().getSupportFragmentManager(), "");
 
         broadcastTask.execute();
@@ -311,27 +324,31 @@ public class SendTab extends Fragment
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
 
         // Setting Dialog Title
-        alertDialog.setTitle("Transaction successful");
-        alertDialog.setMessage("The transaction has been successfully pushed to the network.");
+        alertDialog.setTitle(getString(R.string.tab_send_dialog_transaction_success_title));
+        alertDialog.setMessage(getString(R.string.tab_send_dialog_transaction_successful_message));
 
-        alertDialog.setPositiveButton("See transaction", new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int which)
+        alertDialog.setPositiveButton(
+            getString(R.string.tab_send_dialog_transaction_successful_see),
+            new DialogInterface.OnClickListener()
             {
-                String url = String.format("https://www.coinprism.info/tx/%s", transactionId);
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(url));
-                startActivity(intent);
-            }
-        });
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    String url = String.format(getString(R.string.link_transaction), transactionId);
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
+                }
+            });
 
-        alertDialog.setNegativeButton("Close", new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int which)
+        alertDialog.setNegativeButton(
+            getString(R.string.tab_send_dialog_transaction_successful_close),
+            new DialogInterface.OnClickListener()
             {
-                dialog.cancel();
-            }
-        });
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    dialog.cancel();
+                }
+            });
 
         alertDialog.show();
     }
@@ -340,9 +357,9 @@ public class SendTab extends Fragment
     {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
 
-        alertDialog.setTitle("Error");
+        alertDialog.setTitle(getString(R.string.tab_send_error_dialog_title));
         alertDialog.setMessage(message);
-        alertDialog.setPositiveButton("Ok", null);
+        alertDialog.setPositiveButton(getString(android.R.string.ok), null);
 
         alertDialog.show();
     }

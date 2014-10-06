@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingBottom="8dp"
-        android:text="Your address"
+        android:text="@string/tab_wallet_your_address_label"
         android:textSize="20sp"/>
 
       <TextView
@@ -40,7 +40,7 @@
       android:id="@+id/qrAddress"
       android:layout_width="160dp"
       android:layout_height="160dp"
-      android:contentDescription="QR Code"
+      android:contentDescription="@string/tab_wallet_qr_code_label"
       android:scaleType="centerCrop"
       android:layout_marginTop="-16dp"
       />
@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="16dp"
-        android:text="Loading wallet..."
+        android:text="@string/tab_wallet_loading_wallet_label"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
@@ -101,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="16dp"
-        android:text="Error opening wallet"
+        android:text="@string/tab_wallet_loading_wallet_error"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
   </RelativeLayout>

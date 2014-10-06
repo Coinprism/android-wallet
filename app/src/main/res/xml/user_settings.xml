@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-  <PreferenceCategory android:title="Transaction settings">
+  <PreferenceCategory android:title="@string/settings_section_wallet">
     <EditTextPreference
       android:title="Default transaction fees"
       android:defaultValue="@string/default_fees"
       android:key="default_fees"
       android:inputType="numberDecimal" />
-  </PreferenceCategory>
-  <PreferenceCategory android:title="About">
     <Preference
-      android:title="Application version"
+      android:title="@string/settings_item_title_backup_seed"
+      android:key="backup_seed"
+      android:summary="@string/settings_item_summary_backup_seed" />
+  </PreferenceCategory>
+  <PreferenceCategory android:title="@string/settings_section_about">
+    <Preference
+      android:title="@string/settings_item_title_version"
       android:key="version_number" />
   </PreferenceCategory>
 </PreferenceScreen>

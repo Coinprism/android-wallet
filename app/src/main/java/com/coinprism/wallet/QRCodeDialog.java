@@ -40,7 +40,7 @@ public class QRCodeDialog extends DialogFragment
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(view);
 
-        builder.setNegativeButton("Close", new DialogInterface.OnClickListener()
+        builder.setNegativeButton(getString(R.string.tab_wallet_dialog_qr_close), new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int id)
             {
@@ -48,19 +48,21 @@ public class QRCodeDialog extends DialogFragment
             }
         });
 
-        builder.setNeutralButton("Copy address", new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialogInterface, int i)
+        builder.setNeutralButton(
+            getString(R.string.tab_wallet_dialog_qr_copy_address),
+            new DialogInterface.OnClickListener()
             {
-                ClipboardManager clipboard = (ClipboardManager) getActivity()
-                    .getSystemService(getActivity().CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("label", QRCodeDialog.this.address);
-                clipboard.setPrimaryClip(clip);
-            }
-        });
+                public void onClick(DialogInterface dialogInterface, int i)
+                {
+                    ClipboardManager clipboard = (ClipboardManager) getActivity()
+                        .getSystemService(getActivity().CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("label", QRCodeDialog.this.address);
+                    clipboard.setPrimaryClip(clip);
+                }
+            });
 
         final Dialog result = builder.create();
-        result.setTitle("Receive bitcoins or colored coins");
+        result.setTitle(getString(R.string.tab_wallet_dialog_qr_title));
 
         final ImageView qrCode = (ImageView) view.findViewById(R.id.qrCode);
         QRCodeEncoder.createQRCode(this.address, qrCode, 400, 400, 20);

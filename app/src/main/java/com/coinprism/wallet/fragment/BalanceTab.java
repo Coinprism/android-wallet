@@ -53,7 +53,7 @@ public class BalanceTab extends Fragment
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                 {
                     final AssetBalance balance = adapter.getItem(position - 1);
-                    final String url = String.format("https://www.coinprism.info/asset/%s",
+                    final String url = String.format(getString(R.string.link_asset_definition),
                         balance.getAsset().getAssetAddress());
                     final Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
@@ -125,7 +125,8 @@ public class BalanceTab extends Fragment
             final Drawable btc = getResources().getDrawable(R.drawable.btc);
 
             AssetBalanceAdapter.setBalanceItemContents(this.listHeaderView,
-                Formatting.formatNumber(bitcoinValue) + " BTC", "", btc);
+                String.format(
+                    getString(R.string.tab_wallet_bitcoin_count), Formatting.formatNumber(bitcoinValue)), "", btc);
 
             this.adapter.clear();
             this.adapter.addAll(balance.getAssetBalances());

@@ -36,7 +36,7 @@ public class ProgressDialog extends DialogFragment
         builder.setView(view);
         if (canCancel)
         {
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+            builder.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener()
             {
                 public void onClick(DialogInterface dialog, int id)
                 {

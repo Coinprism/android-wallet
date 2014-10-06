@@ -59,7 +59,7 @@ public class TransactionAdapter extends ArrayAdapter<SingleAssetTransaction>
         }
         else
         {
-            date.setText("Unconfirmed");
+            date.setText(context.getString(R.string.tab_transactions_unconfirmed));
         }
 
         if (balance.getAsset() == null)
@@ -69,14 +69,18 @@ public class TransactionAdapter extends ArrayAdapter<SingleAssetTransaction>
             BigDecimal bitcoinValue = new BigDecimal(balance.getQuantity())
                 .scaleByPowerOfTen(-8);
 
-            assetBalance.setText(Formatting.formatNumber(bitcoinValue) + " BTC");
+            assetBalance.setText(
+                String.format(
+                    context.getString(R.string.tab_wallet_bitcoin_count), Formatting.formatNumber(bitcoinValue)));
             assetIcon.setImageDrawable(btc);
         }
         else if (balance.getAsset().getIsUnknown())
         {
             Drawable placeholder = this.context.getResources().getDrawable(R.drawable.placeholder);
 
-            assetBalance.setText(Formatting.formatNumber(balance.getQuantity()) + " Units");
+            assetBalance.setText(
+                String.format(context.getString(R.string.tab_wallet_units_count),
+                    Formatting.formatNumber(balance.getQuantity())));
             assetIcon.setImageDrawable(placeholder);
         }
         else

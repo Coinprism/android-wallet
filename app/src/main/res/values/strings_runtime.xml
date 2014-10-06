@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="app_name">Coinprism</string>
   <string name="default_fees">0.0001</string>
+  <string name="link_asset_definition">https://www.coinprism.info/asset/%s</string>
+  <string name="link_transaction">https://www.coinprism.info/tx/%s</string>
 </resources>

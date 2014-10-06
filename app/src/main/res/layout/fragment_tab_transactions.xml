@@ -30,7 +30,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:paddingRight="16dp"
-      android:text="Loading transactions..."
+      android:text="@string/tab_transactions_loading_wallet_label"
       android:textAppearance="?android:attr/textAppearanceMedium"/>
   </LinearLayout>
 
@@ -55,7 +55,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:paddingRight="16dp"
-      android:text="Error opening wallet"
+      android:text="@string/tab_transactions_loading_wallet_error"
       android:textAppearance="?android:attr/textAppearanceMedium"/>
   </LinearLayout>
 

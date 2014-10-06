@@ -54,8 +54,9 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
 
             setBalanceItemContents(
                 rowView,
-                Formatting.formatNumber(balance.getQuantity()) + " Units",
-                String.format("Asset ID: %s", balance.getAsset().getAssetAddress()),
+                String.format(
+                    context.getString(R.string.tab_wallet_units_count), Formatting.formatNumber(balance.getQuantity())),
+                String.format(context.getString(R.string.tab_wallet_asset_id), balance.getAsset().getAssetAddress()),
                 placeholder);
         }
         else

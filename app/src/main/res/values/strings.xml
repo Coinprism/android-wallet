@@ -1,7 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">Coinprism</string>
+  <!-- General interface -->
   <string name="action_settings">Settings</string>
+  <string name="action_refresh">Settings</string>
+  <string name="tab_send">Send</string>
+  <string name="tab_wallet">Wallet</string>
+  <string name="tab_transactions">Transactions</string>
+
+  <!-- Balances tab -->
+  <string name="tab_wallet_your_address_label">Your address</string>
+  <string name="tab_wallet_qr_code_label">QR Code</string>
+  <string name="tab_wallet_loading_wallet_label">Loading wallet…</string>
+  <string name="tab_wallet_loading_wallet_error">Error opening wallet</string>
+  <string name="tab_wallet_units_count">%s Units</string>
+  <string name="tab_wallet_bitcoin_count">%s BTC</string>
+  <string name="tab_wallet_asset_id">Asset ID: %s</string>
+  <string name="tab_wallet_balance_label">Balance</string>
+  <string name="tab_wallet_assets_label">Assets</string>
+  <string name="tab_wallet_dialog_qr_close">Close</string>
+  <string name="tab_wallet_dialog_qr_copy_address">Copy address</string>
+  <string name="tab_wallet_dialog_qr_title">Receive bitcoins or colored coins</string>
+
+  <!-- Send tab -->
+  <string name="tab_send_destination_address_label">Destination Address</string>
+  <string name="tab_send_amount_label">Amount</string>
+  <string name="tab_send_send_button">Send</string>
+  <string name="tab_send_error_invalid_amount">The amount is invalid.</string>
+  <string name="tab_send_error_insufficient_funds">You don\'t have enough bitcoins on your address.</string>
+  <string name="tab_send_error_insufficient_asset">You don\'t have enough assets on your address.</string>
+  <string name="tab_send_error_amount_too_low">The amount you entered is too low.</string>
+  <string name="tab_send_error_server_error">An error occurred. Please make sure the application is up to date.</string>
+  <string name="tab_send_error_connection_error">An error occurred. Please make sure you have an internet connection.</string>
+  <string name="tab_send_dialog_please_wait">Please wait</string>
+  <string name="tab_send_dialog_verifying_balance">Verifying balance…</string>
+  <string name="tab_send_dialog_confirm_transaction">Confirm transaction</string>
+  <string name="tab_send_dialog_confirm_button">Confirm</string>
+  <string name="tab_send_error_broadcast">The transaction could not be broadcasted.</string>
+  <string name="tab_send_dialog_broadcasting">Broadcasting transaction…</string>
+  <string name="tab_send_error_dialog_title">Error</string>
+  <string name="tab_send_dialog_transaction_success_title">Transaction successful</string>
+  <string name="tab_send_dialog_transaction_successful_message">The transaction has been successfully pushed to the network.</string>
+  <string name="tab_send_dialog_transaction_successful_see">See transaction</string>
+  <string name="tab_send_dialog_transaction_successful_close">Close</string>
+  <string name="tab_send_dialog_confirm_message">You are about to send %1$s %2$s to the following address:\n\n%3$s</string>
+  <string name="tab_send_dialog_confirm_message_amount_bitcoin">BTC</string>
+  <string name="tab_send_dialog_confirm_message_amount_known_asset">%1$s (%2$s)</string>
+  <string name="tab_send_dialog_confirm_message_amount_unknown_asset">units (Asset ID: %s)</string>
+  <string name="tab_send_selector_short_bitcoin">BTC</string>
+  <string name="tab_send_selector_short_unknown_asset">Units</string>
+  <string name="tab_send_selector_long_bitcoin">Bitcoin</string>
+  <string name="tab_send_selector_long_unknown_asset">Asset ID: %s…</string>
+
+  <!-- Transactions tab -->
+  <string name="tab_transactions_loading_wallet_label">Loading transactions…</string>
+  <string name="tab_transactions_loading_wallet_error">Error opening wallet</string>
+  <string name="tab_transactions_unconfirmed">Unconfirmed</string>
+
+  <!-- Settings -->
+  <string name="settings_wallet_seed_title">Wallet seed</string>
+  <string name="settings_wallet_seed_message">Your wallet seed encoded in mnemonic form is:\n\n%s</string>
+  <string name="settings_wallet_seed_close">Close</string>
+  <string name="settings_item_title_backup_seed">Backup wallet seed</string>
+  <string name="settings_item_summary_backup_seed">Backup the wallet seed as a sequence of words</string>
+  <string name="settings_item_title_version">Application version</string>
+  <string name="settings_section_wallet">Wallet settings</string>
+  <string name="settings_section_about">About</string>
 
 </resources>

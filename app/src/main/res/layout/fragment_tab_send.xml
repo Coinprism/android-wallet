@@ -14,7 +14,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="start"
-      android:text="Destination Address"
+      android:text="@string/tab_send_destination_address_label"
       android:textColor="@color/text_muted"/>
 
     <LinearLayout
@@ -42,7 +42,7 @@
       android:layout_height="wrap_content"
       android:layout_gravity="start"
       android:layout_marginTop="16dp"
-      android:text="Amount"
+      android:text="@string/tab_send_amount_label"
       android:textColor="@color/text_muted"/>
 
     <LinearLayout
@@ -75,5 +75,5 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    android:text="Send"/>
+    android:text="@string/tab_send_send_button"/>
 </RelativeLayout>

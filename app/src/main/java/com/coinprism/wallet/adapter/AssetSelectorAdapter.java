@@ -37,11 +37,11 @@ public class AssetSelectorAdapter extends ArrayAdapter<AssetDefinition>
         AssetDefinition item = values.get(position);
 
         if (item == null)
-            rowView.setText("BTC");
+            rowView.setText(context.getString(R.string.tab_send_selector_short_bitcoin));
         else if (item.getTicker() != null)
             rowView.setText(item.getTicker());
         else
-            rowView.setText("Units");
+            rowView.setText(context.getString(R.string.tab_send_selector_short_unknown_asset));
 
         return rowView;
     }
@@ -57,11 +57,11 @@ public class AssetSelectorAdapter extends ArrayAdapter<AssetDefinition>
         AssetDefinition item = values.get(position);
 
         if (item == null)
-            rowView.setText("Bitcoin");
+            rowView.setText(context.getString(R.string.tab_send_selector_long_bitcoin));
         else if (item.getName() != null)
             rowView.setText(item.getName());
         else
-            rowView.setText("Asset ID: " + item.getAssetAddress().substring(0, 10) + "...");
+            rowView.setText(String.format(context.getString(R.string.tab_send_selector_long_unknown_asset), item.getAssetAddress().substring(0, 10)));
 
         return rowView;
     }

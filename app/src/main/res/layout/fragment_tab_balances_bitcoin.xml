@@ -12,45 +12,10 @@
     android:background="@color/light_background"
     android:gravity="center"
     android:padding="8dp"
-    android:text="Balance"
+    android:text="@string/tab_wallet_balance_label"
     android:textAppearance="?android:attr/textAppearanceLarge"/>
-  <!--<TextView-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="wrap_content"-->
-  <!--android:id="@+id/btcBalance"/>-->
+
   <include layout="@layout/asset_balance_item"/>
-  <!--<LinearLayout android:orientation="horizontal"-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="wrap_content"-->
-  <!--android:paddingTop="8dp"-->
-  <!--android:paddingBottom="8dp">-->
-
-  <!--<ImageView-->
-  <!--android:layout_width="64dp"-->
-  <!--android:layout_height="64dp"-->
-  <!--android:layout_marginRight="16dp"-->
-  <!--android:id="@+id/assetIcon"-->
-  <!--android:background="#ff0000"/>-->
-
-  <!--<LinearLayout-->
-  <!--android:orientation="vertical"-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="wrap_content"-->
-  <!-->-->
-  <!--<TextView-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="wrap_content"-->
-  <!--android:id="@+id/assetBalance"-->
-  <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-  <!--android:paddingBottom="8dp" />-->
-  <!--<TextView-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="wrap_content"-->
-  <!--android:id="@+id/assetName"-->
-  <!--android:textAppearance="?android:attr/textAppearanceSmall"/>-->
-  <!--</LinearLayout>-->
-
-  <!--</LinearLayout>-->
 
   <TextView
     android:id="@+id/assetsHeader"
@@ -59,6 +24,6 @@
     android:background="@color/light_background"
     android:gravity="center"
     android:padding="8dp"
-    android:text="Assets"
+    android:text="@string/tab_wallet_assets_label"
     android:textAppearance="?android:attr/textAppearanceLarge"/>
 </LinearLayout>

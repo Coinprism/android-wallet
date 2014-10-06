@@ -32,7 +32,6 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
     private ViewPager viewPager;
     private TabsPagerAdapter tabsPagerAdapter;
     private ActionBar actionBar;
-    private String[] tabs = {"Send", "Wallet", "Transactions"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,6 +48,13 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         viewPager.setAdapter(tabsPagerAdapter);
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        String[] tabs = new String[]
+        {
+            getResources().getString(R.string.tab_send),
+            getResources().getString(R.string.tab_wallet),
+            getResources().getString(R.string.tab_transactions)
+        };
 
         // Adding Tabs
         for (String tab_name : tabs)
@@ -124,44 +130,6 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
             WalletState.getState().getBalanceTab().triggerRefresh();
             WalletState.getState().getTransactionsTab().triggerRefresh();
             return true;
-        }
-        else if (id == R.id.export_seed)
-        {
-            try
-            {
-                final List<String> mnemonic = MnemonicCode.INSTANCE.toMnemonic(
-                    WalletState.getState().getConfiguration().getSeed());
-
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                final String fullMnemonic = Joiner.on(" ").join(mnemonic);
-                // Setting Dialog Title
-                alertDialog.setTitle("Wallet seed");
-                alertDialog.setMessage(
-                    String.format("Your wallet seed encoded in mnemonic form is:\n\n%s", fullMnemonic));
-
-                alertDialog.setPositiveButton("Copy", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText("label", fullMnemonic);
-                        clipboard.setPrimaryClip(clip);
-                    }
-                });
-
-                alertDialog.setNegativeButton("Close", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dialog.cancel();
-                    }
-                });
-
-                alertDialog.show();
-                return true;
-            }
-            catch (MnemonicException.MnemonicLengthException exception)
-            { }
         }
 
         return super.onOptionsItemSelected(item);
