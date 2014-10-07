@@ -93,6 +93,35 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         super.onStart();
 
         WalletState.getState().triggerUpdate();
+
+        if (WalletState.getState().getFirstLaunch())
+        {
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+            try
+            {
+                final List<String> mnemonic = MnemonicCode.INSTANCE.toMnemonic(
+                    WalletState.getState().getConfiguration().getSeed());
+                final String fullMnemonic = Joiner.on(" ").join(mnemonic);
+
+                alertDialog.setTitle(getString(R.string.general_first_launch_title));
+                alertDialog.setMessage(getString(R.string.general_first_launch_message, fullMnemonic));
+
+                alertDialog.setPositiveButton(
+                    getString(R.string.general_first_launch_close),
+                    new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            dialog.dismiss();
+                        }
+                    });
+
+                alertDialog.show();
+            }
+            catch (MnemonicException.MnemonicLengthException exception)
+            { }
+        }
     }
 
     @Override

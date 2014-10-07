@@ -20,15 +20,17 @@ public class WalletState
 
     private final WalletConfiguration configuration;
     private final APIClient api;
+    private final Boolean firstLaunch;
     private AddressBalance walletData;
     private BalanceTab balanceTab;
     private SendTab sendTab;
     private TransactionsTab transactionsTab;
 
-    public WalletState(WalletConfiguration configuration, APIClient api)
+    public WalletState(WalletConfiguration configuration, APIClient api, Boolean firstLaunch)
     {
         this.configuration = configuration;
         this.api = api;
+        this.firstLaunch = firstLaunch;
 
         Timer updateTimer = new Timer();
         TimerTask task = new TimerTask()
@@ -57,6 +59,7 @@ public class WalletState
 
         String seed = preferences.getString(seedKey, null);
 
+        Boolean firstLaunch = false;
         WalletConfiguration wallet;
         if (seed == null)
         {
@@ -65,9 +68,12 @@ public class WalletState
             SecurePreferences.Editor editor = preferences.edit();
             editor.putString(seedKey, seed);
             editor.commit();
+
+            firstLaunch = true;
         }
 
-        wallet = new WalletConfiguration(seed, NetworkParameters.fromID(NetworkParameters.ID_MAINNET));
+        wallet = new WalletConfiguration(
+            seed, NetworkParameters.fromID(CoinprismWalletApplication.getContext().getString(R.string.network)));
 
         try
         {
@@ -77,9 +83,7 @@ public class WalletState
         catch (IOException exception)
         { }
 
-        return new WalletState(
-            wallet,
-            new APIClient(CoinprismWalletApplication.getContext().getString(R.string.api_base_url)));
+        return new WalletState(wallet, new APIClient(CoinprismWalletApplication.getContext().getString(R.string.api_base_url)), firstLaunch);
     }
 
     public void triggerUpdate()
@@ -140,5 +144,10 @@ public class WalletState
     public void setTransactionsTab(TransactionsTab transactionsTab)
     {
         this.transactionsTab = transactionsTab;
+    }
+
+    public Boolean getFirstLaunch()
+    {
+        return firstLaunch;
     }
 }

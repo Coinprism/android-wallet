@@ -58,6 +58,11 @@
   <string name="tab_transactions_unconfirmed">Unconfirmed</string>
   <string name="tab_transactions_empty">There is no transaction yet in your wallet</string>
 
+  <!-- General -->
+  <string name="general_first_launch_title">Welcome</string>
+  <string name="general_first_launch_message">This is your new wallet for Bitcoins and colored coins. We have generated a new key for your wallet, please write it down and store it in a safe place:\n\n%s</string>
+  <string name="general_first_launch_close">Close</string>
+
   <!-- Settings -->
   <string name="settings_wallet_seed_title">Wallet seed</string>
   <string name="settings_wallet_seed_message">Your wallet seed encoded in mnemonic form is:\n\n%s</string>
