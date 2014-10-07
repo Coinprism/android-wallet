@@ -27,10 +27,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,10 +46,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.net.ssl.HttpsURLConnection;
+
 public class APIClient
 {
     private final String baseUrl;
     private final HashMap<String, AssetDefinition> cache = new HashMap<String, AssetDefinition>();
+    private final static String userAgent = "Coinprism Android";
 
     public APIClient(String baseUrl)
     {
@@ -64,7 +74,7 @@ public class APIClient
         AssetDefinition definition = cache.get(address);
         if (definition == null)
         {
-            String httpResponse = executeHttp(new HttpGet(this.baseUrl + "/v1/assets/" + address));
+            String httpResponse = executeHttpGet(this.baseUrl + "/v1/assets/" + address);
 
             try
             {
@@ -90,7 +100,7 @@ public class APIClient
 
     public AddressBalance getAddressBalance(String address) throws IOException, JSONException, APIException
     {
-        String json = executeHttp(new HttpGet(this.baseUrl + "/v1/addresses/" + address));
+        String json = executeHttpGet(this.baseUrl + "/v1/addresses/" + address);
 
         JSONObject jObject = new JSONObject(json);
         JSONArray assets = jObject.getJSONArray("assets");
@@ -116,8 +126,8 @@ public class APIClient
     public List<SingleAssetTransaction> getTransactions(String address)
         throws IOException, JSONException, ParseException, APIException
     {
-        String json = executeHttp(new HttpGet(
-            this.baseUrl + "/v1/addresses/" + address + "/transactions"));
+        String json = executeHttpGet(
+            this.baseUrl + "/v1/addresses/" + address + "/transactions");
 
         JSONArray transactions = new JSONArray(json);
 
@@ -203,15 +213,12 @@ public class APIClient
             postData.put("from", fromAddress);
             postData.put("to", array);
 
-            HttpPost post;
+            String result;
             if (assetAddress != null)
-                post = new HttpPost(this.baseUrl + "/v1/sendasset?format=raw");
+                result = executeHttpPost(this.baseUrl + "/v1/sendasset?format=raw", postData.toString());
             else
-                post = new HttpPost(this.baseUrl + "/v1/sendbitcoin?format=raw");
+                result = executeHttpPost(this.baseUrl + "/v1/sendbitcoin?format=raw", postData.toString());
 
-            post.setEntity(new StringEntity(postData.toString()));
-            post.addHeader("Content-Type", "application/json");
-            String result = executeHttp(post);
             JSONObject jsonResponse = new JSONObject(result);
 
             byte[] data = hexStringToByteArray(jsonResponse.getString("raw"));
@@ -260,10 +267,8 @@ public class APIClient
 
         try
         {
-            HttpPost post = new HttpPost(this.baseUrl + "/v1/sendrawtransaction");
-            post.setEntity(new StringEntity("\"" + serializedTransaction + "\""));
-            post.addHeader("Content-Type", "application/json");
-            String result = executeHttp(post);
+            String result = executeHttpPost(
+                this.baseUrl + "/v1/sendrawtransaction", "\"" + serializedTransaction + "\"");
 
             return result.substring(1, result.length() - 2);
         }
@@ -296,69 +301,58 @@ public class APIClient
         return addresses.length() == 1 && addresses.getString(0).equals(localAddress);
     }
 
-    private static String executeHttp(HttpRequestBase url) throws IOException, APIException
+    private static String executeHttpGet(String url) throws IOException, APIException
     {
-        HttpClient httpclient;
-        UncheckedSSLSocketFactory sslFactory;
+        URL target = new URL(url);
+        HttpsURLConnection connection = (HttpsURLConnection) target.openConnection();
+
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("User-Agent", userAgent);
+
+        return getHttpResponse(connection);
+    }
+
+    private static String executeHttpPost(String url, String body) throws IOException, APIException
+    {
+        URL target = new URL(url);
+        HttpsURLConnection connection = (HttpsURLConnection) target.openConnection();
+
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("User-Agent", userAgent);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        OutputStream output = null;
         try
         {
-            sslFactory = new UncheckedSSLSocketFactory(null);
-            sslFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            output = connection.getOutputStream();
+            output.write(body.getBytes("UTF-8"));
         }
-        catch (Exception ex)
+        finally
         {
-            throw new IOException(ex.getMessage(), ex);
+            if (output != null)
+                output.close();
         }
 
-        // Enable HTTP parameters
-        HttpParams params = new BasicHttpParams();
-        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-        HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+        return getHttpResponse(connection);
+    }
 
-        // Register the HTTP and HTTPS Protocols. For HTTPS, register our custom SSL Factory object.
-        SchemeRegistry registry = new SchemeRegistry();
-        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-        registry.register(new Scheme("https", sslFactory, 443));
+    private static String getHttpResponse(HttpsURLConnection connection) throws IOException, APIException
+    {
+        int responseCode = connection.getResponseCode();
 
-        // Create a new connection manager using the newly created registry and then create a new HTTP client
-        // using this connection manager
-        ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-
-        //HostnameVerifier hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
-//        HostnameVerifier hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.;
-//
-        DefaultHttpClient client = new DefaultHttpClient();
-//
-//        SchemeRegistry registry = new SchemeRegistry();
-//        SSLSocketFactory socketFactory = SSLSocketFactory.getSocketFactory();
-//        socketFactory.setHostnameVerifier((X509HostnameVerifier) hostnameVerifier);
-//        registry.register(new Scheme("https", socketFactory, 443));
-//        SingleClientConnManager mgr = new SingleClientConnManager(client.getParams(), registry);
-
-        httpclient = new DefaultHttpClient(ccm, client.getParams());
-
-        HttpResponse response;
-
-        response = httpclient.execute(url);
-        StatusLine statusLine = response.getStatusLine();
-        String responseString = null;
-        if (statusLine.getStatusCode() == HttpStatus.SC_OK)
+        if (responseCode < 400)
         {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            response.getEntity().writeTo(out);
-            out.close();
-            responseString = out.toString();
+            InputStream inputStream = new BufferedInputStream(connection.getInputStream());
+
+            return readStream(inputStream);
         }
-        else if (statusLine.getStatusCode() == HttpStatus.SC_BAD_REQUEST)
+        else
         {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            response.getEntity().writeTo(out);
-            out.close();
-            responseString = out.toString();
-
+            InputStream inputStream = new BufferedInputStream(connection.getErrorStream());
+            String response = readStream(inputStream);
             try
             {
-                JSONObject error = new JSONObject(responseString);
+                JSONObject error = new JSONObject(response);
                 String errorCode = error.getString("ErrorCode");
                 String subCode = error.optString("SubCode");
 
@@ -369,13 +363,39 @@ public class APIClient
                 throw new IOException(exception.getMessage());
             }
         }
-        else
-        {
-            // Closes the connection.
-            response.getEntity().getContent().close();
-            throw new IOException(statusLine.getReasonPhrase());
-        }
+    }
 
-        return responseString;
+    private static String readStream(InputStream in)
+    {
+        BufferedReader reader = null;
+        StringBuilder response = new StringBuilder();
+        try
+        {
+            reader = new BufferedReader(new InputStreamReader(in));
+            String line = "";
+            while ((line = reader.readLine()) != null)
+            {
+                response.append(line);
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (reader != null)
+            {
+                try
+                {
+                    reader.close();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return response.toString();
     }
 }

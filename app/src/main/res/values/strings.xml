@@ -30,7 +30,7 @@
   <string name="tab_send_error_insufficient_funds">You don\'t have enough bitcoins on your address.</string>
   <string name="tab_send_error_insufficient_asset">You don\'t have enough assets on your address.</string>
   <string name="tab_send_error_amount_too_low">The amount you entered is too low.</string>
-  <string name="tab_send_error_server_error">An error occurred. Please make sure the application is up to date.</string>
+  <string name="tab_send_error_server_error">Please make sure the address is valid and the application is up to date.</string>
   <string name="tab_send_error_connection_error">An error occurred. Please make sure you have an internet connection.</string>
   <string name="tab_send_dialog_please_wait">Please wait</string>
   <string name="tab_send_dialog_verifying_balance">Verifying balance…</string>

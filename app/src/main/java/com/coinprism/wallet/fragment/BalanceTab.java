@@ -84,7 +84,7 @@ public class BalanceTab extends Fragment
 
         final ImageView qrCode = (ImageView) rootView.findViewById(R.id.qrAddress);
 
-        QRCodeEncoder.createQRCode(state.getConfiguration().getAddress(), qrCode, 400, 400, 20);
+        QRCodeEncoder.createQRCode(state.getConfiguration().getAddress(), qrCode, 148, 148, 8, 0xFFFFFFFF);
 
         LinearLayout addressPanel = (LinearLayout)rootView.findViewById(R.id.topArea);
         addressPanel.setOnClickListener(new View.OnClickListener()

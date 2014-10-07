@@ -65,7 +65,7 @@ public class QRCodeDialog extends DialogFragment
         result.setTitle(getString(R.string.tab_wallet_dialog_qr_title));
 
         final ImageView qrCode = (ImageView) view.findViewById(R.id.qrCode);
-        QRCodeEncoder.createQRCode(this.address, qrCode, 400, 400, 20);
+        QRCodeEncoder.createQRCode(this.address, qrCode, 592, 592, 0, 0x00FFFFFF);
 
         return result;
     }

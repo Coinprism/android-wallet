@@ -14,19 +14,17 @@ import java.util.Map;
 
 public class QRCodeEncoder
 {
-    private static final int WHITE = 0x00FFFFFF;
     private static final int BLACK = 0xFF000000;
 
-    public static void createQRCode(String text, ImageView iv, int width, int height, int quietZone)
+    public static void createQRCode(String text, ImageView iv, int width, int height, int quietZone, int white)
     {
         // barcode image
         Bitmap bitmap = null;
 
         try
         {
-            bitmap = encodeAsBitmap(text, BarcodeFormat.QR_CODE, width, height, quietZone);
+            bitmap = encodeAsBitmap(text, BarcodeFormat.QR_CODE, width, height, quietZone, white);
             iv.setImageBitmap(bitmap);
-
         }
         catch (WriterException e)
         {
@@ -34,7 +32,9 @@ public class QRCodeEncoder
         }
     }
 
-    private static Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width, int img_height, int quietZone) throws WriterException
+    private static Bitmap encodeAsBitmap(
+        String contents, BarcodeFormat format, int img_width, int img_height, int quietZone, int white)
+        throws WriterException
     {
         String contentsToEncode = contents;
         if (contentsToEncode == null)
@@ -47,8 +47,8 @@ public class QRCodeEncoder
         {
             hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
             hints.put(EncodeHintType.CHARACTER_SET, encoding);
-            hints.put(EncodeHintType.MARGIN, quietZone);
         }
+
         MultiFormatWriter writer = new MultiFormatWriter();
         BitMatrix result;
         try
@@ -60,21 +60,24 @@ public class QRCodeEncoder
             // Unsupported format
             return null;
         }
+
         int width = result.getWidth();
         int height = result.getHeight();
-        int[] pixels = new int[width * height];
-        for (int y = 0; y < height; y++)
+        int adjustedWidth = width - (2 * quietZone);
+        int adjustedHeight = height - (2 * quietZone);
+        int[] pixels = new int[adjustedWidth * adjustedHeight];
+        for (int y = quietZone; y < height - quietZone; y++)
         {
-            int offset = y * width;
-            for (int x = 0; x < width; x++)
+            int v = y - quietZone;
+            for (int x = quietZone; x < width - quietZone; x++)
             {
-                pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+                int u = x - quietZone;
+                pixels[v * adjustedWidth + u] = result.get(x, y) ? BLACK : white;
             }
         }
 
-        Bitmap bitmap = Bitmap.createBitmap(width, height,
-            Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        Bitmap bitmap = Bitmap.createBitmap(adjustedWidth, adjustedHeight, Bitmap.Config.ARGB_8888);
+        bitmap.setPixels(pixels, 0, adjustedWidth, 0, 0, adjustedWidth, adjustedHeight);
         return bitmap;
     }
 

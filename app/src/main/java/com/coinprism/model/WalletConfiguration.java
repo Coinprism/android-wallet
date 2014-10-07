@@ -35,7 +35,7 @@ public class WalletConfiguration
     public static String createWallet()
     {
         SecureRandom random = new SecureRandom();
-        byte[] seed = random.generateSeed(32);
+        byte[] seed = random.generateSeed(16);
 
         return Base64.encodeToString(seed, Base64.DEFAULT);
     }

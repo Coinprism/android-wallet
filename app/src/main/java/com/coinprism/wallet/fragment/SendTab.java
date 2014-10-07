@@ -171,29 +171,17 @@ public class SendTab extends Fragment
                 {
                     progressDialog.dismiss();
                     if (result != null)
-                    {
                         onConfirm(result, decimalAmount, selectedAsset, to);
-                    }
-                    else if (subCode.equals("InsufficientFunds"))
-                    {
-                        showError(getString(R.string.tab_send_error_insufficient_funds));
-                    }
-                    else if (subCode.equals("InsufficientColoredFunds"))
-                    {
-                        showError(getString(R.string.tab_send_error_insufficient_asset));
-                    }
-                    else if (subCode.equals("AmountUnderDustThreshold") || subCode.equals("ChangeUnderDustThreshold"))
-                    {
-                        showError(getString(R.string.tab_send_error_amount_too_low));
-                    }
-                    else if (subCode != null)
-                    {
-                        showError(getString(R.string.tab_send_error_server_error));
-                    }
-                    else
-                    {
+                    else if (subCode == null)
                         showError(getString(R.string.tab_send_error_connection_error));
-                    }
+                    else if (subCode.equals("InsufficientFunds"))
+                        showError(getString(R.string.tab_send_error_insufficient_funds));
+                    else if (subCode.equals("InsufficientColoredFunds"))
+                        showError(getString(R.string.tab_send_error_insufficient_asset));
+                    else if (subCode.equals("AmountUnderDustThreshold") || subCode.equals("ChangeUnderDustThreshold"))
+                        showError(getString(R.string.tab_send_error_amount_too_low));
+                    else
+                        showError(getString(R.string.tab_send_error_server_error));
                 }
             }
         };

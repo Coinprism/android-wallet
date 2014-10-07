@@ -8,17 +8,17 @@
   <LinearLayout
     android:id="@+id/topArea"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp">
 
     <LinearLayout
       android:layout_width="0dp"
       android:layout_height="match_parent"
       android:layout_weight="1"
+      android:gravity="center_vertical"
       android:orientation="vertical"
-      android:paddingBottom="16dp"
       android:paddingLeft="16dp"
-      android:paddingRight="16dp"
-      android:paddingTop="16dp">
+      android:paddingRight="16dp">
 
       <TextView
         android:layout_width="match_parent"
@@ -26,14 +26,15 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="@string/tab_wallet_your_address_label"
-        android:textSize="20sp"/>
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="@color/text_muted"/>
 
       <TextView
         android:id="@+id/address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="16sp"/>
+        android:textAppearance="@android:style/TextAppearance.Medium"/>
     </LinearLayout>
 
     <ImageView
@@ -42,7 +43,6 @@
       android:layout_height="160dp"
       android:contentDescription="@string/tab_wallet_qr_code_label"
       android:scaleType="centerCrop"
-      android:layout_marginTop="-16dp"
       />
   </LinearLayout>
 
@@ -55,7 +55,8 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:overScrollMode="never"
-      android:visibility="gone" />
+      android:visibility="gone"
+      android:headerDividersEnabled="false" />
 
     <LinearLayout
       android:id="@+id/loadingIndicator"

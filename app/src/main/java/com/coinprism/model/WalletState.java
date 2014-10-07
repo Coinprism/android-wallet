@@ -1,6 +1,7 @@
 package com.coinprism.model;
 
 import com.coinprism.utils.SecurePreferences;
+import com.coinprism.wallet.R;
 import com.coinprism.wallet.WalletOverview;
 import com.coinprism.wallet.fragment.BalanceTab;
 import com.coinprism.wallet.fragment.SendTab;
@@ -17,7 +18,6 @@ public class WalletState
     private final static String seedKey = "wallet.seed";
     private static WalletState state;
 
-    private final SecurePreferences preferences;
     private final WalletConfiguration configuration;
     private final APIClient api;
     private AddressBalance walletData;
@@ -25,12 +25,10 @@ public class WalletState
     private SendTab sendTab;
     private TransactionsTab transactionsTab;
 
-    public WalletState(WalletConfiguration configuration, APIClient api,
-        SecurePreferences preferences)
+    public WalletState(WalletConfiguration configuration, APIClient api)
     {
         this.configuration = configuration;
         this.api = api;
-        this.preferences = preferences;
 
         Timer updateTimer = new Timer();
         TimerTask task = new TimerTask()
@@ -42,7 +40,7 @@ public class WalletState
             }
         };
 
-        updateTimer.schedule(task, 0, 10000);
+        updateTimer.schedule(task, 0, 60000);
     }
 
     public static WalletState getState()
@@ -69,7 +67,7 @@ public class WalletState
             editor.commit();
         }
 
-        wallet = new WalletConfiguration(seed, NetworkParameters.fromID(NetworkParameters.ID_TESTNET));
+        wallet = new WalletConfiguration(seed, NetworkParameters.fromID(NetworkParameters.ID_MAINNET));
 
         try
         {
@@ -81,8 +79,7 @@ public class WalletState
 
         return new WalletState(
             wallet,
-            new APIClient("https://10.0.2.2:44300"),
-            preferences);
+            new APIClient(CoinprismWalletApplication.getContext().getString(R.string.api_base_url)));
     }
 
     public void triggerUpdate()
