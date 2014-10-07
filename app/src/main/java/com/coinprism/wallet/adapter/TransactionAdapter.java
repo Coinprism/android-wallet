@@ -20,7 +20,9 @@ import com.coinprism.wallet.R;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class TransactionAdapter extends ArrayAdapter<SingleAssetTransaction>
 {
@@ -53,8 +55,11 @@ public class TransactionAdapter extends ArrayAdapter<SingleAssetTransaction>
 
         if (balance.getDate() != null)
         {
-            DateFormat dateFormat = android.text.format.DateFormat.getMediumDateFormat(context);
-            date.setText(DateUtils.formatDateTime(context, balance.getDate().getTime(),
+            Calendar calendar = Calendar.getInstance();
+            TimeZone timeZone = calendar.getTimeZone();
+            int offset = timeZone.getOffset(balance.getDate().getTime());
+
+            date.setText(DateUtils.formatDateTime(context, balance.getDate().getTime() + offset,
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
         }
         else

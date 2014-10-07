@@ -11,8 +11,7 @@
     android:id="@+id/assetIcon"
     android:layout_width="64dp"
     android:layout_height="64dp"
-    android:layout_alignParentRight="true"
-    android:layout_marginLeft="16dp"
+    android:layout_marginRight="12dp"
     android:background="@drawable/rounded_corners"
     android:padding="5dp"/>
 
@@ -20,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="2dp"
-    android:layout_toLeftOf="@id/assetIcon"
+    android:layout_toRightOf="@id/assetIcon"
     android:orientation="vertical">
 
     <TextView
@@ -28,7 +27,9 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:ellipsize="end"
+      android:singleLine="true"
       android:maxLines="1"
+      android:paddingBottom="2dp"
       android:textAppearance="?android:attr/textAppearanceMedium"
       android:textColor="@color/text_muted"/>
 
@@ -37,9 +38,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:ellipsize="end"
-      android:gravity="right"
       android:maxLines="1"
-      android:paddingBottom="4dp"
       android:textAppearance="?android:attr/textAppearanceLarge"/>
   </LinearLayout>
 

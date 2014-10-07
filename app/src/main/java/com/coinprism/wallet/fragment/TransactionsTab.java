@@ -26,6 +26,7 @@ public class TransactionsTab extends Fragment
     private View loadingIndicator;
     private View errorMessageView;
     private ListView listView;
+    private View listViewEmpty;
 
     @Override
     public View onCreateView(
@@ -43,8 +44,7 @@ public class TransactionsTab extends Fragment
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 final SingleAssetTransaction transaction = adapter.getItem(position);
-                final String url = String.format("https://www.coinprism.info/tx/%s",
-                    transaction.getAsset().getAssetAddress());
+                final String url = getString(R.string.link_transaction, transaction.getTransactionId());
                 final Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 startActivity(intent);
@@ -53,6 +53,7 @@ public class TransactionsTab extends Fragment
 
         errorMessageView = rootView.findViewById(R.id.errorMessage);
         loadingIndicator = rootView.findViewById(R.id.loadingIndicator);
+        listViewEmpty = rootView.findViewById(android.R.id.empty);
 
         WalletState.getState().setTransactionsTab(this);
         return rootView;
@@ -76,13 +77,23 @@ public class TransactionsTab extends Fragment
             this.adapter.clear();
             this.adapter.addAll(transactions);
 
-            listView.setVisibility(View.VISIBLE);
+            if (transactions.size() > 0)
+            {
+                listView.setVisibility(View.VISIBLE);
+                listViewEmpty.setVisibility(View.GONE);
+            }
+            else
+            {
+                listView.setVisibility(View.GONE);
+                listViewEmpty.setVisibility(View.VISIBLE);
+            }
             loadingIndicator.setVisibility(View.GONE);
             errorMessageView.setVisibility(View.GONE);
         }
         else
         {
             listView.setVisibility(View.GONE);
+            listViewEmpty.setVisibility(View.GONE);
             loadingIndicator.setVisibility(View.GONE);
             errorMessageView.setVisibility(View.VISIBLE);
         }
@@ -93,6 +104,7 @@ public class TransactionsTab extends Fragment
         if (loadingIndicator.getVisibility() == View.GONE)
         {
             listView.setVisibility(View.GONE);
+            listViewEmpty.setVisibility(View.GONE);
             loadingIndicator.setVisibility(View.VISIBLE);
             errorMessageView.setVisibility(View.GONE);
 

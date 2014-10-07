@@ -56,6 +56,7 @@
   <string name="tab_transactions_loading_wallet_label">Loading transactions…</string>
   <string name="tab_transactions_loading_wallet_error">Error opening wallet</string>
   <string name="tab_transactions_unconfirmed">Unconfirmed</string>
+  <string name="tab_transactions_empty">There is no transaction yet in your wallet</string>
 
   <!-- Settings -->
   <string name="settings_wallet_seed_title">Wallet seed</string>

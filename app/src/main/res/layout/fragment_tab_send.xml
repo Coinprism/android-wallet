@@ -26,8 +26,7 @@
         android:id="@+id/toAddress"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:text="mjxBP2B9AXcptb9Dha383zVZWqabZEu1yh" />
+        android:layout_height="wrap_content" />
       <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

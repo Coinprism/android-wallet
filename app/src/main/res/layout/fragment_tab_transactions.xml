@@ -11,6 +11,26 @@
     android:layout_height="match_parent"/>
 
   <LinearLayout
+    android:id="@android:id/empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:gravity="center"
+    android:orientation="horizontal"
+    >
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingRight="16dp"
+      android:text="@string/tab_transactions_empty"
+      android:textColor="@color/text_muted"
+      android:gravity="center"
+      android:textAppearance="?android:attr/textAppearanceMedium"/>
+  </LinearLayout>
+
+  <LinearLayout
     android:id="@+id/loadingIndicator"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
