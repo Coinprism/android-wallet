@@ -109,8 +109,7 @@
     <orderEntry type="library" exported="" name="android-integration-3.1.0" level="project" />
     <orderEntry type="library" exported="" name="jsr305-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="jcip-annotations-1.0" level="project" />
-    <orderEntry type="library" exported="" name="core-3.0.0" level="project" />
-    <orderEntry type="library" exported="" name="scrypt-1.4.0" level="project" />
+    <orderEntry type="library" exported="" name="core-3.1.0" level="project" />
     <orderEntry type="library" exported="" name="core-1.51.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />

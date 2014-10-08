@@ -8,9 +8,10 @@ android {
         applicationId "com.coinprism.wallet"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 90
+        versionCode 902
         versionName "0.9.0 Private Preview"
     }
+
     buildTypes {
         release {
             runProguard false
@@ -20,11 +21,11 @@ android {
 
     productFlavors {
         production {
-            packageName "com.coinprism.wallet"
+            applicationId "com.coinprism.wallet"
         }
 
         testnet {
-            packageName "com.coinprism.wallet.testnet"
+            applicationId "com.coinprism.wallet.testnet"
         }
     }
 }
@@ -36,7 +37,9 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:20.0.0'
-    compile group: 'org.bitcoinj', name: 'bitcoinj-core', version: '0.12'
-    compile 'com.google.zxing:core:3.0.0'
+    compile('org.bitcoinj:bitcoinj-core:0.12') {
+        exclude group: 'com.lambdaworks'
+    }
+    compile 'com.google.zxing:core:3.1.0'
     compile 'com.google.zxing:android-integration:3.1.0'
 }
