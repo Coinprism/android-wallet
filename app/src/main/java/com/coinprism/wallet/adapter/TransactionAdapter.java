@@ -19,7 +19,6 @@ import com.coinprism.wallet.R;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;

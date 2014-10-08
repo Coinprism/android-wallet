@@ -2,10 +2,10 @@ package com.coinprism.model;
 
 import com.coinprism.utils.SecurePreferences;
 import com.coinprism.wallet.R;
-import com.coinprism.wallet.WalletOverview;
 import com.coinprism.wallet.fragment.BalanceTab;
 import com.coinprism.wallet.fragment.SendTab;
 import com.coinprism.wallet.fragment.TransactionsTab;
+
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.crypto.MnemonicCode;
 

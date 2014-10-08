@@ -1,7 +1,5 @@
 package com.coinprism.wallet.fragment;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -25,10 +23,7 @@ import com.coinprism.wallet.QRCodeDialog;
 import com.coinprism.wallet.R;
 import com.coinprism.wallet.adapter.AssetBalanceAdapter;
 
-import org.bitcoinj.core.Wallet;
-
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class BalanceTab extends Fragment

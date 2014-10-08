@@ -1,16 +1,9 @@
 package com.coinprism.utils;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
 
-import com.coinprism.wallet.R;
-
-/**
- * Created by Flavien on 10/6/2014.
- */
 public class StretchingImageView extends ImageView
 {
     public StretchingImageView(Context context)

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.coinprism.model.AssetBalance;
 import com.coinprism.model.SingleAssetTransaction;
 import com.coinprism.model.TransactionsLoader;
 import com.coinprism.model.WalletState;

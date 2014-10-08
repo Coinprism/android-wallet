@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
+
 import com.coinprism.model.APIException;
 import com.coinprism.model.AssetDefinition;
 import com.coinprism.model.WalletState;
@@ -26,7 +26,6 @@ import com.coinprism.wallet.R;
 import com.coinprism.wallet.UserPreferences;
 import com.coinprism.wallet.adapter.AssetSelectorAdapter;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.Transaction;
@@ -36,8 +35,6 @@ import org.bitcoinj.script.ScriptBuilder;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
 public class SendTab extends Fragment
 {
