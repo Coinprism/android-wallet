@@ -36,6 +36,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+/**
+ * The tab allowing the user to send assets or bitcoins.
+ */
 public class SendTab extends Fragment
 {
     private AssetSelectorAdapter adapter;
@@ -80,6 +83,9 @@ public class SendTab extends Fragment
         return rootView;
     }
 
+    /**
+     * Notifies the UI of an available balance update.
+     */
     public void updateWallet()
     {
         if (!isAdded())
@@ -87,7 +93,9 @@ public class SendTab extends Fragment
 
         this.adapter.clear();
 
+        // Add uncolored bitcoins to the list
         this.adapter.add(null);
+        // Add all known assets to the list
         this.adapter.addAll(WalletState.getState().getAPIClient().getAllAssetDefinitions());
     }
 
@@ -135,12 +143,14 @@ public class SendTab extends Fragment
 
                     if (selectedAsset == null)
                     {
+                        // Send uncolored bitcoins
                         return WalletState.getState().getAPIClient().buildTransaction(
                             WalletState.getState().getConfiguration().getAddress(),
                             to, decimalAmount.scaleByPowerOfTen(8).toBigInteger().toString(), null, fees);
                     }
                     else
                     {
+                        // Send an asset
                         BigInteger unitAmount = decimalAmount
                             .scaleByPowerOfTen(selectedAsset.getDivisibility()).toBigInteger();
                         return WalletState.getState().getAPIClient().buildTransaction(
@@ -150,6 +160,7 @@ public class SendTab extends Fragment
                 }
                 catch (APIException exception)
                 {
+                    // The API returned an error
                     subCode = exception.getSubCode();
                     return null;
                 }
@@ -218,7 +229,7 @@ public class SendTab extends Fragment
             }
         }
 
-        String message = String.format(getString(R.string.tab_send_dialog_confirm_message),
+        final String message = String.format(getString(R.string.tab_send_dialog_confirm_message),
             Formatting.formatNumber(decimalAmount), assetName, to);
 
         alertDialog.setMessage(message);
@@ -258,7 +269,7 @@ public class SendTab extends Fragment
                 {
                     for (int i = 0; i < result.getInputs().size(); i++)
                     {
-                        ECKey key = WalletState.getState().getConfiguration().getKey();
+                        final ECKey key = WalletState.getState().getConfiguration().getKey();
                         TransactionSignature signature =
                             result.calculateSignature(i, key,
                                 result.getInputs().get(i).getScriptBytes(), Transaction.SigHash.ALL, false);
@@ -340,7 +351,7 @@ public class SendTab extends Fragment
 
     private void showError(String message)
     {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
 
         alertDialog.setTitle(getString(R.string.tab_send_error_dialog_title));
         alertDialog.setMessage(message);

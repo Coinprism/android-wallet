@@ -8,6 +8,9 @@ import com.coinprism.wallet.fragment.BalanceTab;
 import com.coinprism.wallet.fragment.SendTab;
 import com.coinprism.wallet.fragment.TransactionsTab;
 
+/**
+ * Renders the main UI tabs.
+ */
 public class TabsPagerAdapter extends FragmentPagerAdapter
 {
     private final Fragment[] fragments;

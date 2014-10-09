@@ -1,8 +1,10 @@
 package com.coinprism.model;
 
+/**
+ * Represents the definition of an asset.
+ */
 public class AssetDefinition
 {
-
     private final String assetAddress;
     private final String name;
     private final String ticker;

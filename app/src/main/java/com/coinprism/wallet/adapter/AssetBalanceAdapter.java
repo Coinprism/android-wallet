@@ -19,6 +19,9 @@ import com.coinprism.wallet.R;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Renders asset balance objects.
+ */
 public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
 {
     private final Context context;
@@ -34,23 +37,20 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        LayoutInflater inflater = (LayoutInflater) context
-            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView;
+        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View rowView;
         if (convertView == null)
             rowView = inflater.inflate(R.layout.asset_balance_item, parent, false);
         else
             rowView = convertView;
 
-        AssetBalance balance = values.get(position);
-
-        TextView assetName = (TextView) rowView.findViewById(R.id.assetName);
-        TextView assetBalance = (TextView) rowView.findViewById(R.id.assetBalance);
-        ImageView assetIcon = (ImageView) rowView.findViewById(R.id.assetIcon);
+        final AssetBalance balance = values.get(position);
 
         if (balance.getAsset().getIsUnknown())
         {
-            Drawable placeholder = this.context.getResources().getDrawable(R.drawable.placeholder);
+            // The asset has insufficient metadata
+
+            final Drawable placeholder = this.context.getResources().getDrawable(R.drawable.placeholder);
 
             setBalanceItemContents(
                 rowView,
@@ -61,10 +61,12 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
         }
         else
         {
-            BigDecimal decimalQuantity = new BigDecimal(balance.getQuantity())
+            // The asset has valid metadata
+
+            final BigDecimal decimalQuantity = new BigDecimal(balance.getQuantity())
                 .scaleByPowerOfTen(-balance.getAsset().getDivisibility());
 
-            Bitmap defaultBitmap = BitmapFactory.decodeResource(this.context.getResources(),
+            final Bitmap defaultBitmap = BitmapFactory.decodeResource(this.context.getResources(),
                 R.drawable.placeholder);
 
             setBalanceItemContents(
@@ -74,6 +76,7 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
                 balance.getAsset().getName(),
                 null);
 
+            // Download and display the image for the asset
             new DownloadImageTask(
                 (ImageView) rowView.findViewById(R.id.assetIcon), defaultBitmap)
                 .execute(balance.getAsset().getIconUrl());
@@ -82,12 +85,11 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
         return rowView;
     }
 
-    public static void setBalanceItemContents(View rootView, String mainText, String subText,
-        Drawable icon)
+    public static void setBalanceItemContents(View rootView, String mainText, String subText, Drawable icon)
     {
-        TextView assetName = (TextView) rootView.findViewById(R.id.assetName);
-        TextView assetBalance = (TextView) rootView.findViewById(R.id.assetBalance);
-        ImageView assetIcon = (ImageView) rootView.findViewById(R.id.assetIcon);
+        final TextView assetName = (TextView) rootView.findViewById(R.id.assetName);
+        final TextView assetBalance = (TextView) rootView.findViewById(R.id.assetBalance);
+        final ImageView assetIcon = (ImageView) rootView.findViewById(R.id.assetIcon);
 
         assetName.setText(subText);
         assetBalance.setText(mainText);

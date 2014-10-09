@@ -23,6 +23,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+/**
+ * Renders a list of transactions.
+ */
 public class TransactionAdapter extends ArrayAdapter<SingleAssetTransaction>
 {
     private final Context context;
@@ -54,6 +57,7 @@ public class TransactionAdapter extends ArrayAdapter<SingleAssetTransaction>
 
         if (balance.getDate() != null)
         {
+            // The transaction is confirmed and a block timestamp is available
             Calendar calendar = Calendar.getInstance();
             TimeZone timeZone = calendar.getTimeZone();
             int offset = timeZone.getOffset(balance.getDate().getTime());
@@ -63,6 +67,7 @@ public class TransactionAdapter extends ArrayAdapter<SingleAssetTransaction>
         }
         else
         {
+            // The transaction is unconfirmred
             date.setText(context.getString(R.string.tab_transactions_unconfirmed));
         }
 

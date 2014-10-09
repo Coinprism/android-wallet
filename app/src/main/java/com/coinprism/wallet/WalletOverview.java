@@ -22,11 +22,12 @@ import org.bitcoinj.crypto.MnemonicException;
 
 import java.util.List;
 
-
+/**
+ * The main activity of the application.
+ */
 public class WalletOverview extends FragmentActivity implements ActionBar.TabListener
 {
     private ViewPager viewPager;
-    private TabsPagerAdapter tabsPagerAdapter;
     private ActionBar actionBar;
 
     @Override
@@ -39,7 +40,7 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
 
-        tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+        final TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(tabsPagerAdapter);
         actionBar.setHomeButtonEnabled(false);
@@ -92,6 +93,7 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
 
         if (WalletState.getState().getFirstLaunch())
         {
+            // At first launch, calculate the mnemonic and display it to the user
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
             try
@@ -152,7 +154,9 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
         }
         else if (id == R.id.action_refresh)
         {
+            // Refresh the balance
             WalletState.getState().getBalanceTab().triggerRefresh();
+            // Refresh the list of transactions
             WalletState.getState().getTransactionsTab().triggerRefresh();
             return true;
         }

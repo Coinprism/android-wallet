@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+/**
+ * A dialog showing a progress indicator.
+ */
 public class ProgressDialog extends DialogFragment
 {
     private String title;
@@ -23,6 +26,7 @@ public class ProgressDialog extends DialogFragment
         this.canCancel = canCancel;
     }
 
+    @android.support.annotation.NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {

@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Contains the global state of the application.
+ */
 public class WalletState
 {
     private final static String seedKey = "wallet.seed";
@@ -45,6 +48,11 @@ public class WalletState
         updateTimer.schedule(task, 0, 60000);
     }
 
+    /**
+     * Gets the singleton instance.
+     *
+     * @return the singleton instance
+     */
     public static WalletState getState()
     {
         if (state == null)
@@ -111,6 +119,10 @@ public class WalletState
         return this.configuration;
     }
 
+    /**
+     * Gets the API client object.
+     * @return the API client object
+     */
     public APIClient getAPIClient()
     {
         return this.api;
@@ -146,6 +158,11 @@ public class WalletState
         this.transactionsTab = transactionsTab;
     }
 
+    /**
+     * Gets whether this is the first time that the application is launched.
+     *
+     * @return a boolean indicating whether this is the first time that the application is launched
+     */
     public Boolean getFirstLaunch()
     {
         return firstLaunch;

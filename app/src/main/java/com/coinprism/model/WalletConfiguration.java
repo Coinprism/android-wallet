@@ -9,6 +9,9 @@ import org.bitcoinj.crypto.HDKeyDerivation;
 
 import java.security.SecureRandom;
 
+/**
+ * Represents the configuration of a wallet.
+ */
 public class WalletConfiguration
 {
     private final ECKey key;
@@ -27,11 +30,19 @@ public class WalletConfiguration
         this.networkParameters = network;
     }
 
+    /**
+     * Gets the main address of a wallet.
+     * @return the main address of the wallet
+     */
     public String getAddress()
     {
         return address;
     }
 
+    /**
+     * Creates a new wallet.
+     * @return the base 64 representation of the wallet seed
+     */
     public static String createWallet()
     {
         SecureRandom random = new SecureRandom();
@@ -40,16 +51,28 @@ public class WalletConfiguration
         return Base64.encodeToString(seed, Base64.DEFAULT);
     }
 
+    /**
+     * Gets the main key of the wallet.
+     * @return the main key of the wallet
+     */
     public ECKey getKey()
     {
         return this.key;
     }
 
+    /**
+     * Gets the network parameters of the wallet.
+     * @return the network parameters of the wallet
+     */
     public NetworkParameters getNetworkParameters()
     {
         return networkParameters;
     }
 
+    /**
+     * Gets the seed for the current HD wallet.
+     * @return the seed for the current HD wallet
+     */
     public byte[] getSeed()
     {
         return seed;

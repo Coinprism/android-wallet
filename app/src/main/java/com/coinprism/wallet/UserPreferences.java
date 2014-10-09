@@ -21,6 +21,9 @@ import org.bitcoinj.crypto.MnemonicException;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * The activity for user preferences.
+ */
 public class UserPreferences extends PreferenceActivity
 {
     public final static String defaultFeesKey = "default_fees";
@@ -42,26 +45,27 @@ public class UserPreferences extends PreferenceActivity
         {
             super.onCreate(savedInstanceState);
 
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(
+            final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(
                 this.getActivity().getBaseContext());
 
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.user_settings);
             PreferenceManager.setDefaultValues(GeneralPreferences.this.getActivity(), R.xml.user_settings, false);
 
-            EditTextPreference defaultFeeText = (EditTextPreference) findPreference(defaultFeesKey);
-            String currentValue = sharedPrefs.getString(
+            final EditTextPreference defaultFeeText = (EditTextPreference) findPreference(defaultFeesKey);
+            final String currentValue = sharedPrefs.getString(
                 defaultFeesKey, getResources().getString(R.string.default_fees));
 
             defaultFeeText.setSummary(getString(R.string.tab_wallet_bitcoin_count, currentValue));
 
-            String versionName = BuildConfig.VERSION_NAME;
-            Preference versionPreference = findPreference("version_number");
+            final String versionName = BuildConfig.VERSION_NAME;
+            final Preference versionPreference = findPreference("version_number");
             versionPreference.setSummary(versionName);
 
-            Preference seedBackupPreference = findPreference("backup_seed");
+            final Preference seedBackupPreference = findPreference("backup_seed");
             seedBackupPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
             {
+                // Show the mnemonic for the wallet seed
                 @Override
                 public boolean onPreferenceClick(Preference preference)
                 {
@@ -78,16 +82,17 @@ public class UserPreferences extends PreferenceActivity
                         alertDialog.setMessage(
                             String.format(getString(R.string.settings_wallet_seed_message), fullMnemonic));
 
-                        alertDialog.setPositiveButton(getString(android.R.string.copy), new DialogInterface.OnClickListener()
-                        {
-                            public void onClick(DialogInterface dialog, int which)
+                        alertDialog.setPositiveButton(getString(android.R.string.copy),
+                            new DialogInterface.OnClickListener()
                             {
-                                ClipboardManager clipboard = (ClipboardManager) GeneralPreferences
-                                    .this.getActivity().getSystemService(CLIPBOARD_SERVICE);
-                                ClipData clip = ClipData.newPlainText("label", fullMnemonic);
-                                clipboard.setPrimaryClip(clip);
-                            }
-                        });
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    ClipboardManager clipboard = (ClipboardManager) GeneralPreferences
+                                        .this.getActivity().getSystemService(CLIPBOARD_SERVICE);
+                                    ClipData clip = ClipData.newPlainText("label", fullMnemonic);
+                                    clipboard.setPrimaryClip(clip);
+                                }
+                            });
 
                         alertDialog.setNegativeButton(
                             getString(R.string.settings_wallet_seed_close),

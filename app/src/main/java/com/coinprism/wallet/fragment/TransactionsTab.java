@@ -19,6 +19,9 @@ import com.coinprism.wallet.adapter.TransactionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The tab showing the list of recent transactions.
+ */
 public class TransactionsTab extends Fragment
 {
     private TransactionAdapter adapter;
@@ -66,6 +69,11 @@ public class TransactionsTab extends Fragment
         triggerRefresh();
     }
 
+    /**
+     * Updates the list of transactions.
+     *
+     * @param transactions the new list of transactions
+     */
     public void updateTransactions(List<SingleAssetTransaction> transactions)
     {
         if (!isAdded())
@@ -98,6 +106,9 @@ public class TransactionsTab extends Fragment
         }
     }
 
+    /**
+     * Triggers the asynchronous refresh of the recent transactions.
+     */
     public void triggerRefresh()
     {
         if (loadingIndicator.getVisibility() == View.GONE)

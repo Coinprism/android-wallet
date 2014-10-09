@@ -26,6 +26,9 @@ import com.coinprism.wallet.adapter.AssetBalanceAdapter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+/**
+ * The tab showing the wallet address and the balance for that address.
+ */
 public class BalanceTab extends Fragment
 {
     private AssetBalanceAdapter adapter;
@@ -69,6 +72,11 @@ public class BalanceTab extends Fragment
         return rootView;
     }
 
+    /**
+     * Constructs the UI when the activity is first rendered.
+     *
+     * @param rootView the rootView of the fragment
+     */
     public void setupUI(final View rootView)
     {
         final WalletState state = WalletState.getState();
@@ -83,6 +91,7 @@ public class BalanceTab extends Fragment
         LinearLayout addressPanel = (LinearLayout)rootView.findViewById(R.id.topArea);
         addressPanel.setOnClickListener(new View.OnClickListener()
         {
+            // Enlarge the QR code
             @Override
             public void onClick(View view)
             {
@@ -93,6 +102,9 @@ public class BalanceTab extends Fragment
         });
     }
 
+    /**
+     * Triggers a refresh of the balance.
+     */
     public void triggerRefresh()
     {
         if (loadingIndicator.getVisibility() == View.GONE)
@@ -105,6 +117,9 @@ public class BalanceTab extends Fragment
         }
     }
 
+    /**
+     * Notifies the UI of an available balance update.
+     */
     public void updateWallet()
     {
         if (!isAdded())
@@ -113,6 +128,8 @@ public class BalanceTab extends Fragment
         final AddressBalance balance = WalletState.getState().getBalance();
         if (balance != null)
         {
+            // The balance was successfully updated
+
             final BigDecimal bitcoinValue = new BigDecimal(balance.getSatoshiBalance())
                 .scaleByPowerOfTen(-8);
 
@@ -136,6 +153,8 @@ public class BalanceTab extends Fragment
         }
         else
         {
+            // There was an error while retrieving the balance, show an error message
+
             loadingIndicator.setVisibility(View.GONE);
             listView.setVisibility(View.GONE);
             errorMessageView.setVisibility(View.VISIBLE);

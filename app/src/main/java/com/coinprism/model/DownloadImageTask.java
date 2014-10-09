@@ -7,6 +7,9 @@ import android.widget.ImageView;
 
 import java.io.InputStream;
 
+/**
+ * A task that can asynchronously download an image from the web, and set it as the source of an ImageView.
+ */
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap>
 {
     private final ImageView bmImage;

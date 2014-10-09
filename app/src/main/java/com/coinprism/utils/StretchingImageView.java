@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+/**
+ * Displays a stretching square image.
+ */
 public class StretchingImageView extends ImageView
 {
     public StretchingImageView(Context context)

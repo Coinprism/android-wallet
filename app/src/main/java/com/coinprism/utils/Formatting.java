@@ -3,10 +3,16 @@ package com.coinprism.utils;
 import java.text.NumberFormat;
 
 /**
- * Created by Flavien on 9/27/2014.
+ * Contains formatting helper functions.
  */
 public class Formatting
 {
+    /**
+     * Formats a number as a string.
+     *
+     * @param number the number to format
+     * @return the formatted number
+     */
     public static String formatNumber(Number number)
     {
         NumberFormat format = NumberFormat.getNumberInstance();

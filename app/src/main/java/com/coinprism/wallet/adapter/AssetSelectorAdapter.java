@@ -12,6 +12,9 @@ import com.coinprism.wallet.R;
 
 import java.util.List;
 
+/**
+ * Renders the list of available asset for a spinner control.
+ */
 public class AssetSelectorAdapter extends ArrayAdapter<AssetDefinition>
 {
     private final Context context;

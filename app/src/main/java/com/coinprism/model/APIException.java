@@ -1,5 +1,8 @@
 package com.coinprism.model;
 
+/**
+ * Represents an exception thrown by the Coinprism API.
+ */
 public class APIException extends Exception
 {
     private final String errorCode;

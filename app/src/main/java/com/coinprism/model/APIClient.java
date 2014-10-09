@@ -24,6 +24,9 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/**
+ * Provides functions for accessing the Coinprism API.
+ */
 public class APIClient
 {
     private final String baseUrl;
@@ -74,6 +77,12 @@ public class APIClient
         return definition;
     }
 
+    /**
+     * Gets the balance of an address from the Coinprism API.
+     *
+     * @param address the address for which to query the balance
+     * @return the balance of the address
+     */
     public AddressBalance getAddressBalance(String address) throws IOException, JSONException, APIException
     {
         String json = executeHttpGet(this.baseUrl + "/v1/addresses/" + address);
@@ -99,6 +108,12 @@ public class APIClient
         return new AddressBalance(bitcoinBalance, assetBalances);
     }
 
+    /**
+     * Gets the list of recent transactions for a given address.
+     *
+     * @param address the address for which to query the recent transactions
+     * @return a list of transactions
+     */
     public List<SingleAssetTransaction> getTransactions(String address)
         throws IOException, JSONException, ParseException, APIException
     {
@@ -170,6 +185,16 @@ public class APIClient
         return assetBalances;
     }
 
+    /**
+     * Calls the API to create a valid unsigned transaction.
+     *
+     * @param fromAddress the address from which to send the funds or assets
+     * @param toAddress the address where to send the funds or assets
+     * @param amount the amount to send, in asset units or satoshis
+     * @param assetAddress the asset address of the asset to send, or null for bitcoins
+     * @param fees the fees to pay, in satoshis
+     * @return the unsigned transaction for the requested operation
+     */
     public Transaction buildTransaction(String fromAddress, String toAddress, String amount, String assetAddress,
         long fees)
         throws JSONException, IOException, APIException
@@ -223,7 +248,7 @@ public class APIClient
         return data;
     }
 
-    public static String byteArrayToHexString(byte[] bytes)
+    private static String byteArrayToHexString(byte[] bytes)
     {
         final char[] hexArray = "0123456789ABCDEF".toCharArray();
 
@@ -237,6 +262,12 @@ public class APIClient
         return new String(hexChars);
     }
 
+    /**
+     * Broadcasts a transaction to the Bitcoin network.
+     *
+     * @param transaction the transaction to broadcast
+     * @return the transaction hash of the transaction
+     */
     public String broadcastTransaction(Transaction transaction) throws IOException, JSONException, APIException
     {
         String serializedTransaction = byteArrayToHexString(transaction.bitcoinSerialize());
