@@ -63,7 +63,7 @@ public class UserPreferences extends PreferenceActivity
             new GeneralPreferences()).commit();
     }
 
-    public class GeneralPreferences extends PreferenceFragment
+    public static class GeneralPreferences extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener
     {
         @Override
@@ -150,7 +150,7 @@ public class UserPreferences extends PreferenceActivity
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
                         GeneralPreferences.this.getActivity());
 
-                    final View dialogView = UserPreferences.this.getLayoutInflater().inflate(
+                    final View dialogView = getActivity().getLayoutInflater().inflate(
                         R.layout.dialog_restore_seed, null);
 
                     alertDialog.setPositiveButton(getString(android.R.string.ok),
@@ -221,7 +221,6 @@ public class UserPreferences extends PreferenceActivity
                     return true;
                 }
             });
-
         }
 
         @Override
