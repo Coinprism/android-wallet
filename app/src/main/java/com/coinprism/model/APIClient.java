@@ -294,7 +294,7 @@ public class APIClient
             String result = executeHttpPost(
                 this.baseUrl + "/v1/sendrawtransaction", "\"" + serializedTransaction + "\"");
 
-            return result.substring(1, result.length() - 2);
+            return result.substring(1, result.length() - 1);
         }
         catch (UnsupportedEncodingException ex)
         {

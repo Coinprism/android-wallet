@@ -18,6 +18,7 @@
 package com.coinprism.wallet;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
@@ -28,14 +29,22 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Base64;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
+import com.coinprism.model.CoinprismWalletApplication;
 import com.coinprism.model.WalletState;
+import com.coinprism.utils.SecurePreferences;
 import com.google.common.base.Joiner;
 
 import org.bitcoinj.crypto.MnemonicCode;
 import org.bitcoinj.crypto.MnemonicException;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -54,7 +63,7 @@ public class UserPreferences extends PreferenceActivity
             new GeneralPreferences()).commit();
     }
 
-    public static class GeneralPreferences extends PreferenceFragment
+    public class GeneralPreferences extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener
     {
         @Override
@@ -130,6 +139,89 @@ public class UserPreferences extends PreferenceActivity
                     return false;
                 }
             });
+
+            final Preference seedRestorePreference = findPreference("restore_seed");
+            seedRestorePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+            {
+                @Override
+                public boolean onPreferenceClick(Preference preference)
+                {
+                    // Display a dialog to restore the wallet seed
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                        GeneralPreferences.this.getActivity());
+
+                    final View dialogView = UserPreferences.this.getLayoutInflater().inflate(
+                        R.layout.dialog_restore_seed, null);
+
+                    alertDialog.setPositiveButton(getString(android.R.string.ok),
+                        new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                final EditText text = (EditText) dialogView.findViewById(R.id.mnemonicInput);
+                                final String mnemonic = text.getText().toString();
+
+                                String[] words = mnemonic.split(" ");
+                                try
+                                {
+                                    byte[] mnemonicData = MnemonicCode.INSTANCE.toEntropy(Arrays.asList(words));
+
+                                    SecurePreferences preferences = new SecurePreferences(CoinprismWalletApplication.getContext());
+
+                                    SecurePreferences.Editor editor = preferences.edit();
+                                    editor.putString(WalletState.seedKey, Base64.encodeToString(mnemonicData, Base64.DEFAULT));
+                                    editor.commit();
+
+                                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                                        GeneralPreferences.this.getActivity());
+                                    alertDialog.setTitle(getString(R.string.settings_dialog_restore_seed_success_title));
+                                    alertDialog.setMessage(getString(R.string.settings_dialog_restore_seed_success_message));
+                                    alertDialog.setPositiveButton(getString(android.R.string.ok), null);
+                                    alertDialog.show();
+
+                                    return;
+                                }
+                                catch (MnemonicException.MnemonicLengthException e)
+                                {
+                                    e.printStackTrace();
+                                }
+                                catch (MnemonicException.MnemonicWordException e)
+                                {
+                                    e.printStackTrace();
+                                }
+                                catch (MnemonicException.MnemonicChecksumException e)
+                                {
+                                    e.printStackTrace();
+                                }
+
+                                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                                    GeneralPreferences.this.getActivity());
+                                alertDialog.setTitle(getString(R.string.settings_dialog_restore_seed_error_title));
+                                alertDialog.setMessage(getString(R.string.settings_dialog_restore_seed_error_message));
+                                alertDialog.setPositiveButton(getString(android.R.string.ok), null);
+                                alertDialog.show();
+                            }
+                        });
+
+                    alertDialog.setNegativeButton(
+                        getString(android.R.string.cancel),
+                        new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                dialog.cancel();
+                            }
+                        });
+
+                    alertDialog.setView(dialogView);
+                    alertDialog.setTitle(getString(R.string.settings_dialog_restore_seed_title));
+                    Dialog restoreDialog = alertDialog.create();
+                    restoreDialog.show();
+
+                    return true;
+                }
+            });
+
         }
 
         @Override

@@ -68,9 +68,17 @@
   <string name="settings_wallet_seed_message">Your wallet seed encoded in mnemonic form is:\n\n%s</string>
   <string name="settings_wallet_seed_close">Close</string>
   <string name="settings_item_title_backup_seed">Backup wallet seed</string>
-  <string name="settings_item_summary_backup_seed">Backup the wallet seed as a sequence of words</string>
+  <string name="settings_item_summary_backup_seed">Backup the wallet using a mnemonic phrase</string>
+  <string name="settings_item_title_restore_seed">Restore wallet seed</string>
+  <string name="settings_item_summary_restore_seed">Restore a wallet from a mnemonic phrase</string>
   <string name="settings_item_title_version">Application version</string>
   <string name="settings_section_wallet">Wallet settings</string>
   <string name="settings_section_about">About</string>
+  <string name="settings_dialog_restore_seed_title">Restore wallet seed</string>
+  <string name="settings_dialog_restore_seed">You are about to restore a wallet. Attention: funds in your current wallet will be lost if you haven\'t backed them up.\n\nType your wallet mnemonic:</string>
+  <string name="settings_dialog_restore_seed_success_title">Seed restored</string>
+  <string name="settings_dialog_restore_seed_success_message">The seed has been successfully restored. Please restart the application to load the restored wallet.</string>
+  <string name="settings_dialog_restore_seed_error_title">Error</string>
+  <string name="settings_dialog_restore_seed_error_message">The seed was invalid and could not be restored.</string>
 
 </resources>

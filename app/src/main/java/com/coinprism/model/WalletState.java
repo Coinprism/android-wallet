@@ -35,7 +35,7 @@ import java.util.TimerTask;
  */
 public class WalletState
 {
-    private final static String seedKey = "wallet.seed";
+    public final static String seedKey = "wallet.seed";
     private static WalletState state;
 
     private final WalletConfiguration configuration;

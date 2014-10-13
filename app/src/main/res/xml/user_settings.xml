@@ -11,6 +11,10 @@
       android:title="@string/settings_item_title_backup_seed"
       android:key="backup_seed"
       android:summary="@string/settings_item_summary_backup_seed" />
+    <Preference
+      android:title="@string/settings_item_title_restore_seed"
+      android:key="restore_seed"
+      android:summary="@string/settings_item_summary_restore_seed" />
   </PreferenceCategory>
   <PreferenceCategory android:title="@string/settings_section_about">
     <Preference
