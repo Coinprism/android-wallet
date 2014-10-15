@@ -8,7 +8,7 @@ android {
         applicationId "com.coinprism.wallet"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 902
+        versionCode 903
         versionName "0.9.0 Private Preview"
     }
 
