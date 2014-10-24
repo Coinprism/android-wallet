@@ -17,7 +17,12 @@
 
 package com.coinprism.model;
 
+import org.bitcoinj.core.Address;
+import org.bitcoinj.core.AddressFormatException;
+import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.Transaction;
+import org.bitcoinj.script.Script;
+import org.bitcoinj.script.ScriptBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,8 +137,14 @@ public class APIClient
      * @return a list of transactions
      */
     public List<SingleAssetTransaction> getTransactions(String address)
-        throws IOException, JSONException, ParseException, APIException
+        throws IOException, JSONException, ParseException, APIException, AddressFormatException
     {
+        final NetworkParameters network = WalletState.getState().getConfiguration().getNetworkParameters();
+        final Script baseScript = ScriptBuilder.createOutputScript(new Address(network, address));
+        final Address derivedAddress1 = ScriptBuilder.createP2SHOutputScript(baseScript).getToAddress(network);
+        final Script derivedScript2 = WalletConfiguration.getV2RedeemScript(baseScript);
+        final Address derivedAddress2 = ScriptBuilder.createP2SHOutputScript(derivedScript2).getToAddress(network);
+
         String json = executeHttpGet(
             this.baseUrl + "/v1/addresses/" + address + "/transactions");
 
@@ -157,7 +168,7 @@ public class APIClient
             for (int j = 0; j < inputs.length(); j++)
             {
                 JSONObject input = (JSONObject) inputs.get(j);
-                if (isAddress(input, address))
+                if (isAddress(input, address, derivedAddress1, derivedAddress2))
                 {
                     if (!input.isNull("asset_address"))
                         addQuantity(quantities,
@@ -173,7 +184,7 @@ public class APIClient
             for (int j = 0; j < outputs.length(); j++)
             {
                 JSONObject output = (JSONObject) outputs.get(j);
-                if (isAddress(output, address))
+                if (isAddress(output, address, derivedAddress1, derivedAddress2))
                 {
                     if (!output.isNull("asset_address"))
                         addQuantity(quantities,
@@ -318,11 +329,15 @@ public class APIClient
         return df.parse(input.substring(0, 21));
     }
 
-    private boolean isAddress(JSONObject member, String localAddress) throws JSONException
+    private boolean isAddress(JSONObject member, String localAddress, Address derived1, Address derived2)
+        throws JSONException
     {
         JSONArray addresses = member.getJSONArray("addresses");
 
-        return addresses.length() == 1 && addresses.getString(0).equals(localAddress);
+        return addresses.length() == 1
+            && (addresses.getString(0).equals(localAddress)
+                || addresses.getString(0).equals(derived1.toString())
+                || addresses.getString(0).equals(derived2.toString()));
     }
 
     private static String executeHttpGet(String url) throws IOException, APIException

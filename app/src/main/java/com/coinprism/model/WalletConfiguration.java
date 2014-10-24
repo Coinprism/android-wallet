@@ -23,7 +23,10 @@ import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.crypto.HDKeyDerivation;
+import org.bitcoinj.script.Script;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.security.SecureRandom;
 
 /**
@@ -93,5 +96,13 @@ public class WalletConfiguration
     public byte[] getSeed()
     {
         return seed;
+    }
+
+    public static Script getV2RedeemScript(Script baseScript) throws IOException
+    {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        outputStream.write(new byte[] { 0x02, 0x4f, 0x41, 0x75 });
+        outputStream.write(baseScript.getProgram());
+        return new Script(outputStream.toByteArray());
     }
 }

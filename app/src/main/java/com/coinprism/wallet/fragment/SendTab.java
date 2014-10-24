@@ -36,6 +36,7 @@ import android.widget.Spinner;
 
 import com.coinprism.model.APIException;
 import com.coinprism.model.AssetDefinition;
+import com.coinprism.model.WalletConfiguration;
 import com.coinprism.model.WalletState;
 import com.coinprism.utils.Formatting;
 import com.coinprism.wallet.ProgressDialog;
@@ -44,9 +45,11 @@ import com.coinprism.wallet.UserPreferences;
 import com.coinprism.wallet.adapter.AssetSelectorAdapter;
 import com.google.zxing.integration.android.IntentIntegrator;
 
+import org.bitcoinj.core.Address;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.crypto.TransactionSignature;
+import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptBuilder;
 
 import java.math.BigDecimal;
@@ -284,14 +287,29 @@ public class SendTab extends Fragment
             {
                 try
                 {
+                    final ECKey key = WalletState.getState().getConfiguration().getKey();
+                    Address address = key.toAddress(WalletState.getState().getConfiguration().getNetworkParameters());
+                    Script baseScript = ScriptBuilder.createOutputScript(address);
+                    Script derivedScript1 = ScriptBuilder.createP2SHOutputScript(baseScript);
+
+                    Script redeemScript2 = WalletConfiguration.getV2RedeemScript(baseScript);
+                    Script derivedScript2 = ScriptBuilder.createP2SHOutputScript(redeemScript2);
+
                     for (int i = 0; i < result.getInputs().size(); i++)
                     {
-                        final ECKey key = WalletState.getState().getConfiguration().getKey();
                         TransactionSignature signature =
-                            result.calculateSignature(i, key,
-                                result.getInputs().get(i).getScriptBytes(), Transaction.SigHash.ALL, false);
+                            result.calculateSignature(i, key, baseScript, Transaction.SigHash.ALL, false);
 
-                        result.getInputs().get(i).setScriptSig(ScriptBuilder.createInputScript(signature, key));
+                        ScriptBuilder builder = new ScriptBuilder();
+                        builder.data(signature.encodeToBitcoin());
+                        builder.data(key.getPubKey());
+
+                        if (result.getInputs().get(i).getScriptSig().equals(derivedScript1))
+                            builder.data(baseScript.getProgram());
+                        else if (result.getInputs().get(i).getScriptSig().equals(derivedScript2))
+                            builder.data(redeemScript2.getProgram());
+
+                        result.getInputs().get(i).setScriptSig(builder.build());
                     }
 
                     return WalletState.getState().getAPIClient().broadcastTransaction(result);
