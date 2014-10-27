@@ -6,7 +6,6 @@
   >
 
   <LinearLayout
-    android:id="@+id/topArea"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="16dp">
@@ -15,32 +14,56 @@
       android:layout_width="0dp"
       android:layout_height="match_parent"
       android:layout_weight="1"
+      android:paddingRight="16dp"
       android:gravity="center_vertical"
-      android:orientation="vertical"
-      android:paddingLeft="16dp"
-      android:paddingRight="16dp">
+      android:orientation="vertical">
 
-      <TextView
+      <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingBottom="8dp"
-        android:text="@string/tab_wallet_your_address_label"
-        android:textAppearance="@android:style/TextAppearance.Large"
-        android:textColor="@color/text_muted"/>
+        android:layout_height="match_parent">
+        <ToggleButton
+          android:id="@+id/addressTypeSelector"
+          android:layout_height="wrap_content"
+          android:layout_width="match_parent"
+          android:textOn="@string/tab_wallet_receive_assets"
+          android:textOff="@string/tab_wallet_receive_bitcoins"
+          android:layout_marginTop="4dp"
+          android:layout_alignParentBottom="true"
+          android:textAppearance="@android:style/TextAppearance.Medium"/>
 
-      <TextView
-        android:id="@+id/address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textAppearance="@android:style/TextAppearance.Medium"/>
+        <LinearLayout
+          android:id="@+id/addressArea"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:gravity="center_vertical"
+          android:orientation="vertical"
+          android:layout_above="@id/addressTypeSelector"
+          android:layout_alignParentTop="true">
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:text="@string/tab_wallet_your_address_label"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@color/text_muted"/>
+
+          <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="@android:style/TextAppearance.Medium"/>
+        </LinearLayout>
+
+      </RelativeLayout>
+
     </LinearLayout>
 
     <ImageView
       android:id="@+id/qrAddress"
-      android:layout_width="160dp"
-      android:layout_height="160dp"
+      android:layout_width="164dp"
+      android:layout_height="164dp"
       android:contentDescription="@string/tab_wallet_qr_code_label"
       android:scaleType="centerCrop"
       />

@@ -131,7 +131,9 @@
   </style>
 
   <style name="ToggleAppTheme" parent="android:Widget.Holo.Light.Button.Toggle">
-    <item name="android:background">@drawable/apptheme_btn_toggle_holo_light</item>
+    <item name="android:background">@drawable/apptheme_btn_toggle</item>
+    <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+    <item name="android:textColor">@color/apptheme_btn_toggle_color_selector</item>
   </style>
 
 </resources>

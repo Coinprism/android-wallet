@@ -19,8 +19,10 @@ package com.coinprism.model;
 
 import android.util.Base64;
 
+import org.bitcoinj.core.Address;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.core.VersionedChecksummedBytes;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.crypto.HDKeyDerivation;
 
@@ -31,29 +33,47 @@ import java.security.SecureRandom;
  */
 public class WalletConfiguration
 {
+    private final byte openAssetsNamespace = 19;
     private final ECKey key;
     private final byte[] seed;
     private final String address;
+    private final String receiveAssetsAddress;
     private final NetworkParameters networkParameters;
 
     public WalletConfiguration(String seed, NetworkParameters network)
     {
         this.seed = Base64.decode(seed, Base64.DEFAULT);
 
-        DeterministicKey key = HDKeyDerivation.createMasterPrivateKey(this.seed);
+        final DeterministicKey key = HDKeyDerivation.createMasterPrivateKey(this.seed);
         this.key = HDKeyDerivation.deriveChildKey(key, 0);
 
-        this.address = this.key.toAddress(network).toString();
+        final Address address = this.key.toAddress(network);
+        this.address = address.toString();
         this.networkParameters = network;
+
+        byte[] forAssetsAddress = new byte[21];
+        System.arraycopy(address.getHash160(), 0, forAssetsAddress, 1, 20);
+        forAssetsAddress[0] = (byte)address.getVersion();
+
+        this.receiveAssetsAddress = new VersionedChecksummedBytes(openAssetsNamespace, forAssetsAddress) { }.toString();
     }
 
     /**
-     * Gets the main address of a wallet.
+     * Gets the main address of a wallet (for receiving Bitcoins).
      * @return the main address of the wallet
      */
     public String getAddress()
     {
         return address;
+    }
+
+    /**
+     * Gets the main address of a wallet (for receiving assets).
+     * @return the main address of the wallet
+     */
+    public String getReceiveAssetAddress()
+    {
+        return receiveAssetsAddress;
     }
 
     /**

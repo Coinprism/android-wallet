@@ -37,10 +37,12 @@ import com.coinprism.model.QRCodeEncoder;
 public class QRCodeDialog extends DialogFragment
 {
     private String address;
+    private String title;
 
-    public void configure(String address)
+    public void configure(String address, String title)
     {
         this.address = address;
+        this.title = title;
     }
 
     @android.support.annotation.NonNull
@@ -80,7 +82,7 @@ public class QRCodeDialog extends DialogFragment
             });
 
         final Dialog result = builder.create();
-        result.setTitle(getString(R.string.tab_wallet_dialog_qr_title));
+        result.setTitle(this.title);
 
         final ImageView qrCode = (ImageView) view.findViewById(R.id.qrCode);
         QRCodeEncoder.createQRCode(this.address, qrCode, 592, 592, 0, 0x00FFFFFF);

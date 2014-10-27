@@ -26,10 +26,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.coinprism.model.AddressBalance;
 import com.coinprism.model.AssetBalance;
@@ -99,24 +101,54 @@ public class BalanceTab extends Fragment
         final WalletState state = WalletState.getState();
 
         final TextView addressText = (TextView) rootView.findViewById(R.id.address);
-        addressText.setText(state.getConfiguration().getAddress());
-
         final ImageView qrCode = (ImageView) rootView.findViewById(R.id.qrAddress);
 
-        QRCodeEncoder.createQRCode(state.getConfiguration().getAddress(), qrCode, 148, 148, 8, 0xFFFFFFFF);
+        final ToggleButton addressTypeSelector = (ToggleButton)rootView.findViewById(R.id.addressTypeSelector);
 
-        LinearLayout addressPanel = (LinearLayout)rootView.findViewById(R.id.topArea);
-        addressPanel.setOnClickListener(new View.OnClickListener()
+        final View.OnClickListener enlarge = new View.OnClickListener()
         {
             // Enlarge the QR code
             @Override
             public void onClick(View view)
             {
                 final QRCodeDialog dialog = new QRCodeDialog();
-                dialog.configure(WalletState.getState().getConfiguration().getAddress());
+                if (addressTypeSelector.isChecked()) {
+                    dialog.configure(
+                        WalletState.getState().getConfiguration().getReceiveAssetAddress(),
+                        getString(R.string.tab_wallet_dialog_qr_title_assets));
+                }
+                else {
+                    dialog.configure(
+                        WalletState.getState().getConfiguration().getAddress(),
+                        getString(R.string.tab_wallet_dialog_qr_title_bitcoin));
+                }
+
                 dialog.show(BalanceTab.this.getActivity().getSupportFragmentManager(), "");
             }
+        };
+
+        LinearLayout addressPanel = (LinearLayout)rootView.findViewById(R.id.addressArea);
+        addressPanel.setOnClickListener(enlarge);
+        qrCode.setOnClickListener(enlarge);
+
+        addressTypeSelector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
+            {
+                if (addressTypeSelector.isChecked()) {
+                    addressText.setText(state.getConfiguration().getReceiveAssetAddress());
+                    QRCodeEncoder.createQRCode(
+                        state.getConfiguration().getReceiveAssetAddress(), qrCode, 148, 148, 8, 0xFFFFFFFF);
+                }
+                else {
+                    addressText.setText(state.getConfiguration().getAddress());
+                    QRCodeEncoder.createQRCode(state.getConfiguration().getAddress(), qrCode, 148, 148, 8, 0xFFFFFFFF);
+                }
+            }
         });
+
+        addressTypeSelector.setChecked(true);
     }
 
     /**

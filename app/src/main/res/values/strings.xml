@@ -10,6 +10,8 @@
 
   <!-- Balances tab -->
   <string name="tab_wallet_your_address_label">Your address</string>
+  <string name="tab_wallet_receive_bitcoins">Receive Bitcoins</string>
+  <string name="tab_wallet_receive_assets">Receive Assets</string>
   <string name="tab_wallet_qr_code_label">QR Code</string>
   <string name="tab_wallet_loading_wallet_label">Loading wallet…</string>
   <string name="tab_wallet_loading_wallet_error">Error opening wallet</string>
@@ -20,7 +22,8 @@
   <string name="tab_wallet_assets_label">Assets</string>
   <string name="tab_wallet_dialog_qr_close">Close</string>
   <string name="tab_wallet_dialog_qr_copy_address">Copy address</string>
-  <string name="tab_wallet_dialog_qr_title">Receive bitcoins or colored coins</string>
+  <string name="tab_wallet_dialog_qr_title_assets">Receive bitcoins or colored coins</string>
+  <string name="tab_wallet_dialog_qr_title_bitcoin">Receive bitcoins</string>
 
   <!-- Send tab -->
   <string name="tab_send_destination_address_label">Destination Address</string>
