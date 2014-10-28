@@ -40,7 +40,7 @@ public class WalletState
 
     private final WalletConfiguration configuration;
     private final APIClient api;
-    private final Boolean firstLaunch;
+    private Boolean firstLaunch;
     private AddressBalance walletData;
     private BalanceTab balanceTab;
     private SendTab sendTab;
@@ -183,5 +183,10 @@ public class WalletState
     public Boolean getFirstLaunch()
     {
         return firstLaunch;
+    }
+
+    public void unsetFirstLaunch()
+    {
+        this.firstLaunch = false;
     }
 }

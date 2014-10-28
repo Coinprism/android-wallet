@@ -129,6 +129,7 @@ public class WalletOverview extends FragmentActivity implements ActionBar.TabLis
                         public void onClick(DialogInterface dialog, int which)
                         {
                             dialog.dismiss();
+                            WalletState.getState().unsetFirstLaunch();
                         }
                     });
 
