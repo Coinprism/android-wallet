@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.coinprism.model.APIException;
 import com.coinprism.model.AssetDefinition;
@@ -249,7 +250,13 @@ public class SendTab extends Fragment
         final String message = String.format(getString(R.string.tab_send_dialog_confirm_message),
             Formatting.formatNumber(decimalAmount), assetName, to);
 
-        alertDialog.setMessage(message);
+        final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_confirm_send, null);
+        if (!WalletState.getState().getConfiguration().isPasswordEnabled())
+            dialogView.findViewById(R.id.passwordContainer).setVisibility(View.GONE);
+
+        final TextView messageText = (TextView) dialogView.findViewById(R.id.sendSummary);
+        messageText.setText(message);
+        alertDialog.setView(dialogView);
 
         alertDialog.setPositiveButton(
             getString(R.string.tab_send_dialog_confirm_button),
@@ -257,7 +264,14 @@ public class SendTab extends Fragment
             {
                 public void onClick(DialogInterface dialog, int which)
                 {
-                    onConfirmed(result);
+                    final EditText walletPasswordText = (EditText) dialogView.findViewById(R.id.walletPassword);
+                    final String password = walletPasswordText.getText().toString();
+
+                    if (!WalletState.getState().getConfiguration().isPasswordEnabled()
+                        || WalletState.getState().getConfiguration().comparePassword(password))
+                        onConfirmed(result);
+                    else
+                        showError(getString(R.string.tab_send_dialog_confirm_password_incorrect));
                 }
             });
 
@@ -339,6 +353,9 @@ public class SendTab extends Fragment
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.tab_send_dialog_transaction_success_title));
         alertDialog.setMessage(getString(R.string.tab_send_dialog_transaction_successful_message));
+
+        this.amount.setText("");
+        this.toAddress.setText("");
 
         alertDialog.setPositiveButton(
             getString(R.string.tab_send_dialog_transaction_successful_see),

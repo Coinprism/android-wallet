@@ -50,6 +50,8 @@
   <string name="tab_send_dialog_confirm_message_amount_bitcoin">BTC</string>
   <string name="tab_send_dialog_confirm_message_amount_known_asset">%1$s (%2$s)</string>
   <string name="tab_send_dialog_confirm_message_amount_unknown_asset">units (Asset ID: %s)</string>
+  <string name="tab_send_dialog_confirm_password">Enter your wallet password to confirm</string>
+  <string name="tab_send_dialog_confirm_password_incorrect">The password is incorrect.</string>
   <string name="tab_send_selector_short_bitcoin">BTC</string>
   <string name="tab_send_selector_short_unknown_asset">Units</string>
   <string name="tab_send_selector_long_bitcoin">Bitcoin</string>
@@ -88,7 +90,7 @@
   <string name="settings_dialog_restore_seed_error_title">Error</string>
   <string name="settings_dialog_restore_seed_error_message">The seed was invalid and could not be restored.</string>
   <string name="settings_dialog_enable_wallet_password_title">Enable wallet password</string>
-  <string name="settings_dialog_enable_wallet_password_text1">You are about to set a password to your wallet. You will be prompted for this password every time you try to send funds.</string>
+  <string name="settings_dialog_enable_wallet_password_text1">You are about to set a password for your wallet. You will be prompted for this password every time you try to send funds. Attention: it is not possible to recover your funds if you lose the password. Make sure you have a backup.</string>
   <string name="settings_dialog_enable_wallet_password_text2">Enter password</string>
   <string name="settings_dialog_enable_wallet_password_text3">Repeat password</string>
   <string name="settings_dialog_enable_wallet_password_error">The two passwords don\'t match.</string>
@@ -96,6 +98,5 @@
   <string name="settings_dialog_disable_wallet_password_text1">You are about to disable password protection.</string>
   <string name="settings_dialog_disable_wallet_password_text2">Enter password</string>
   <string name="settings_dialog_disable_wallet_password_error">The password is incorrect.</string>
-
 
 </resources>
