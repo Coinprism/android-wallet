@@ -69,11 +69,15 @@
   <!-- Settings -->
   <string name="settings_wallet_seed_title">Wallet seed</string>
   <string name="settings_wallet_seed_message">Your wallet seed encoded in mnemonic form is:\n\n%s</string>
+  <string name="settings_wallet_seed_error_password_on">Wallet backup is disabled while wallet password is enabled. Disable your wallet password before making a backup.</string>
   <string name="settings_wallet_seed_close">Close</string>
   <string name="settings_item_title_backup_seed">Backup wallet seed</string>
   <string name="settings_item_summary_backup_seed">Backup the wallet using a mnemonic phrase</string>
   <string name="settings_item_title_restore_seed">Restore wallet seed</string>
   <string name="settings_item_summary_restore_seed">Restore a wallet from a mnemonic phrase</string>
+  <string name="settings_item_title_wallet_password">Password protection</string>
+  <string name="settings_item_summary_wallet_password_enabled">Enabled</string>
+  <string name="settings_item_summary_wallet_password_disabled">Disabled</string>
   <string name="settings_item_title_version">Application version</string>
   <string name="settings_section_wallet">Wallet settings</string>
   <string name="settings_section_about">About</string>
@@ -83,5 +87,15 @@
   <string name="settings_dialog_restore_seed_success_message">The seed has been successfully restored. Please restart the application to load the restored wallet.</string>
   <string name="settings_dialog_restore_seed_error_title">Error</string>
   <string name="settings_dialog_restore_seed_error_message">The seed was invalid and could not be restored.</string>
+  <string name="settings_dialog_enable_wallet_password_title">Enable wallet password</string>
+  <string name="settings_dialog_enable_wallet_password_text1">You are about to set a password to your wallet. You will be prompted for this password every time you try to send funds.</string>
+  <string name="settings_dialog_enable_wallet_password_text2">Enter password</string>
+  <string name="settings_dialog_enable_wallet_password_text3">Repeat password</string>
+  <string name="settings_dialog_enable_wallet_password_error">The two passwords don\'t match.</string>
+  <string name="settings_dialog_disable_wallet_password_title">Disable wallet password</string>
+  <string name="settings_dialog_disable_wallet_password_text1">You are about to disable password protection.</string>
+  <string name="settings_dialog_disable_wallet_password_text2">Enter password</string>
+  <string name="settings_dialog_disable_wallet_password_error">The password is incorrect.</string>
+
 
 </resources>

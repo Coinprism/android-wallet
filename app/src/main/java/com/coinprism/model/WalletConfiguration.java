@@ -17,6 +17,8 @@
 
 package com.coinprism.model;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Base64;
 
 import org.bitcoinj.core.Address;
@@ -26,6 +28,9 @@ import org.bitcoinj.core.VersionedChecksummedBytes;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.crypto.HDKeyDerivation;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 /**
@@ -33,6 +38,7 @@ import java.security.SecureRandom;
  */
 public class WalletConfiguration
 {
+    public static final String passwordKey = "wallet.password";
     private final byte openAssetsNamespace = 19;
     private final ECKey key;
     private final byte[] seed;
@@ -114,4 +120,55 @@ public class WalletConfiguration
     {
         return seed;
     }
+
+    public Boolean isPasswordEnabled()
+    {
+        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(
+            CoinprismWalletApplication.getContext());
+
+        return sharedPrefs.getString(passwordKey, null) != null;
+    }
+
+    public Boolean comparePassword(String password)
+    {
+        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(
+            CoinprismWalletApplication.getContext());
+
+        String storedValue = sharedPrefs.getString(passwordKey, null);
+        return storedValue != null && storedValue.equals(computeSHAHash(password));
+    }
+
+    public void setPassword(String value)
+    {
+        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(
+            CoinprismWalletApplication.getContext());
+
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        if (value != null)
+            editor.putString(passwordKey, computeSHAHash(value));
+        else
+            editor.putString(passwordKey, null);
+
+        editor.commit();
+    }
+
+    private static String computeSHAHash(String password)
+    {
+        try
+        {
+            MessageDigest mdSha1 = MessageDigest.getInstance("SHA-1");
+            mdSha1.update(password.getBytes("ASCII"));
+            byte[] data = mdSha1.digest();
+            return Base64.encodeToString(data, Base64.NO_WRAP);
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            return password;
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            return password;
+        }
+    }
+
 }

@@ -30,11 +30,11 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Base64;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
 import com.coinprism.model.CoinprismWalletApplication;
+import com.coinprism.model.WalletConfiguration;
 import com.coinprism.model.WalletState;
 import com.coinprism.utils.SecurePreferences;
 import com.google.common.base.Joiner;
@@ -43,7 +43,6 @@ import org.bitcoinj.crypto.MnemonicCode;
 import org.bitcoinj.crypto.MnemonicException;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -97,6 +96,12 @@ public class UserPreferences extends PreferenceActivity
                 {
                     try
                     {
+                        if (WalletState.getState().getConfiguration().isPasswordEnabled())
+                        {
+                            showError(getString(R.string.settings_wallet_seed_error_password_on));
+                            return false;
+                        }
+
                         final List<String> mnemonic = MnemonicCode.INSTANCE.toMnemonic(
                             WalletState.getState().getConfiguration().getSeed());
 
@@ -221,6 +226,117 @@ public class UserPreferences extends PreferenceActivity
                     return true;
                 }
             });
+
+            final Preference walletPassword = findPreference("wallet_password");
+            setPasswordSummary();
+            walletPassword.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+            {
+                @Override
+                public boolean onPreferenceClick(Preference preference)
+                {
+                    if (WalletState.getState().getConfiguration().isPasswordEnabled())
+                        showDisablePasswordDialog();
+                    else
+                        showEnablePasswordDialog();
+
+                    return true;
+                }
+            });
+        }
+
+        private void showEnablePasswordDialog()
+        {
+            // Display a dialog to enable password protection
+
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                GeneralPreferences.this.getActivity());
+
+            final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_enable_password, null);
+
+            alertDialog.setPositiveButton(
+                getString(android.R.string.ok),
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        final EditText edit1 = (EditText) dialogView.findViewById(R.id.password1);
+                        String password1 = edit1.getText().toString();
+                        final EditText edit2 = (EditText) dialogView.findViewById(R.id.password2);
+                        String password2 = edit2.getText().toString();
+
+                        if (password1.equals(password2))
+                        {
+                            WalletState.getState().getConfiguration().setPassword(password1);
+                            setPasswordSummary();
+                        }
+                        else
+                        {
+                            showError(getString(R.string.settings_dialog_enable_wallet_password_error));
+                        }
+                    }
+                });
+
+            alertDialog.setNegativeButton(
+                getString(android.R.string.cancel),
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.cancel();
+                    }
+                });
+
+            alertDialog.setView(dialogView);
+            alertDialog.setTitle(getString(R.string.settings_dialog_enable_wallet_password_title));
+            Dialog restoreDialog = alertDialog.create();
+            restoreDialog.show();
+        }
+
+        private void showDisablePasswordDialog()
+        {
+            // Display a dialog to disable password protection
+
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                GeneralPreferences.this.getActivity());
+
+            final View dialogView = getActivity().getLayoutInflater().inflate(
+                R.layout.dialog_disable_password, null);
+
+            alertDialog.setPositiveButton(
+                getString(android.R.string.ok),
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        final EditText edit = (EditText) dialogView.findViewById(R.id.password1);
+                        String password = edit.getText().toString();
+
+                        if (WalletState.getState().getConfiguration().comparePassword(password))
+                        {
+                            WalletState.getState().getConfiguration().setPassword(null);
+                            setPasswordSummary();
+                        }
+                        else
+                        {
+                            showError(getString(R.string.settings_dialog_disable_wallet_password_error));
+                        }
+                    }
+                });
+
+            alertDialog.setNegativeButton(
+                getString(android.R.string.cancel),
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.cancel();
+                    }
+                });
+
+            alertDialog.setView(dialogView);
+            alertDialog.setTitle(getString(R.string.settings_dialog_disable_wallet_password_title));
+            Dialog restoreDialog = alertDialog.create();
+            restoreDialog.show();
         }
 
         @Override
@@ -228,12 +344,12 @@ public class UserPreferences extends PreferenceActivity
         {
             if ("default_fees".equals(key))
             {
-                EditTextPreference textPreference = (EditTextPreference) findPreference(key);
-                String defaultFees = getResources().getString(R.string.default_fees);
-                String value = sharedPreferences.getString(key, defaultFees);
+                final EditTextPreference textPreference = (EditTextPreference) findPreference(key);
+                final String defaultFees = getResources().getString(R.string.default_fees);
+                final String value = sharedPreferences.getString(key, defaultFees);
                 try
                 {
-                    BigDecimal decimal = new BigDecimal(value);
+                    final BigDecimal decimal = new BigDecimal(value);
 
                     if (decimal.compareTo(BigDecimal.ZERO) >= 0)
                     {
@@ -247,6 +363,31 @@ public class UserPreferences extends PreferenceActivity
                 textPreference.setText(value);
                 textPreference.setSummary(value + " BTC");
             }
+            else if (WalletConfiguration.passwordKey.equals(key))
+            {
+                setPasswordSummary();
+            }
+        }
+
+        private void setPasswordSummary()
+        {
+            final Preference walletPassword = findPreference("wallet_password");
+
+            if (WalletState.getState().getConfiguration().isPasswordEnabled())
+                walletPassword.setSummary(getString(R.string.settings_item_summary_wallet_password_enabled));
+            else
+                walletPassword.setSummary(getString(R.string.settings_item_summary_wallet_password_disabled));
+        }
+
+        private void showError(String message)
+        {
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
+
+            alertDialog.setTitle(getString(R.string.tab_send_error_dialog_title));
+            alertDialog.setMessage(message);
+            alertDialog.setPositiveButton(getString(android.R.string.ok), null);
+
+            alertDialog.show();
         }
     }
 }
