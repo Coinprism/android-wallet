@@ -77,7 +77,7 @@ public class APIClient
                 JSONObject jObject = new JSONObject(httpResponse);
 
                 definition = new AssetDefinition(
-                    jObject.getString("asset_address"),
+                    jObject.getString("asset_id"),
                     jObject.getString("name"),
                     jObject.getString("name_short"),
                     jObject.getInt("divisibility"),
