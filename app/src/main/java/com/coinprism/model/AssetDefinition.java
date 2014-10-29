@@ -5,17 +5,17 @@ package com.coinprism.model;
  */
 public class AssetDefinition
 {
-    private final String assetAddress;
+    private final String assetId;
     private final String name;
     private final String ticker;
     private final int divisibility;
     private final String iconUrl;
     private final Boolean isUnknown;
 
-    public AssetDefinition(String assetAddress, String name, String ticker, int divisibility,
+    public AssetDefinition(String assetId, String name, String ticker, int divisibility,
         String iconUrl)
     {
-        this.assetAddress = assetAddress;
+        this.assetId = assetId;
         this.name = name;
         this.ticker = ticker;
         this.divisibility = divisibility;
@@ -23,9 +23,9 @@ public class AssetDefinition
         this.isUnknown = false;
     }
 
-    public AssetDefinition(String assetAddress)
+    public AssetDefinition(String assetId)
     {
-        this.assetAddress = assetAddress;
+        this.assetId = assetId;
         this.name = null;
         this.ticker = null;
         this.divisibility = 0;
@@ -33,9 +33,9 @@ public class AssetDefinition
         this.isUnknown = true;
     }
 
-    public String getAssetAddress()
+    public String getAssetId()
     {
-        return this.assetAddress;
+        return this.assetId;
     }
 
     public String getName()

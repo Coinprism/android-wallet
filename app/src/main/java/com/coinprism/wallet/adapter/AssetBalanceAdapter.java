@@ -73,7 +73,7 @@ public class AssetBalanceAdapter extends ArrayAdapter<AssetBalance>
                 rowView,
                 String.format(
                     context.getString(R.string.tab_wallet_units_count), Formatting.formatNumber(balance.getQuantity())),
-                String.format(context.getString(R.string.tab_wallet_asset_id), balance.getAsset().getAssetAddress()),
+                String.format(context.getString(R.string.tab_wallet_asset_id), balance.getAsset().getAssetId()),
                 placeholder);
         }
         else

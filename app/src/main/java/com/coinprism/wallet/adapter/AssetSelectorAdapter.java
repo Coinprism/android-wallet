@@ -81,7 +81,7 @@ public class AssetSelectorAdapter extends ArrayAdapter<AssetDefinition>
         else if (item.getName() != null)
             rowView.setText(item.getName());
         else
-            rowView.setText(String.format(context.getString(R.string.tab_send_selector_long_unknown_asset), item.getAssetAddress().substring(0, 10)));
+            rowView.setText(String.format(context.getString(R.string.tab_send_selector_long_unknown_asset), item.getAssetId().substring(0, 10)));
 
         return rowView;
     }

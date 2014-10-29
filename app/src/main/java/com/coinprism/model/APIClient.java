@@ -114,12 +114,12 @@ public class APIClient
         {
             JSONObject assetObject = (JSONObject) assets.get(i);
 
-            String assetAddress = assetObject.getString("address");
+            String assetId = assetObject.getString("id");
 
             BigInteger quantity = new BigInteger(assetObject.getString("balance"))
                     .add(new BigInteger(assetObject.getString("unconfirmed_balance")));
 
-            assetBalances.add(new AssetBalance(fetchAssetDefinition(assetAddress), quantity));
+            assetBalances.add(new AssetBalance(fetchAssetDefinition(assetId), quantity));
         }
 
         return new AddressBalance(bitcoinBalance, assetBalances);
@@ -159,9 +159,9 @@ public class APIClient
                 JSONObject input = (JSONObject) inputs.get(j);
                 if (isAddress(input, address))
                 {
-                    if (!input.isNull("asset_address"))
+                    if (!input.isNull("asset_id"))
                         addQuantity(quantities,
-                            input.getString("asset_address"),
+                            input.getString("asset_id"),
                             new BigInteger(input.getString("asset_quantity")).negate());
 
                     satoshiDelta = satoshiDelta.subtract(
@@ -175,9 +175,9 @@ public class APIClient
                 JSONObject output = (JSONObject) outputs.get(j);
                 if (isAddress(output, address))
                 {
-                    if (!output.isNull("asset_address"))
+                    if (!output.isNull("asset_id"))
                         addQuantity(quantities,
-                            output.getString("asset_address"),
+                            output.getString("asset_id"),
                             new BigInteger(output.getString("asset_quantity")));
 
                     satoshiDelta = satoshiDelta.add(
@@ -208,12 +208,11 @@ public class APIClient
      * @param fromAddress the address from which to send the funds or assets
      * @param toAddress the address where to send the funds or assets
      * @param amount the amount to send, in asset units or satoshis
-     * @param assetAddress the asset address of the asset to send, or null for bitcoins
+     * @param assetId the asset ID of the asset to send, or null for bitcoins
      * @param fees the fees to pay, in satoshis
      * @return the unsigned transaction for the requested operation
      */
-    public Transaction buildTransaction(String fromAddress, String toAddress, String amount, String assetAddress,
-        long fees)
+    public Transaction buildTransaction(String fromAddress, String toAddress, String amount, String assetId, long fees)
         throws JSONException, IOException, APIException
     {
         try
@@ -221,8 +220,8 @@ public class APIClient
             JSONObject toObject = new JSONObject();
             toObject.put("address", toAddress);
             toObject.put("amount", amount);
-            if (assetAddress != null)
-                toObject.put("asset_address", assetAddress);
+            if (assetId != null)
+                toObject.put("asset_id", assetId);
 
             JSONArray array = new JSONArray();
             array.put(toObject);
@@ -232,7 +231,7 @@ public class APIClient
             postData.put("to", array);
 
             String result;
-            if (assetAddress != null)
+            if (assetId != null)
                 result = executeHttpPost(this.baseUrl + "/v1/sendasset?format=raw", postData.toString());
             else
                 result = executeHttpPost(this.baseUrl + "/v1/sendbitcoin?format=raw", postData.toString());
@@ -302,13 +301,13 @@ public class APIClient
         }
     }
 
-    private void addQuantity(HashMap<String, BigInteger> map, String assetAddress,
+    private void addQuantity(HashMap<String, BigInteger> map, String assetId,
         BigInteger quantity)
     {
-        if (!map.containsKey(assetAddress))
-            map.put(assetAddress, quantity);
+        if (!map.containsKey(assetId))
+            map.put(assetId, quantity);
         else
-            map.put(assetAddress, quantity.add(map.get(assetAddress)));
+            map.put(assetId, quantity.add(map.get(assetId)));
     }
 
     private static Date parseDate(String input) throws java.text.ParseException

@@ -173,7 +173,7 @@ public class SendTab extends Fragment
                             .scaleByPowerOfTen(selectedAsset.getDivisibility()).toBigInteger();
                         return WalletState.getState().getAPIClient().buildTransaction(
                             WalletState.getState().getConfiguration().getAddress(),
-                            to, unitAmount.toString(), selectedAsset.getAssetAddress(), fees);
+                            to, unitAmount.toString(), selectedAsset.getAssetId(), fees);
                     }
                 }
                 catch (APIException exception)
@@ -243,7 +243,7 @@ public class SendTab extends Fragment
             {
                 assetName = String.format(
                     getString(R.string.tab_send_dialog_confirm_message_amount_unknown_asset),
-                    selectedAsset.getAssetAddress());
+                    selectedAsset.getAssetId());
             }
         }
 
