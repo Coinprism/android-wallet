@@ -17,6 +17,7 @@
 
 package com.coinprism.model;
 
+import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.Transaction;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,12 +48,14 @@ import javax.net.ssl.HttpsURLConnection;
 public class APIClient
 {
     private final String baseUrl;
+    private final NetworkParameters networkParameters;
     private final HashMap<String, AssetDefinition> cache = new HashMap<String, AssetDefinition>();
     private final static String userAgent = "Coinprism Android";
 
-    public APIClient(String baseUrl)
+    public APIClient(String baseUrl, NetworkParameters networkParameters)
     {
         this.baseUrl = baseUrl;
+        this.networkParameters = networkParameters;
     }
 
     public AssetDefinition getAssetDefinition(String address)
@@ -239,9 +242,7 @@ public class APIClient
             JSONObject jsonResponse = new JSONObject(result);
 
             byte[] data = hexStringToByteArray(jsonResponse.getString("raw"));
-            Transaction transaction = new Transaction(
-                WalletState.getState().getConfiguration().getNetworkParameters(),
-                data);
+            Transaction transaction = new Transaction(this.networkParameters, data);
             transaction.ensureParsed();
 
             return transaction;

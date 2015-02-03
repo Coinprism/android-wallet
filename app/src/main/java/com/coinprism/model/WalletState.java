@@ -108,7 +108,12 @@ public class WalletState
         catch (IOException exception)
         { }
 
-        return new WalletState(wallet, new APIClient(CoinprismWalletApplication.getContext().getString(R.string.api_base_url)), firstLaunch);
+        return new WalletState(
+            wallet,
+            new APIClient(
+                CoinprismWalletApplication.getContext().getString(R.string.api_base_url),
+                wallet.getNetworkParameters()),
+            firstLaunch);
     }
 
     public void triggerUpdate()
