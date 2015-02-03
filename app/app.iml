@@ -10,7 +10,7 @@
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="testnetDebug" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleTestnetDebug" />
-        <option name="COMPILE_JAVA_TASK_NAME" value="compileTestnetDebugJava" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileTestnetDebugSources" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleTestnetDebugTest" />
         <option name="SOURCE_GEN_TASK_NAME" value="generateTestnetDebugSources" />
         <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateTestnetDebugTestSources" />
@@ -31,6 +31,7 @@
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/testnet/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/testnet/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/testnet/debug" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/testnet/debug" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testnetDebug/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testnetDebug/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testnetDebug/assets" type="java-resource" />
@@ -43,6 +44,7 @@
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/test/testnet/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/test/testnet/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/test/testnet/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/test/testnet/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testnet/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testnet/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testnet/assets" type="java-resource" />
@@ -98,6 +100,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 20 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
