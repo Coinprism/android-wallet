@@ -324,7 +324,7 @@ public class APIClient
         return addresses.length() == 1 && addresses.getString(0).equals(localAddress);
     }
 
-    private static String executeHttpGet(String url) throws IOException, APIException
+    protected String executeHttpGet(String url) throws IOException, APIException
     {
         URL target = new URL(url);
         HttpsURLConnection connection = (HttpsURLConnection) target.openConnection();
@@ -335,7 +335,7 @@ public class APIClient
         return getHttpResponse(connection);
     }
 
-    private static String executeHttpPost(String url, String body) throws IOException, APIException
+    protected String executeHttpPost(String url, String body) throws IOException, APIException
     {
         URL target = new URL(url);
         HttpsURLConnection connection = (HttpsURLConnection) target.openConnection();
